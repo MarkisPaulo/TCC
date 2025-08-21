@@ -1,6 +1,11 @@
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
+:root {
+    --primary-color: #1a4b8c;
+    --secondary-color: #2a6fba;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -158,12 +163,7 @@ input {
 }
 
 .overlay {
-	background: #FF416C;
-	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: 0 0;
+	background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 	color: #FFFFFF;
 	position: relative;
 	left: -100%;
