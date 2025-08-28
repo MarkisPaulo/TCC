@@ -1,7 +1,4 @@
-<?php
-require_once("verificaautentaticacao.php");
 
-?>
 
 <?php
 require_once("conexao.php");
