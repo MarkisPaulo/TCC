@@ -1,0 +1,74 @@
+        /* Reset e estilos básicos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Container do Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: #f8f9fa; /* Cor de fundo opcional */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Logo com espaço para imagem */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: #ddd; /* Apenas para visualização */
+            border-radius: 50%; /* Opcional: formato circular */
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* Navegação */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Efeito after sublinhado */
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0700b8 0%, #00ff88 100%);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s;
+            transform-origin: left center;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        
