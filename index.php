@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="assets/css/login.css" />
-    <title>Document</title>
+    <title>Login</title>
   </head>
 
   <body>
@@ -19,8 +19,8 @@
       </div>
       <div class="overlay">
         <div class="overlay-container">
-          <h1>Bem-vindo</h1>
-          <p>Texto do painel</p>
+          <h1>Bem-vindo a Nexus!</h1>
+          <p>Faça seu Login.</p>
         </div>
       </div>
     </div>
