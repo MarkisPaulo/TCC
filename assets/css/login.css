@@ -44,8 +44,8 @@ a {
 
 button {
 	border-radius: 20px;
-	border: 1px solid #FF4B2B;
-	background-color: #FF4B2B;
+	border: 1px solid #0077b6;
+	background: linear-gradient(to right, #0077b6, #00b4d8);
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -75,8 +75,9 @@ form {
 }
 
 input {
-	background-color: #eee;
-	border: none;
+	background-color: #fff;
+	border: 1px solid #3a47d5;
+	border-radius: 10px;
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
