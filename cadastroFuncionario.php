@@ -22,9 +22,9 @@ if (isset($_POST['cadastrar'])) {
     $senha = $_POST['senha'];
 
 
-    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao)
+    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao, status)
     VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
-    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao' )";
+    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao', '$status' )";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -133,11 +133,11 @@ if (isset($_POST['cadastrar'])) {
                     <label>Status do Funcionário</label>
                     <div class="radio-group">
                         <div class="radio-option">
-                            <input type="radio" id="status-ativo" name="product-status" value="true" checked>
+                            <input type="radio" id="status-ativo" name="status" value="true" checked>
                             <label for="status-ativo">Ativo</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="status-inativo" name="product-status" value="false">
+                            <input type="radio" id="status-inativo" name="status" value="false">
                             <label for="status-inativo">Inativo</label>
                         </div>
                     </div>
@@ -149,11 +149,17 @@ if (isset($_POST['cadastrar'])) {
                 </div>
             </div>
 
+            <div class="form-row">
             <div class="form-group">
                 <label for="email">E-mail</label>
                 <input type="email" name="email" id="email" placeholder="exemplo@email.com">
             </div>
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha" id="senha" required>
+            </div>
 
+</div>
 
             <div class="form-group">
                 <label for="telefone">Telefone*</label>
@@ -248,12 +254,12 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="dtDemissao">Data de Demissão*</label>
-                    <input type="date" name="dtAdmissao" id="dtDemissao" placeholder="00/00/0000" required>
+                    <input type="date" name="dtDemissao" id="dtDemissao" placeholder="00/00/0000" >
                 </div>
             </div>
             <div class="button-group">
                 <button type="button" class="btn btn-secondary">Cancelar</button>
-                <button type="submit" class="btn">Cadastrar Funcionário</button>
+                <button type="submit" class="btn" name="cadastrar">Cadastrar Funcionário</button>
             </div>
         </form>
     </div>

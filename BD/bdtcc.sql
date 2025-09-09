@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21/08/2025 às 16:01
+-- Tempo de geração: 09/09/2025 às 21:43
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -43,10 +43,9 @@ CREATE TABLE `cliente` (
   `codigo` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `cpf` varchar(20) NOT NULL,
-  `rg` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `logradouro` varchar(45) NOT NULL,
-  `endereço` varchar(100) NOT NULL,
+  `endereco` varchar(100) NOT NULL,
   `cep` varchar(45) NOT NULL,
   `bairro` varchar(60) NOT NULL,
   `cidade` varchar(50) NOT NULL,
@@ -54,6 +53,13 @@ CREATE TABLE `cliente` (
   `telefone` varchar(20) NOT NULL,
   `email` varchar(254) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `cliente`
+--
+
+INSERT INTO `cliente` (`codigo`, `status`, `cpf`, `nome`, `logradouro`, `endereco`, `cep`, `bairro`, `cidade`, `uf`, `telefone`, `email`) VALUES
+(1, 1, '132456789', 'judite', 'sdafdsa', 'adfafads', '87400-000', 'asdfadsfa', 'Cruzeiro do Oeste', 'PR', '44444444444', 'asddf@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -65,7 +71,6 @@ CREATE TABLE `funcionario` (
   `codigo` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `cpf` varchar(20) NOT NULL,
-  `rg` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `endereco` varchar(100) NOT NULL,
   `logradouro` varchar(45) NOT NULL,
@@ -77,8 +82,16 @@ CREATE TABLE `funcionario` (
   `email` varchar(254) DEFAULT NULL,
   `tipoDeAcesso` tinyint(1) NOT NULL,
   `dtAdmissao` date NOT NULL,
-  `dtDemissao` date NOT NULL
+  `dtDemissao` date NOT NULL,
+  `senha` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `funcionario`
+--
+
+INSERT INTO `funcionario` (`codigo`, `status`, `cpf`, `nome`, `endereco`, `logradouro`, `telefone`, `cep`, `uf`, `bairro`, `cidade`, `email`, `tipoDeAcesso`, `dtAdmissao`, `dtDemissao`, `senha`) VALUES
+(1, 0, '132456789', 'judite', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'asddf@gmail.com', 1, '2025-09-09', '0000-00-00', '132456');
 
 -- --------------------------------------------------------
 
@@ -159,6 +172,12 @@ ALTER TABLE `cliente`
   ADD PRIMARY KEY (`codigo`);
 
 --
+-- Índices de tabela `funcionario`
+--
+ALTER TABLE `funcionario`
+  ADD PRIMARY KEY (`codigo`);
+
+--
 -- Índices de tabela `marca`
 --
 ALTER TABLE `marca`
@@ -196,7 +215,13 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de tabela `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `funcionario`
+--
+ALTER TABLE `funcionario`
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `marca`
