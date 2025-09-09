@@ -22,8 +22,9 @@ if (isset($_POST['cadastrar'])) {
     $senha = $_POST['senha'];
 
 
-    $sql = "INSERT INTO usuario (nome, email, senha) VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
-    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtDemissao', '$dtDemissao' )";
+    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao)
+    VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
+    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao' )";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -106,7 +107,7 @@ if (isset($_POST['cadastrar'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Funcionário</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/cadastroFuncionario.css">
+    <link rel="stylesheet" href="assets/css/cadastroFun.css">
 </head>
 
 <body>
@@ -154,11 +155,11 @@ if (isset($_POST['cadastrar'])) {
             </div>
 
 
-                <div class="form-group">
-                    <label for="telefone">Telefone*</label>
-                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" required>
-                </div>
+            <div class="form-group">
+                <label for="telefone">Telefone*</label>
+                <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" required>
             </div>
+
 
             <div class="form-row">
 
@@ -240,7 +241,7 @@ if (isset($_POST['cadastrar'])) {
                     </div>
                 </div>
 
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="dtAdmissao">Data de Admissão*</label>
                     <input type="date" name="dtAdmissao" id="dtAdmissao" placeholder="00/00/0000" required>
                 </div>
@@ -249,7 +250,7 @@ if (isset($_POST['cadastrar'])) {
                     <label for="dtDemissao">Data de Demissão*</label>
                     <input type="date" name="dtAdmissao" id="dtDemissao" placeholder="00/00/0000" required>
                 </div>
-
+            </div>
             <div class="button-group">
                 <button type="button" class="btn btn-secondary">Cancelar</button>
                 <button type="submit" class="btn">Cadastrar Funcionário</button>
