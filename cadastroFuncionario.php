@@ -10,17 +10,20 @@ if (isset($_POST['cadastrar'])) {
     $email = $_POST['email'];
     $telefone = $_POST['telefone'];
     $cpf = $_POST['cpf'];
-    $rg = $_POST['rg'];
     $endereco = $_POST['endereco'];
     $logradouro = $_POST['logradouro'];
     $cep = $_POST['cep'];
     $bairro = $_POST['bairro'];
     $cidade = $_POST['cidade'];
     $uf = $_POST['uf'];
+    $tipoDeAcesso = $_POST['acess'];
+    $dtAdmissao = $_POST['dtAdmissao'];
+    $dtDemissao = $_POST['dtDemissao'];
+    $senha = $_POST['senha'];
 
 
-
-    $sql = "INSERT INTO usuario (nome, email, senha) VALUES('$nome', '$email', '$senha')";
+    $sql = "INSERT INTO usuario (nome, email, senha) VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
+    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtDemissao', '$dtDemissao' )";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -101,16 +104,16 @@ if (isset($_POST['cadastrar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Cliente</title>
+    <title>Cadastro de Funcionário</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/cadastroCliente.css">
+    <link rel="stylesheet" href="assets/css/cadastroFuncionario.css">
 </head>
 
 <body>
     <div class="container">
         <div class="form-header">
-            <h1><i class="fas fa-thin fa-user"></i> Cadastro de Cliente</h1>
-            <p>Preencha os dados abaixo para cadastrar um novo cliente</p>
+            <h1><i class="fas fa-thin fa-user"></i> Cadastro de Funcionário</h1>
+            <p>Preencha os dados abaixo para cadastrar um novo funcionário</p>
         </div>
 
         <div class="info-box">
@@ -126,7 +129,7 @@ if (isset($_POST['cadastrar'])) {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>Status do Cliente</label>
+                    <label>Status do Funcionário</label>
                     <div class="radio-group">
                         <div class="radio-option">
                             <input type="radio" id="status-ativo" name="product-status" value="true" checked>
@@ -150,11 +153,6 @@ if (isset($_POST['cadastrar'])) {
                 <input type="email" name="email" id="email" placeholder="exemplo@email.com">
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="rg">RG</label>
-                    <input type="text" name="rg" id="rg" placeholder="00.000.000-0">
-                </div>
 
                 <div class="form-group">
                     <label for="telefone">Telefone*</label>
@@ -227,63 +225,39 @@ if (isset($_POST['cadastrar'])) {
                     <input type="text" name="bairro" id="bairro" placeholder="Bairro...." required>
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Tipo de Acesso</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="acess" name="acess" value="1" checked>
+                            <label for="acess">Funcionário</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="acess" name="acess" value="0">
+                            <label for="acess">Gerente</label>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="form-group">
+                    <label for="dtAdmissao">Data de Admissão*</label>
+                    <input type="date" name="dtAdmissao" id="dtAdmissao" placeholder="00/00/0000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="dtDemissao">Data de Demissão*</label>
+                    <input type="date" name="dtAdmissao" id="dtDemissao" placeholder="00/00/0000" required>
+                </div>
 
             <div class="button-group">
                 <button type="button" class="btn btn-secondary">Cancelar</button>
-                <button type="submit" class="btn">Cadastrar Cliente</button>
+                <button type="submit" class="btn">Cadastrar Funcionário</button>
             </div>
         </form>
     </div>
 </body>
 
 
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "post") {
-    include('conn.php');
-
-    $nome = $_POST['client-name'];
-    $email = $_POST['client-email'];
-    $cpf = $_POST['client-cpf'];
-    $rg = $_POST['client-rg'];
-    $telefone = $_POST['client-phone'];
-    $cep = $_POST['client-cep'];
-    $Cidade = $_POST['client-city'];
-    $logradouro = $_POST['client-logradouro'];
-    $endereco = $_POST['client-address'];
-    $bairro = $_POST['client-bairro'];
-
-    if (isset($_POST['product-status'])) {
-        $status = $_POST['product-status'];
-    } else {
-        echo "Nenhum gênero foi selecionado.";
-    }
-
-    if (isset($_POST['client-state'])) {
-        $uf = $_POST['client-state'];
-    } else {
-        echo "Nenhuma cor foi selecionada.";
-    }
-
-    if ($senha === $senha2) {
-
-        $stmt = $conn->prepare("INSERT INTO livro (titulo, autor, paginas) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $titulo, $autor, $paginas);
-
-        if ($stmt->execute()) {
-            echo "<div class='success-message'>✅ Livro cadastrado com sucesso!</div>";
-            echo "<script>setTimeout(function(){ window.location.href = 'cadastroLivro.php'; }, 2500);</script>";
-        } else {
-            echo "<div class='success-message' style='background-color:#f8d7da; color:#721c24; border-color:#f5c6cb;'>Erro ao cadastrar: " . $conn->error . "</div>";
-        }
-
-        $stmt->close();
-        $conn->close();
-    } else {
-        echo "Senhas não coincidem";
-        header("Refresh: 2; url=cadastrousuario.php");
-    }
-}
-
-?>
 
 </html>
