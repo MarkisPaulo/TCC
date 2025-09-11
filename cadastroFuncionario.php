@@ -134,11 +134,11 @@ if (isset($_POST['cadastrar'])) {
                     <div class="radio-group">
                         <div class="radio-option">
                             <input type="radio" id="status-ativo" name="status" value="true" checked>
-                            <label for="status-ativo">Ativo</label>
+                            <label for="status">Ativo</label>
                         </div>
                         <div class="radio-option">
                             <input type="radio" id="status-inativo" name="status" value="false">
-                            <label for="status-inativo">Inativo</label>
+                            <label for="status">Inativo</label>
                         </div>
                     </div>
                 </div>

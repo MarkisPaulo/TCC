@@ -113,10 +113,11 @@ CREATE TABLE `marca` (
 
 CREATE TABLE `produto` (
   `codigo` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
-  `nome` int(45) NOT NULL,
-  `precoUnitarioDaCompra` double NOT NULL,
-  `precoUnitarioDaVenda` double NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `precoUnitarioDaCompra` double(10,2) NOT NULL,
+  `precoUnitarioDaVenda` double(10,2) NOT NULL,
+  `quantEstoque` int(11) NOT NULL,
   `ncm` varchar(10) NOT NULL,
   `cfop` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -129,7 +130,7 @@ CREATE TABLE `produto` (
 
 CREATE TABLE `recebimentos` (
   `codigo` int(11) NOT NULL,
-  `status` double NOT NULL,
+  `status` tinyint(1) NOT NULL,
   `formaDeRecebimento` varchar(45) NOT NULL,
   `valorRecebido` double NOT NULL,
   `valorReceber` double NOT NULL,
@@ -145,14 +146,14 @@ CREATE TABLE `recebimentos` (
 
 CREATE TABLE `vendas` (
   `numeroDaVenda` int(11) NOT NULL,
-  `status` double NOT NULL,
+  `status` tinyint(1) NOT NULL,
   `data/hora` datetime NOT NULL,
   `valorTotal` double NOT NULL,
   `formaDeRecebimento` varchar(45) NOT NULL,
   `observacoes` varchar(100) NOT NULL,
   `data/horaEntrega` datetime NOT NULL,
   `enderecoEntrega` varchar(100) NOT NULL,
-  `statusEntrega` double NOT NULL
+  `statusEntrega` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

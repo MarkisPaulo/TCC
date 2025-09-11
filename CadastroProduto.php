@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/cadastroProd.css">
+    <link rel="stylesheet" href="assets/css/cadastroProd.css">
     <title>Cadastro de Produto</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -25,13 +25,6 @@
                 <label for="product-name">Nome do Produto*</label>
                 <input type="text" id="product-name" placeholder="Digite o nome do produto" required>
             </div>
-
-            <div class="form-group">
-                <label for="product-description">Descrição*</label>
-                <textarea id="product-description" placeholder="Descreva o produto em detalhes" required></textarea>
-            </div>
-
-
 
             <div class="form-row">
                 <div class="form-group">
@@ -85,8 +78,8 @@
 
 
             <div class="form-group">
-                <label for="product-sku">SKU/Código</label>
-                <input type="text" id="product-sku" placeholder="Código único do produto">
+                <label for="product-sku">NCM</label>
+                <input type="text" id="product-ncm" placeholder="Código único do produto">
             </div>
 
             <div class="button-group">
