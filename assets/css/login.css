@@ -112,16 +112,6 @@ input {
 	z-index: 5;
 }
 
-.overlay-container {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 50%;
-	height: 100%;
-	overflow: hidden;
-	z-index: 100;
-}
-
 .overlay {
 	background: linear-gradient(90deg, #00d2ff 0%, #3a47d5 100%);
 	color: #FFFFFF;
@@ -138,7 +128,16 @@ input {
 }
 
 .overlay-container {
-	
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+	z-index: 100;
+}
+
+.overlay-container {
 	display: flex;
 	align-items: center;
 	justify-content: center;
