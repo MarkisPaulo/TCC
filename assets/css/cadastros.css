@@ -1,0 +1,111 @@
+:root {
+            --azul-principal: #2c80b8;
+            --azul-claro: #e6f2fa;
+            --azul-escuro: #1a5a8a;
+            --branco: #ffffff;
+            --cinza-claro: #f5f5f5;
+            --cinza-texto: #666666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--cinza-claro);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--azul-principal);
+            color: var(--branco);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 250px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border-top: 4px solid var(--azul-principal);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .card-icon {
+            font-size: 48px;
+            color: var(--azul-principal);
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .card-description {
+            color: var(--cinza-texto);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        footer {
+            background-color: var(--azul-principal);
+            color: var(--branco);
+            text-align: center;
+            padding: 15px 0;
+            margin-top: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container {
+                gap: 20px;
+            }
+            
+            .card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }

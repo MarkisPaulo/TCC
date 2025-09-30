@@ -1,5 +1,6 @@
 <?php
 require_once("conexao.php");
+require_once("verificaautenticacao.php");
 if (isset($_POST['cadastrar'])) {
 
     $status = $_POST['status'];

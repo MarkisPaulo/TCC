@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
@@ -10,11 +12,11 @@
   <body>
     <div class="container" id="container">
       <div class="form-container sign-in-container">
-        <form action="#">
+        <form action="autenticacao.php" method="POST">
           <h1>Login</h1>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button>Entrar</button>
+          <input name="email" type="email" placeholder="Email" />
+          <input name="password" type="password" placeholder="Password" />
+          <button name="entrar" type="submit">Entrar</button>
         </form>
       </div>
       <div class="overlay">

@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
 <?php
+require_once("verificaautenticacao.php");
 require_once("conexao.php");
 if (isset($_POST['cadastrar'])) {
 
     $nome = $_POST['nome'];
-    $status = $_POST['status'];
     $email = $_POST['email'];
     $telefone = $_POST['telefone'];
     $cpf = $_POST['cpf'];
@@ -22,9 +19,9 @@ if (isset($_POST['cadastrar'])) {
     $senha = $_POST['senha'];
 
 
-    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao, status)
+    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao)
     VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
-    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao', '$status' )";
+    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao')";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -102,6 +99,9 @@ if (isset($_POST['cadastrar'])) {
     });
 </script>
 
+<!DOCTYPE html>
+<html lang="pt-BR"></html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,40 +130,24 @@ if (isset($_POST['cadastrar'])) {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>Status do Funcionário</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="status-ativo" name="status" value="true" checked>
-                            <label for="status">Ativo</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="status-inativo" name="status" value="false">
-                            <label for="status">Inativo</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label for="cpf">CPF*</label>
                     <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone*</label>
+                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" required>
                 </div>
             </div>
 
             <div class="form-row">
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" name="email" id="email" placeholder="exemplo@email.com">
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha</label>
-                <input type="password" name="senha" id="senha" required>
-            </div>
-
-</div>
-
-            <div class="form-group">
-                <label for="telefone">Telefone*</label>
-                <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" required>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email" placeholder="exemplo@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" name="senha" id="senha" placeholder="********" required>
+                </div>
             </div>
 
 

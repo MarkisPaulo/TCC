@@ -1,3 +1,6 @@
+<?php 
+  require_once("verificaautenticacao.php");
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
