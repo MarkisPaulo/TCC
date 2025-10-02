@@ -237,7 +237,7 @@ if (isset($_POST['cadastrar'])) {
                 </div>
 
                 <div class="form-group">
-                    <label for="dtDemissao">Data de Demissão*</label>
+                    <label for="dtDemissao">Data de Demissão</label>
                     <input type="date" name="dtDemissao" id="dtDemissao" placeholder="00/00/0000" >
                 </div>
             </div>

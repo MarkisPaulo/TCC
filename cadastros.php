@@ -44,12 +44,7 @@
             </div>
         </div>
     </main>
-    
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 Sistema de Gestão - Todos os direitos reservados</p>
-        </div>
-    </footer>
+
     
     <script>
         function navegarPara(tela) {

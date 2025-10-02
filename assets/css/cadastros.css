@@ -90,14 +90,7 @@
             font-size: 14px;
             line-height: 1.5;
         }
-        
-        footer {
-            background-color: var(--azul-principal);
-            color: var(--branco);
-            text-align: center;
-            padding: 15px 0;
-            margin-top: auto;
-        }
+
         
         @media (max-width: 768px) {
             .cards-container {

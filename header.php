@@ -26,7 +26,7 @@
             <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">About</a></li>
-                <li><a href="#">Cadastro</a></li>
+                <li><a href="cadastros.php">Cadastros</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </nav>
