@@ -1,5 +1,5 @@
-<?php 
-  require_once("verificaautenticacao.php");
+<?php
+require_once("verificaautenticacao.php");
 ?>
 
 <!DOCTYPE html>
@@ -32,19 +32,6 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>Status do Produto</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="status-ativo" name="product-status" value="ativo" checked>
-                            <label for="status-ativo">Ativo</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="status-inativo" name="product-status" value="inativo">
-                            <label for="status-inativo">Inativo</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="product-price">Preço Unitário da Compra*</label>
                     <input type="number" id="product-price" placeholder="R$ 0,00" step="0.01" min="0" required>
                 </div>
@@ -70,20 +57,25 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="product-stock">Estoque*</label>
-                    <input type="number" id="product-stock" placeholder="Quantidade disponível" min="0" required>
+                    <label for="product-stock">Quantidade em Estoque*</label>
+                    <input type="number" id="product-stock" placeholder="Quantidade disponível" min="1" required>
                 </div>
                 <div class="form-group">
-                    <label for="product-brand">Marca</label>
-                    <input type="text" id="product-brand" placeholder="Marca do produto">
+                    <label for="product-brand">Marca*</label>
+                    <input type="text" id="product-brand" placeholder="Marca do produto" required>
                 </div>
             </div>
 
 
-
-            <div class="form-group">
-                <label for="product-sku">NCM</label>
-                <input type="text" id="product-ncm" placeholder="Código único do produto">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="product-sku">NCM*</label>
+                    <input type="text" name="product-ncm" id="product-ncm" placeholder="Nomenclatura Comum do Mercosul" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-sku">CFOP*</label>
+                    <input type="text" name="product-cfop" id="product-cfop" placeholder="Código Fiscal de Operações e Prestações" required>
+                </div>
             </div>
 
             <div class="button-group">
