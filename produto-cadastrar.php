@@ -1,5 +1,21 @@
 <?php
+require_once("conexao.php");
 require_once("verificaautenticacao.php");
+if (isset($_POST['cadastrar'])) {
+
+    $nome = $_POST['nome'];
+    $precoUnitarioDaCompra = $_POST['precoUnitarioDaCompra'];
+    $precoUnitarioDaVenda = $_POST['precoUnitarioDaVenda'];
+    $quantEstoque = $_POST['quantEstoque'];
+    $ncm = $_POST['ncm'];
+    $cfop = $_POST['cfop'];
+
+ $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop ) 
+ VALUES('$nome', '$precoUnitarioDaCompra', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop')";
+
+    mysqli_query($conexao, $sql);
+    echo "Registro salvo com sucesso";
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,20 +42,21 @@ require_once("verificaautenticacao.php");
 
         <form>
             <div class="form-group">
-                <label for="product-name">Nome do Produto*</label>
-                <input type="text" id="product-name" placeholder="Digite o nome do produto" required>
+                <label for="nome">Nome do Produto*</label>
+                <input type="text" id="nome" placeholder="Digite o nome do produto" required>
             </div>
-
             <div class="form-row">
                 <div class="form-group">
-                    <label for="product-price">Preço Unitário da Compra*</label>
-                    <input type="number" id="product-price" placeholder="R$ 0,00" step="0.01" min="0" required>
+                    <label for="precoUnitarioDaCompra">Preço Unitário da Compra*</label>
+                    <input type="number" id="precoUnitarioDaCompra" placeholder="R$ 0,00" step="0.01" min="0" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="product-price2">Preço Unitário da Venda*</label>
-                    <input type="number" id="product-price" placeholder="R$ 0,00" step="0.01" min="0" required>
+                    <label for="precoUnitarioDaVenda">Preço Unitário da Venda*</label>
+                    <input type="number" id="precoUnitarioDaVenda" placeholder="R$ 0,00" step="0.01" min="0" required>
                 </div>
+
+
 
 
             </div>
@@ -57,8 +74,8 @@ require_once("verificaautenticacao.php");
                 </div>
 
                 <div class="form-group">
-                    <label for="product-stock">Quantidade em Estoque*</label>
-                    <input type="number" id="product-stock" placeholder="Quantidade disponível" min="1" required>
+                    <label for="quantEstoque">Quantidade em Estoque*</label>
+                    <input type="number" id="quantEstoque" placeholder="Quantidade disponível" min="1" required>
                 </div>
                 <div class="form-group">
                     <label for="product-brand">Marca*</label>
@@ -69,12 +86,12 @@ require_once("verificaautenticacao.php");
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="product-sku">NCM*</label>
-                    <input type="text" name="product-ncm" id="product-ncm" placeholder="Nomenclatura Comum do Mercosul" required>
+                    <label for="ncm">NCM*</label>
+                    <input type="text" name="ncm" id="product-ncm" placeholder="Nomenclatura Comum do Mercosul" required>
                 </div>
                 <div class="form-group">
-                    <label for="product-sku">CFOP*</label>
-                    <input type="text" name="product-cfop" id="product-cfop" placeholder="Código Fiscal de Operações e Prestações" required>
+                    <label for="cfop">CFOP*</label>
+                    <input type="text" name="product-cfop" id="cfop" placeholder="Código Fiscal de Operações e Prestações" required>
                 </div>
             </div>
 

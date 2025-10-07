@@ -14,6 +14,7 @@ if (isset($_POST['cadastrar'])) {
     $cidade = $_POST['cidade'];
     $uf = $_POST['uf'];
     $email = $_POST['email'];
+    $status = $_POST['status'];
 
 
     $sql = "INSERT INTO cliente (nome, status, cpf, telefone, endereco, logradouro, cep, bairro, cidade, uf, email) VALUES('$nome', '$status', '$cpf', '$telefone', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$email')";
@@ -122,20 +123,7 @@ if (isset($_POST['cadastrar'])) {
                 <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" required>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Status do Cliente</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="status-ativo" name="status" value="1" checked>
-                            <label for="status-ativo">Ativo</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="status-inativo" name="status" value="0">
-                            <label for="status-inativo">Inativo</label>
-                        </div>
-                    </div>
-                </div>
+            
 
                 <div class="form-group">
                     <label for="cpf">CPF*</label>
@@ -152,7 +140,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="uf">UF*</label>
-                    <select id="uf" name="uf" required>
+                    <select id="uf" name="uf" required >
                         <option value="">Selecione</option>
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>

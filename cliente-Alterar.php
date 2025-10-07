@@ -4,6 +4,7 @@ if (isset($_POST['salvar'])) {
 
     $nome = $_POST['nome'];
     $cpf = $_POST['cpf'];
+    $nome = $_POST['nome'];
     $telefone = $_POST['telefone'];
     $endereco = $_POST['endereco'];
     $logradouro = $_POST['logradouro'];
@@ -12,8 +13,9 @@ if (isset($_POST['salvar'])) {
     $cidade = $_POST['cidade'];
     $uf = $_POST['uf'];
     $email = $_POST['email'];
+    $status = $_POST['status'];
 
-    $sql = "UPDATE cliente SET nome = '$nome', cpfcnpj = '$cpfcnpj', telefone = '$tell', endereco = '$endereco', cidade = '$cidade', estado = '$estado', observacao = '$obs' WHERE id = " . $_GET['id'];
+    $sql = "INSERT INTO cliente (nome, status, cpf, telefone, endereco, logradouro, cep, bairro, cidade, uf, email) VALUES('$nome', '$status', '$cpf', '$telefone', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$email')";
 
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
@@ -56,27 +58,45 @@ $linha = mysqli_fetch_array($resultado);
             </div>
             <div class="mb-3">
                 <label for="cpf" class="form-label">CPF</label>
-                <input name="cpf/cnpj" type="text" class="form-control" id="cpf/cnpj" value="<?= $linha['cpfcnpj'] ?>">
+                <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
+            </div>
+            
+            <div class="mb-3">
+                <label for="cpf" class="form-label">CPF</label>
+                <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
             </div>
             <div class="mb-3">
-                <label for="tell" class="form-label">Telefone</label>
-                <input name="tell" type="text" class="form-control" id="tell" value="<?= $linha['telefone'] ?>">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input name="telefone" type="text" class="form-control" id="telefone" value="<?= $linha['telefone'] ?>">
             </div>
+            
             <div class="mb-3">
                 <label for="endereco" class="form-label">Endereço</label>
                 <input name="endereco" type="text" class="form-control" id="endereco" value="<?= $linha['endereco'] ?>">
+            </div>
+             <div class="mb-3">
+                <label for="tel" class="form-label">Logradouro</label>
+                <input name="logradouro" type="text" class="form-control" id="logradouro" value="<?= $linha['logradouro'] ?>">
+            </div>
+            <div class="mb-3">
+                <label for="cep" class="form-label">CEP</label>
+                <input name="cep" type="text" class="form-control" id="cep" value="<?= $linha['cep'] ?>">
             </div>
             <div class="mb-3">
                 <label for="cidade" class="form-label">Cidade</label>
                 <input name="cidade" type="text" class="form-control" id="cidade" value="<?= $linha['cidade'] ?>">
             </div>
-            <div class="mb-3">
-                <label for="estado" class="form-label">Estado</label>
-                <input name="estado" type="text" class="form-control" id="estado" value="<?= $linha['estado'] ?>">
+             <div class="mb-3">
+                <label for="bairro" class="form-label">Bairro</label>
+                <input name="bairro" type="text" class="form-control" id="bairro" value="<?= $linha['bairro'] ?>">
             </div>
             <div class="mb-3">
-                <label for="obs" class="form-label">Observações</label>
-                <input name="obs" type="text-area" class="form-control" id="obs" value="<?= $linha['observacao'] ?>">
+                <label for="uf" class="form-label">UF</label>
+                <input name="uf" type="text" class="form-control" id="uf" value="<?= $linha['uf'] ?>">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input name="email" type="email" class="form-control" id="email" value="<?= $linha['email'] ?>">
             </div>
             <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
             <a type="button" class="btn btn-secondary" href="cliente-listar.php">Voltar</a>
