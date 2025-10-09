@@ -87,11 +87,11 @@ if (isset($_POST['cadastrar'])) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="ncm">NCM*</label>
-                    <input type="text" name="ncm" id="product-ncm" placeholder="Nomenclatura Comum do Mercosul" required>
+                    <input type="number" name="ncm" id="product-ncm" placeholder="Nomenclatura Comum do Mercosul" required>
                 </div>
                 <div class="form-group">
                     <label for="cfop">CFOP*</label>
-                    <input type="text" name="product-cfop" id="cfop" placeholder="Código Fiscal de Operações e Prestações" required>
+                    <input type="number" name="product-cfop" id="cfop" placeholder="Código Fiscal de Operações e Prestações" required>
                 </div>
             </div>
 

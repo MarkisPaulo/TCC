@@ -4,11 +4,7 @@ if (isset($_POST['salvar'])) {
 
    
  $nome = $_POST['nome'];
-    $precoUnitarioDaCompra = $_POST['precoUnitarioDaCompra'];
-    $precoUnitarioDaVenda = $_POST['precoUnitarioDaVenda'];
-    $quantEstoque = $_POST['quantEstoque'];
-    $ncm = $_POST['ncm'];
-    $cfop = $_POST['cfop'];
+   
 
 
     $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao)

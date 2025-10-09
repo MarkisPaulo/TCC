@@ -1,12 +1,12 @@
 <?php
 require_once("conexao.php");
 if (isset($_GET['codigo'])) {
-    $sql = "DELETE FROM produto WHERE id = " . $_GET['codigo'];
+    $sql = "DELETE FROM funcionario WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     $mensagem = "Exclusão realizada com sucesso.";
 }
 
-$sql = "SELECT * FROM produto ORDER BY codigo";
+$sql = "SELECT * FROM funcionario ORDER BY id";
 
 $resultado = mysqli_query($conexao, $sql);
 
@@ -36,8 +36,8 @@ $resultado = mysqli_query($conexao, $sql);
         <div class="card mt-3">
             <div class="card-body">
                 <h5 class="card-title">
-                    Listagem de Produtos
-                    <a href="produto-cadastrar.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                    Listagem de Funcionário
+                    <a href="cliente-cadastrar.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
                 </h5>
             </div>
         </div>
@@ -46,22 +46,43 @@ $resultado = mysqli_query($conexao, $sql);
             <thead>
                 <tr>
                     <th scope="col">Código</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Endereço</th>
+                    <th scope="col">Logradouro</th>
+                    <th scope="col">CEP</th>
+                    <th scope="col">Cidade</th>
+                    <th scope="col">UF</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Ativo</th>
+                    <th scope="col">Acesso</th>
+                    <th scope="col">Data Admissão</th>
+                    <th scope="col">Data Demissão</th>
                     <th scope="col">Ações</th>
+                    
                 </tr>
             </thead>
             <tbody>
                 <?php while($linha = mysqli_fetch_array($resultado)) { ?>
                 <tr>
-                    <td><?= $linha['id'] ?></td>
+                    <td><?= $linha['codigo'] ?></td>
+                    <td><?= $linha['status'] ?></td>
                     <td><?= $linha['nome'] ?></td>
-                    <td><?= $linha['unimedida'] ?></td>
-                    <td><?= $linha['preco'] ?></td>
+                    <td><?= $linha['cpf'] ?></td>
+                    <td><?= $linha['telefone'] ?></td>
+                    <td><?= $linha['endereco'] ?></td>
+                    <td><?= $linha['logradouro'] ?></td>
+                    <td><?= $linha['cep'] ?></td>
+                    <td><?= $linha['cidade']?></td>
+                    <td><?= $linha['uf'] ?></td>
+                    <td><?= $linha['email'] ?></td>
+                    <td><?= $linha['acess'] ?></td>
+                    <td><?= $linha['dtAdmissao'] ?></td>
+                    <td><?= $linha['dtDemissao'] ?></td>
                     <td>
-                        <a href="produto-alterar.php?id=<?= $linha['id']?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                        <a href="produto-listar.php?id=<?= $linha['id'] ?>" class="btn btn-danger" onclick="return confirm('Confirma exclusão?')"><i class="bi bi-trash"></i></a>
+                        <a href="funcionario-alterar.php?id=<?= $linha['codigo']?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+                        <a href="funcionario-listar.php?id=<?= $linha['codigo'] ?>" class="btn btn-danger" onclick="return confirm('Confirma exclusão?')"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>
                 <?php } ?>

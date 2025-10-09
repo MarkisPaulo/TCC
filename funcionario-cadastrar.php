@@ -141,11 +141,11 @@ if (isset($_POST['cadastrar'])) {
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="email">E-mail</label>
+                    <label for="email">E-mail*</label>
                     <input type="email" name="email" id="email" placeholder="exemplo@email.com">
                 </div>
                 <div class="form-group">
-                    <label for="senha">Senha</label>
+                    <label for="senha">Senha*</label>
                     <input type="password" name="senha" id="senha" placeholder="********" required>
                 </div>
             </div>
@@ -218,7 +218,7 @@ if (isset($_POST['cadastrar'])) {
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Tipo de Acesso</label>
+                    <label>Tipo de Acesso*</label>
                     <div class="radio-group">
                         <div class="radio-option">
                             <input type="radio" id="acess" name="acess" value="1" checked>

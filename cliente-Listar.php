@@ -1,12 +1,12 @@
 <?php
 require_once("conexao.php");
-if (isset($_GET['id'])) {
-    $sql = "DELETE FROM cliente WHERE id = " . $_GET['id'];
+if (isset($_GET['codigo'])) {
+    $sql = "DELETE FROM cliente WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     $mensagem = "Exclusão realizada com sucesso.";
 }
 
-$sql = "SELECT * FROM cliente ORDER BY id";
+$sql = "SELECT * FROM cliente ORDER BY codigo";
 
 $resultado = mysqli_query($conexao, $sql);
 

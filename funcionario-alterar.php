@@ -116,6 +116,9 @@ $linha = mysqli_fetch_array($resultado);
                 <label for="dtDemissao" class="form-label">Data de Demissão</label>
                 <input name="dtDemissao" type="date" class="form-control" id="dtDemissao" value="<?= $linha['dtDemissao'] ?>">
 
+                <label for="senha" class="form-label">Senha</label>
+                <input name="senha" type="password" class="form-control" id="senha" value="<?= $linha['senha'] ?>">
+
             <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
             <a type="button" class="btn btn-secondary" href="cliente-listar.php">Voltar</a>
         </form>
