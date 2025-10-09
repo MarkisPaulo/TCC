@@ -97,7 +97,37 @@ $linha = mysqli_fetch_array($resultado);
             </div>
             <div class="mb-3">
                 <label for="uf" class="form-label">UF</label>
-                <input name="uf" type="text" class="form-control" id="uf" value="<?= $linha['uf'] ?>">
+                <select id="uf" name="uf" required >
+                        <option value="">Selecione</option>
+                        <option value="AC" <?= ($linha['uf'] == 'AC') ? 'selected' : '' ?>>Acre</option>
+                        <option value="AL" <?= ($linha['uf'] == 'AL') ? 'selected' : '' ?>>Alagoas</option>
+                        <option value="AP" <?= ($linha['uf'] == 'AP') ? 'selected' : '' ?>>Amapá</option>
+                        <option value="AM" <?= ($linha['uf'] == 'AM') ? 'selected' : '' ?>>Amazonas</option>
+                        <option value="BA" <?= ($linha['uf'] == 'BA') ? 'selected' : '' ?>>Bahia</option>
+                        <option value="CE" <?= ($linha['uf'] == 'CE') ? 'selected' : '' ?>>Ceará</option>
+                        <option value="DF" <?= ($linha['uf'] == 'DF') ? 'selected' : '' ?>>Distrito Federal</option>
+                        <option value="ES" <?= ($linha['uf'] == 'ES') ? 'selected' : '' ?>>Espírito Santo</option>
+                        <option value="GO" <?= ($linha['uf'] == 'GO') ? 'selected' : '' ?>>Goiás</option>
+                        <option value="MA" <?= ($linha['uf'] == 'MA') ? 'selected' : '' ?>>Maranhão</option>
+                        <option value="MT" <?= ($linha['uf'] == 'MT') ? 'selected' : '' ?>>Mato Grosso</option>
+                        <option value="MS" <?= ($linha['uf'] == 'MS') ? 'selected' : '' ?>>Mato Grosso do Sul</option>
+                        <option value="MG" <?= ($linha['uf'] == 'MG') ? 'selected' : '' ?>>Minas Gerais</option>
+                        <option value="PA" <?= ($linha['uf'] == 'PA') ? 'selected' : '' ?>>Pará</option>
+                        <option value="PB" <?= ($linha['uf'] == 'PB') ? 'selected' : '' ?>>Paraíba</option>
+                        <option value="PR" <?= ($linha['uf'] == 'PR') ? 'selected' : '' ?>>Paraná</option>
+                        <option value="PE" <?= ($linha['uf'] == 'PE') ? 'selected' : '' ?>>Pernambuco</option>
+                        <option value="PI" <?= ($linha['uf'] == 'PI') ? 'selected' : '' ?>>Piauí</option>
+                        <option value="RJ" <?= ($linha['uf'] == 'RJ') ? 'selected' : '' ?>>Rio de Janeiro</option>
+                        <option value="RN" <?= ($linha['uf'] == 'RN') ? 'selected' : '' ?>>Rio Grande do Norte</option>
+                        <option value="RS" <?= ($linha['uf'] == 'RS') ? 'selected' : '' ?>>Rio Grande do Sul</option>
+                        <option value="RO" <?= ($linha['uf'] == 'RO') ? 'selected' : '' ?>>Rondônia</option>
+                        <option value="RR" <?= ($linha['uf'] == 'RR') ? 'selected' : '' ?>>Roraima</option>
+                        <option value="SC" <?= ($linha['uf'] == 'SC') ? 'selected' : '' ?>>Santa Catarina</option>
+                        <option value="SP" <?= ($linha['uf'] == 'SP') ? 'selected' : '' ?>>São Paulo</option>
+                        <option value="SE" <?= ($linha['uf'] == 'SE') ? 'selected' : '' ?>>Sergipe</option>
+                        <option value="TO" <?= ($linha['uf'] == 'TO') ? 'selected' : '' ?>>Tocantins</option>
+                    </select>
+            </div>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
@@ -109,7 +139,7 @@ $linha = mysqli_fetch_array($resultado);
                 <input name="tipoDeAcesso" type="text" class="form-control" id="tipoDeAcesso" value="<?= $linha['tipoDeAcesso'] ?>">
             </div>
 
- <div class="mb-3">
+            <div class="mb-3">
                 <label for="dtAdmissao" class="form-label">Data de Admissão</label>
                 <input name="dtAdmissao" type="date" class="form-control" id="dtAdmissao" value="<?= $linha['dtAdmissao'] ?>">
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/cadastros.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Portal de Cadastros</title>
     <style>
         
@@ -19,27 +20,33 @@
     
     <main class="container">
         <div class="cards-container">
-            <div class="card" onclick="navegarPara('clientes')">
-                <div class="card-icon">👥</div>
+            <div class="card" onclick="navegarPara('cliente')">
+                <div class="card-icon"><i class="fas fa-thin fa-user"></i></div>
                 <div class="card-title">Cadastro de Clientes</div>
                 <div class="card-description">Gerencie informações de clientes, contatos e histórico de relacionamento.</div>
             </div>
             
-            <div class="card" onclick="navegarPara('produtos')">
-                <div class="card-icon">📦</div>
+            <div class="card" onclick="navegarPara('produto')">
+                <div class="card-icon"><i class="fas fa-box"></i></div>
                 <div class="card-title">Cadastro de Produtos</div>
                 <div class="card-description">Adicione, edite e visualize produtos, estoque e informações de preços.</div>
             </div>
             
-            <div class="card" onclick="navegarPara('fornecedores')">
-                <div class="card-icon">🏭</div>
-                <div class="card-title">Cadastro de Fornecedores</div>
+            <div class="card" onclick="navegarPara('funcionario')">
+                <div class="card-icon"><i class="fas fa-thin fa-user-tie"></i></div>
+                <div class="card-title">Cadastro de Funcionários</div>
                 <div class="card-description">Controle dados de fornecedores, contratos e informações de contato.</div>
             </div>
             
-            <div class="card" onclick="navegarPara('usuarios')">
-                <div class="card-icon">👤</div>
-                <div class="card-title">Cadastro de Usuários</div>
+            <div class="card" onclick="navegarPara('categoria')">
+                <div class="card-icon"><i class="fas fa-thin fa-tags"></i></div>
+                <div class="card-title">Cadastro de Categoria</div>
+                <div class="card-description">Administre permissões, acessos e dados dos usuários do sistema.</div>
+            </div>
+
+            <div class="card" onclick="navegarPara('marca')">
+                <div class="card-icon"><i class="fas fa-thin fa-registered"></i></div>
+                <div class="card-title">Cadastro de Marca</div>
                 <div class="card-description">Administre permissões, acessos e dados dos usuários do sistema.</div>
             </div>
         </div>
@@ -48,9 +55,7 @@
     
     <script>
         function navegarPara(tela) {
-            // Aqui você pode implementar a navegação para as telas específicas
-            alert(`Navegando para a tela de: ${tela}`);
-            // Exemplo: window.location.href = `/cadastro-${tela}.html`;
+            window.location.href = `${tela}-cadastrar.php`;
         }
     </script>
 </body>

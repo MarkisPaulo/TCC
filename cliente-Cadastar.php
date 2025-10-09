@@ -26,6 +26,7 @@ if (isset($_POST['cadastrar'])) {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -123,13 +124,13 @@ if (isset($_POST['cadastrar'])) {
                 <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" required>
             </div>
 
-            
 
-                <div class="form-group">
-                    <label for="cpf">CPF*</label>
-                    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required>
-                </div>
+
+            <div class="form-group">
+                <label for="cpf">CPF*</label>
+                <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required>
             </div>
+
 
             <div class="form-row">
 
@@ -140,7 +141,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="uf">UF*</label>
-                    <select id="uf" name="uf" required >
+                    <select id="uf" name="uf" required>
                         <option value="">Selecione</option>
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
