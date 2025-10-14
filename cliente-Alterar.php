@@ -28,71 +28,124 @@ $linha = mysqli_fetch_array($resultado);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
-        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="assets/css/header.css">
+        <link rel="stylesheet" href="assets/css/cadastroCliente.css">
 </head>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cepInput = document.getElementById('cep');
+        const logradouroInput = document.getElementById('logradouro');
+        const bairroInput = document.getElementById('bairro');
+        const cidadeInput = document.getElementById('cidade');
+        const ufSelect = document.getElementById('uf');
+        const enderecoInput = document.getElementById('endereco');
+
+        function limpaCampos() {
+            logradouroInput.value = '';
+            bairroInput.value = '';
+            cidadeInput.value = '';
+            ufSelect.value = '';
+            enderecoInput.value = '';
+        }
+
+        function formatCEP(v) {
+            const d = v.replace(/\D/g, '').slice(0, 8);
+            return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d;
+        }
+
+        cepInput.addEventListener('input', function (e) {
+            e.target.value = formatCEP(e.target.value);
+        });
+
+        cepInput.addEventListener('blur', function () {
+            const cep = cepInput.value.replace(/\D/g, '');
+            if (cep.length !== 8) {
+                limpaCampos();
+                return;
+            }
+
+            // indica carregamento
+            logradouroInput.value = '...';
+            bairroInput.value = '...';
+            cidadeInput.value = '...';
+            ufSelect.value = '';
+            enderecoInput.value = '...';
+
+            fetch('https://viacep.com.br/ws/' + cep + '/json/')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.erro) {
+                        limpaCampos();
+                        alert('CEP não encontrado.');
+                        return;
+                    }
+                    logradouroInput.value = data.logradouro || '';
+                    bairroInput.value = data.bairro || '';
+                    cidadeInput.value = data.localidade || '';
+
+                    // normaliza UF e seleciona somente se existir a opção
+                    const ufFromApi = (data.uf || '').toUpperCase();
+                    if (Array.from(ufSelect.options).some(opt => opt.value === ufFromApi)) {
+                        ufSelect.value = ufFromApi;
+                    } else {
+                        ufSelect.value = '';
+                    }
+
+                    enderecoInput.value = data.logradouro ? data.logradouro + (data.complemento ? ', ' + data.complemento : '') : '';
+                })
+                .catch(err => {
+                    console.error(err);
+                    limpaCampos();
+                    alert('Erro ao consultar CEP. Tente novamente.');
+                });
+        });
+    });
+</script>
+
 <body>
-    <?php require_once("menu.php"); ?>
+    <?php require_once("header.php"); ?>
     <div class="container">
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5 class="card-title">Alteração de Cliente</h5>
-            </div>
+        <div class="form-header">
+            <h1><i class="fas fa-thin fa-user"></i> Cadastro de Cliente</h1>
+            <p>Preencha os dados abaixo para cadastrar um novo cliente</p>
+        </div>
+
+        <div class="info-box">
+            <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
         <form method="post">
-            <div class="mb-3">
-                <label for="nome" class="form-label">Nome</label>
-                <input name="nome" type="text" class="form-control" id="nome" value="<?= $linha['nome'] ?>">
+
+            <div class="form-group">
+                <label for="nome">Nome Completo*</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?= $linha['nome'] ?>" required>
             </div>
-            <div class="mb-3">
-                <label for="cpf" class="form-label">CPF</label>
-                <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
+
+            <div class="form-group">
+                <label for="cpf">CPF*</label>
+                <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" value="<?= $linha['cpf'] ?>" required>
             </div>
-            
-            <div class="mb-3">
-                <label for="cpf" class="form-label">CPF</label>
-                <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
-            </div>
-            <div class="mb-3">
-                <label for="telefone" class="form-label">Telefone</label>
-                <input name="telefone" type="text" class="form-control" id="telefone" value="<?= $linha['telefone'] ?>">
-            </div>
-            
-            <div class="mb-3">
-                <label for="endereco" class="form-label">Endereço</label>
-                <input name="endereco" type="text" class="form-control" id="endereco" value="<?= $linha['endereco'] ?>">
-            </div>
-             <div class="mb-3">
-                <label for="tel" class="form-label">Logradouro</label>
-                <input name="logradouro" type="text" class="form-control" id="logradouro" value="<?= $linha['logradouro'] ?>">
-            </div>
-            <div class="mb-3">
-                <label for="cep" class="form-label">CEP</label>
-                <input name="cep" type="text" class="form-control" id="cep" value="<?= $linha['cep'] ?>">
-            </div>
-            <div class="mb-3">
-                <label for="cidade" class="form-label">Cidade</label>
-                <input name="cidade" type="text" class="form-control" id="cidade" value="<?= $linha['cidade'] ?>">
-            </div>
-             <div class="mb-3">
-                <label for="bairro" class="form-label">Bairro</label>
-                <input name="bairro" type="text" class="form-control" id="bairro" value="<?= $linha['bairro'] ?>">
-            </div>
-            <div class="mb-3">
-                <label for="uf" class="form-label">UF</label>
-                <select id="uf" name="uf" required >
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label for="cep">CEP*</label>
+                    <input type="text" name="cep" id="cep" placeholder="00000-000" value="<?= $linha['cep'] ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="uf">UF*</label>
+                    <select id="uf" name="uf" required>
                         <option value="">Selecione</option>
                         <option value="AC" <?= ($linha['uf'] == 'AC') ? 'selected' : '' ?>>Acre</option>
                         <option value="AL" <?= ($linha['uf'] == 'AL') ? 'selected' : '' ?>>Alagoas</option>
@@ -122,15 +175,49 @@ $linha = mysqli_fetch_array($resultado);
                         <option value="SE" <?= ($linha['uf'] == 'SE') ? 'selected' : '' ?>>Sergipe</option>
                         <option value="TO" <?= ($linha['uf'] == 'TO') ? 'selected' : '' ?>>Tocantins</option>
                     </select>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input name="email" type="email" class="form-control" id="email" value="<?= $linha['email'] ?>">
-            </div>
-            <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
-            <a type="button" class="btn btn-secondary" href="cliente-listar.php">Voltar</a>
-        </form>
+                </div>
 
+                <div class="form-group">
+                    <label for="cidade">Cidade*</label>
+                    <input type="text" name="cidade" id="cidade" placeholder="Nome da cidade" value="<?= $linha['cidade'] ?>" required>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="logradouro">Logradouro*</label>
+                    <input type="text" name="logradouro" id="logradouro" placeholder="Rua, número, complemento" value="<?= $linha['logradouro'] ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco">Endereço Completo*</label>
+                    <input type="text" name="endereco" id="endereco" placeholder="Rua/Avenida/Praça" value="<?= $linha['endereco'] ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bairro">Bairro*</label>
+                    <input type="text" name="bairro" id="bairro" placeholder="Bairro...." value="<?= $linha['bairro'] ?>" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email" placeholder="exemplo@email.com" value="<?= $linha['email'] ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone*</label>
+                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" value="<?= $linha['telefone'] ?>" required>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary">Cancelar</button>
+                <button name="salvar" type="submit" class="btn">Salvar Alterações</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>
