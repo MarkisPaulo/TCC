@@ -2,7 +2,7 @@
   require_once("verificaautenticacao.php");
 ?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
