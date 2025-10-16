@@ -18,8 +18,7 @@ $resultado = mysqli_query($conexao, $sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/836f33e838.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/listar.css">
 
 <body>
@@ -77,7 +76,7 @@ $resultado = mysqli_query($conexao, $sql);
                         <td><?= $linha['uf'] ?></td>
                         <td><?= $linha['email'] ?></td>
                         <td class="actions">
-                            <a href="cliente-Alterar.php?id=<?= $linha['codigo'] ?>" class="btn btn-warning">
+                            <a href="cliente-alterar.php?id=<?= $linha['codigo'] ?>" class="btn btn-warning">
                                 <i class="fas fa-solid fa-pen-to-square"></i> Alterar</a>
                             <a href="cliente-Listar.php?id=<?= $linha['codigo'] ?>" class="btn btn-danger"
                                 onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>

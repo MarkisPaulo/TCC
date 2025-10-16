@@ -10,8 +10,8 @@ if (isset($_POST['cadastrar'])) {
     $ncm = $_POST['ncm'];
     $cfop = $_POST['cfop'];
 
- $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop ) 
- VALUES('$nome', '$precoUnitarioDaCompra', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop')";
+    $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop ) 
+    VALUES('$nome', '$precoUnitarioDaCompra', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop')";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -24,7 +24,7 @@ if (isset($_POST['cadastrar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/cadastroProd.css">
+    <link rel="stylesheet" href="assets/css/formCadastro.css">
     <title>Cadastro de Produto</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -66,10 +66,7 @@ if (isset($_POST['cadastrar'])) {
                     <label for="product-category">Categoria*</label>
                     <select id="product-category" required>
                         <option value="">Selecione uma categoria</option>
-                        <option value="hidraulico">Hidráulico</option>
-                        <option value="eletrica">Elétrica</option>
-                        <option value="impermeabilizante">Impermeabilizantes</option>
-                        <option value="fixador">Fixadores</option>
+                        
                     </select>
                 </div>
 
