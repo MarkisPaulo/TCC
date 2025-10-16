@@ -30,6 +30,12 @@
             margin: 0 auto;
             padding: 20px;
         }
+
+        .containerFun {
+            max-width: 1700px;
+            margin: 0 auto;
+            padding: 20px;
+        }
         
         header {
             background-color: var(--azul-principal);
