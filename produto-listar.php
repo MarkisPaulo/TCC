@@ -1,7 +1,7 @@
 <?php
 require_once("conexao.php");
 if (isset($_GET['codigo'])) {
-    $sql = "DELETE FROM produto WHERE id = " . $_GET['codigo'];
+    $sql = "DELETE FROM produto WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     $mensagem = "Exclusão realizada com sucesso.";
 }
@@ -18,31 +18,33 @@ $resultado = mysqli_query($conexao, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://kit.fontawesome.com/836f33e838.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="assets/css/listar.css">
 </head>
 <body>
 
-    <?php require_once("menu.php"); ?>
-    <div class="container">
-
-        <?php if (isset($mensagem)) { ?>
+    <?php require_once("header.php"); ?>
+    
+    <?php if (isset($mensagem)) { ?>
             <div class="alert alert-success mt-3" role="alert">
                 <?= $mensagem ?>
             </div>
         <?php } ?>
 
-        <div class="card mt-3">
+    <div class="container">
+
+        <div class="card">
             <div class="card-body">
-                <h5 class="card-title">
-                    Listagem de Produtos
-                    <a href="produto-cadastrar.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                <h5 class="title">
+                    Listagem de Produto
+                    <a href="produto-cadastrar.php">
+                        <i class="fas fa-solid fa-circle-plus"></i> Novo Produto
+                    </a>
                 </h5>
             </div>
         </div>
 
-        <table class="table table-striped mt-3">
+        <table class="table-container">
             <thead>
                 <tr>
                     <th scope="col">Código</th>
@@ -59,9 +61,11 @@ $resultado = mysqli_query($conexao, $sql);
                     <td><?= $linha['nome'] ?></td>
                     <td><?= $linha['unimedida'] ?></td>
                     <td><?= $linha['preco'] ?></td>
-                    <td>
-                        <a href="produto-alterar.php?id=<?= $linha['id']?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                        <a href="produto-listar.php?id=<?= $linha['id'] ?>" class="btn btn-danger" onclick="return confirm('Confirma exclusão?')"><i class="bi bi-trash"></i></a>
+                    <td class="actions">
+                        <a href="produto-alterar.php?id=<?= $linha['id']?>" class="btn btn-warning">
+                            <i class="fas fa-solid fa-pen-to-square"></i>Alterar</a>
+                        <a href="produto-listar.php?id=<?= $linha['id'] ?>" class="btn btn-danger" 
+                            onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
                     </td>
                 </tr>
                 <?php } ?>

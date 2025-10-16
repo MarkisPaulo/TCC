@@ -6,7 +6,7 @@ if (isset($_GET['codigo'])) {
     $mensagem = "Exclusão realizada com sucesso.";
 }
 
-$sql = "SELECT * FROM funcionario ORDER BY id";
+$sql = "SELECT * FROM funcionario ORDER BY codigo";
 
 $resultado = mysqli_query($conexao, $sql);
 
@@ -18,31 +18,34 @@ $resultado = mysqli_query($conexao, $sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://kit.fontawesome.com/836f33e838.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="assets/css/listar.css">
 </head>
 <body>
 
-    <?php require_once("menu.php"); ?>
-    <div class="container">
+    <?php require_once("header.php"); ?>
 
-        <?php if (isset($mensagem)) { ?>
+    <?php if (isset($mensagem)) { ?>
             <div class="alert alert-success mt-3" role="alert">
                 <?= $mensagem ?>
             </div>
         <?php } ?>
 
-        <div class="card mt-3">
+    <div class="containerFun">
+
+
+        <div class="card">
             <div class="card-body">
-                <h5 class="card-title">
+                <h5 class="title">
                     Listagem de Funcionário
-                    <a href="cliente-cadastrar.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>
+                    <a href="funcionario-cadastrar.php">
+                        <i class="fas fa-solid fa-circle-plus"></i> Novo Funcionário
+                    </a>
                 </h5>
             </div>
         </div>
 
-        <table class="table table-striped mt-3">
+        <table class="table-container">
             <thead>
                 <tr>
                     <th scope="col">Código</th>
@@ -67,7 +70,7 @@ $resultado = mysqli_query($conexao, $sql);
                 <?php while($linha = mysqli_fetch_array($resultado)) { ?>
                 <tr>
                     <td><?= $linha['codigo'] ?></td>
-                    <td><?= $linha['status'] ?></td>
+                    <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo'?></td>
                     <td><?= $linha['nome'] ?></td>
                     <td><?= $linha['cpf'] ?></td>
                     <td><?= $linha['telefone'] ?></td>
@@ -77,12 +80,14 @@ $resultado = mysqli_query($conexao, $sql);
                     <td><?= $linha['cidade']?></td>
                     <td><?= $linha['uf'] ?></td>
                     <td><?= $linha['email'] ?></td>
-                    <td><?= $linha['acess'] ?></td>
+                    <td><?= ($linha['tipoDeAcesso'] == 1) ? 'Funcionário' : 'Gerente'?></td>
                     <td><?= $linha['dtAdmissao'] ?></td>
                     <td><?= $linha['dtDemissao'] ?></td>
-                    <td>
-                        <a href="funcionario-alterar.php?id=<?= $linha['codigo']?>" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
-                        <a href="funcionario-listar.php?id=<?= $linha['codigo'] ?>" class="btn btn-danger" onclick="return confirm('Confirma exclusão?')"><i class="bi bi-trash"></i></a>
+                    <td class="actions">
+                        <a href="funcionario-alterar.php?id=<?= $linha['codigo']?>" class="btn btn-warning">
+                            <i class="fas fa-solid fa-pen-to-square"></i>Alterar</a>
+                        <a href="funcionario-listar.php?id=<?= $linha['codigo'] ?>" class="btn btn-danger"
+                        onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
                     </td>
                 </tr>
                 <?php } ?>
