@@ -76,9 +76,9 @@ $resultado = mysqli_query($conexao, $sql);
                         <td><?= $linha['uf'] ?></td>
                         <td><?= $linha['email'] ?></td>
                         <td class="actions">
-                            <a href="cliente-alterar.php?id=<?= $linha['codigo'] ?>" class="btn btn-warning">
+                            <a href="cliente-alterar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-warning">
                                 <i class="fas fa-solid fa-pen-to-square"></i> Alterar</a>
-                            <a href="cliente-Listar.php?id=<?= $linha['codigo'] ?>" class="btn btn-danger"
+                            <a href="cliente-Listar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-danger"
                                 onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
                         </td>
                     </tr>
