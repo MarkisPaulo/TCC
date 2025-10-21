@@ -26,7 +26,7 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -120,7 +120,6 @@
         th, td {
             padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
         }
         
         th {
@@ -131,6 +130,7 @@
         
         tbody tr {
             transition: background-color 0.3s;
+            border-bottom: 1px solid #ddd;
         }
         
         tbody tr:hover {
