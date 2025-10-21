@@ -11,12 +11,14 @@
     </style>
 </head>
 <body>
-    <header>
+
+    <?php require_once('header.php');?>
+    <div class="header">
         <div class="container">
             <div class="logo">Sistema de Gestão</div>
             <div class="subtitle">Portal de Cadastros</div>
         </div>
-    </header>
+    </div>
     
     <main class="container">
         <div class="cards-container">
