@@ -19,9 +19,10 @@ if (isset($_POST['salvar'])) {
 
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
+    header("Location: cliente-listar.php");
 }
 
-$sql = "SELECT * FROM cliente WHERE id = " . $_GET['id'];
+$sql = "SELECT * FROM cliente WHERE codigo = " . $_GET['codigo'];
 $resultado = mysqli_query($conexao, $sql);
 $linha = mysqli_fetch_array($resultado);
 
@@ -36,8 +37,8 @@ $linha = mysqli_fetch_array($resultado);
     <title>Alterar</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <link rel="stylesheet" href="assets/css/header.css">
-        <link rel="stylesheet" href="assets/css/formCadastro.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/formCadastro.css">
 </head>
 
 <script>
@@ -115,7 +116,7 @@ $linha = mysqli_fetch_array($resultado);
     <?php require_once("header.php"); ?>
     <div class="container">
         <div class="form-header">
-            <h1><i class="fas fa-thin fa-user"></i> Cadastro de Cliente</h1>
+            <h1><i class="fas fa-thin fa-user"></i> Alteração de Cliente</h1>
             <p>Preencha os dados abaixo para cadastrar um novo cliente</p>
         </div>
 
@@ -127,20 +128,39 @@ $linha = mysqli_fetch_array($resultado);
 
             <div class="form-group">
                 <label for="nome">Nome Completo*</label>
-                <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" value="<?= $linha['nome'] ?>" required>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome completo"
+                    value="<?= $linha['nome'] ?>" required>
             </div>
 
-            <div class="form-group">
-                <label for="cpf">CPF*</label>
-                <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" value="<?= $linha['cpf'] ?>" required>
-            </div>
+            <div class="form-row">
 
+                <div class="form-group">
+                    <label for="cpf">CPF*</label>
+                    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" value="<?= $linha['cpf'] ?>"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Status*</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="status-ativo" name="status" value="1" <?= $linha['status'] == 1 ? 'checked' : '' ?>>
+                            <label for="status-ativo">Ativo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="status-inativo" name="status" value="0" <?= $linha['status'] == 0 ? 'checked' : '' ?>>
+                            <label for="status-inativo">Inativo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-row">
 
                 <div class="form-group">
                     <label for="cep">CEP*</label>
-                    <input type="text" name="cep" id="cep" placeholder="00000-000" value="<?= $linha['cep'] ?>" required>
+                    <input type="text" name="cep" id="cep" placeholder="00000-000" value="<?= $linha['cep'] ?>"
+                        required>
                 </div>
 
                 <div class="form-group">
@@ -179,7 +199,8 @@ $linha = mysqli_fetch_array($resultado);
 
                 <div class="form-group">
                     <label for="cidade">Cidade*</label>
-                    <input type="text" name="cidade" id="cidade" placeholder="Nome da cidade" value="<?= $linha['cidade'] ?>" required>
+                    <input type="text" name="cidade" id="cidade" placeholder="Nome da cidade"
+                        value="<?= $linha['cidade'] ?>" required>
                 </div>
 
             </div>
@@ -187,37 +208,43 @@ $linha = mysqli_fetch_array($resultado);
             <div class="form-row">
                 <div class="form-group">
                     <label for="logradouro">Logradouro*</label>
-                    <input type="text" name="logradouro" id="logradouro" placeholder="Rua, número, complemento" value="<?= $linha['logradouro'] ?>" required>
+                    <input type="text" name="logradouro" id="logradouro" placeholder="Rua, número, complemento"
+                        value="<?= $linha['logradouro'] ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="endereco">Endereço Completo*</label>
-                    <input type="text" name="endereco" id="endereco" placeholder="Rua/Avenida/Praça" value="<?= $linha['endereco'] ?>" required>
+                    <input type="text" name="endereco" id="endereco" placeholder="Rua/Avenida/Praça"
+                        value="<?= $linha['endereco'] ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="bairro">Bairro*</label>
-                    <input type="text" name="bairro" id="bairro" placeholder="Bairro...." value="<?= $linha['bairro'] ?>" required>
+                    <input type="text" name="bairro" id="bairro" placeholder="Bairro...."
+                        value="<?= $linha['bairro'] ?>" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" name="email" id="email" placeholder="exemplo@email.com" value="<?= $linha['email'] ?>">
+                    <input type="email" name="email" id="email" placeholder="exemplo@email.com"
+                        value="<?= $linha['email'] ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="telefone">Telefone*</label>
-                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" value="<?= $linha['telefone'] ?>" required>
+                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000"
+                        value="<?= $linha['telefone'] ?>" required>
                 </div>
             </div>
 
             <div class="button-group">
-                <button type="button" class="btn btn-secondary">Cancelar</button>
+                <a href="cliente-listar.php"><button type="button" class="btn btn-secondary">Cancelar</button></a>
                 <button name="salvar" type="submit" class="btn">Salvar Alterações</button>
             </div>
         </form>
     </div>
 </body>
+
 </html>
