@@ -20,6 +20,7 @@ $resultado = mysqli_query($conexao, $sql);
     <title>Listagem</title>
     <script src="https://kit.fontawesome.com/836f33e838.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/listar.css">
+    <link rel="stylesheet" href="assets/css/reset.css">
 
 <body>
 

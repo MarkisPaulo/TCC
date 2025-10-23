@@ -29,6 +29,7 @@ $linha = mysqli_fetch_array($resultado);
     <title>Alterar</title>
 
     <link rel="stylesheet" href="assets/css/formCadastro.css">
+    <link rel="stylesheet" href="assets/css/reset.css">
 </head>
 
 <body>
