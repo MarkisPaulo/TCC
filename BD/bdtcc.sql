@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 09/09/2025 às 21:43
+-- Tempo de geração: 23/10/2025 às 15:23
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categoria` (
   `codigo` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `nome` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -41,7 +41,7 @@ CREATE TABLE `categoria` (
 
 CREATE TABLE `cliente` (
   `codigo` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `cpf` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `logradouro` varchar(45) NOT NULL,
@@ -69,7 +69,7 @@ INSERT INTO `cliente` (`codigo`, `status`, `cpf`, `nome`, `logradouro`, `enderec
 
 CREATE TABLE `funcionario` (
   `codigo` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `cpf` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `endereco` varchar(100) NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE `funcionario` (
 --
 
 INSERT INTO `funcionario` (`codigo`, `status`, `cpf`, `nome`, `endereco`, `logradouro`, `telefone`, `cep`, `uf`, `bairro`, `cidade`, `email`, `tipoDeAcesso`, `dtAdmissao`, `dtDemissao`, `senha`) VALUES
-(1, 0, '132456789', 'judite', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'asddf@gmail.com', 1, '2025-09-09', '0000-00-00', '132456');
+(1, 1, '132456789', 'judite', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'asddf@gmail.com', 1, '2025-09-09', '0000-00-00', '132456');
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ INSERT INTO `funcionario` (`codigo`, `status`, `cpf`, `nome`, `endereco`, `logra
 
 CREATE TABLE `marca` (
   `codigo` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `nome` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -113,7 +113,7 @@ CREATE TABLE `marca` (
 
 CREATE TABLE `produto` (
   `codigo` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `nome` varchar(100) NOT NULL,
   `precoUnitarioDaCompra` double(10,2) NOT NULL,
   `precoUnitarioDaVenda` double(10,2) NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE `produto` (
 
 CREATE TABLE `recebimentos` (
   `codigo` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `formaDeRecebimento` varchar(45) NOT NULL,
   `valorRecebido` double NOT NULL,
   `valorReceber` double NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE `recebimentos` (
 
 CREATE TABLE `vendas` (
   `numeroDaVenda` int(11) NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `data/hora` datetime NOT NULL,
   `valorTotal` double NOT NULL,
   `formaDeRecebimento` varchar(45) NOT NULL,
