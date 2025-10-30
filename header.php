@@ -1,19 +1,7 @@
 <?php
 require_once("verificaautenticacao.php");
 ?>
-<!DOCTYPE html>
-<html lang="pt-BR">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/header.css">
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Document</title>
-</head>
-
-<body>
     <header>
         <div class="sidebar" id="sidebar">
             <button class="toggle-btn" id="toggleBtn">
@@ -38,7 +26,6 @@ require_once("verificaautenticacao.php");
                 </ul>
             </nav>
         </div>
-
     </header>
 
     <script>
@@ -48,9 +35,7 @@ require_once("verificaautenticacao.php");
 
             toggleBtn.addEventListener('click', function () {
                 sidebar.classList.toggle('collapsed');
+                document.body.classList.toggle('sidebar-collapsed');
             });
         });
     </script>
-</body>
-
-</html>
