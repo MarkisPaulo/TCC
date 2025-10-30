@@ -1,4 +1,4 @@
-        /* Reset e estilos básicos */
+
         * {
             font-family: 'Arial', sans-serif;
         }
@@ -7,6 +7,11 @@
             display: flex;
             min-height: 100vh;
             transition: margin-left 0.3s ease;
+            margin-left: 250px;
+        }
+
+        body.sidebar-collapsed {
+            margin-left: 70px;
         }
 
         /* Menu Lateral */
@@ -146,3 +151,16 @@
             transform: rotate(180deg);
             align-self: center;
         }
+
+    @media (max-width: 768px) {
+    body {
+        margin-left: 0;
+    }
+    .sidebar {
+        position: fixed;
+        width: 250px;
+        height: 100vh;
+        left: 0;
+        top: 0;
+    }
+}
