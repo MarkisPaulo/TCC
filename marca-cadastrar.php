@@ -5,11 +5,13 @@ if (isset($_POST['cadastrar'])) {
 
     $nome = $_POST['nome'];
 
-$sql = "INSERT INTO marca (nome) VALUES('$nome')";
-
+    $sql = "INSERT INTO marca (nome) VALUES('$nome')";
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
-}
+}else{
+    echo "DEU RUIM";
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -35,16 +37,16 @@ $sql = "INSERT INTO marca (nome) VALUES('$nome')";
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form>
+        <form method="POST">
             <div class="form-group">
                 <label for="nome">Nome*</label>
-                <input type="text" id="nome" placeholder="Digite o nome da Marca" required>
+                <input  name="nome" type="text" id="nome" placeholder="Digite o nome da Marca" required>
             </div>
            
 
             <div class="button-group">
                 <button type="button" class="btn btn-secondary">Cancelar</button>
-                <button type="submit" class="btn">Cadastrar Marca</button>
+                <button name="cadastrar" type="submit" class="btn">Cadastrar Marca</button>
             </div>
         </form>
     </div>
