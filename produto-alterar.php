@@ -11,14 +11,13 @@ if (isset($_POST['salvar'])) {
     $cfop = $_POST['cfop'];
 
 
-    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao)
-    VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
-    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao')";
+    $sql = "UPDATE produto SET nome = '$nome', status = '$status', precoUnitarioDaCompra = '$precoUnitarioDaCompra', precoUnitarioDaVenda = '$precoUnitarioDaVenda', quantEstoque = '$quantEstoque', ncm = '$ncm', cfop = '$cfop' 
+    WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
 }
 
-$sql = "SELECT * FROM cliente WHERE id = " . $_GET['id'];
+$sql = "SELECT * FROM produto WHERE id = " . $_GET['id'];
 $resultado = mysqli_query($conexao, $sql);
 $linha = mysqli_fetch_array($resultado);
 
@@ -41,7 +40,7 @@ $linha = mysqli_fetch_array($resultado);
     <div class="container">
         <div class="card mt-3">
             <div class="card-body">
-                <h5 class="card-title">Alteração de Cliente</h5>
+                <h5 class="card-title">Alteração de Produto</h5>
             </div>
         </div>
 
