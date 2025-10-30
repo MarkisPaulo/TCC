@@ -35,16 +35,16 @@ if (isset($_POST['cadastrar'])) {
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form>
+        <form method="POST">
             <div class="form-group">
                 <label for="nome">Nome*</label>
-                <input type="text" id="nome" placeholder="Digite o nome da Categoria" required>
+                <input name="nome" type="text" id="nome" placeholder="Digite o nome da Categoria" required>
             </div>
            
 
             <div class="button-group">
                 <button type="button" class="btn btn-secondary">Cancelar</button>
-                <button type="submit" class="btn">Cadastrar Categoria</button>
+                <button name="cadastrar" type="submit" class="btn">Cadastrar Categoria</button>
             </div>
         </form>
     </div>
