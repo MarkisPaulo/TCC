@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 23/10/2025 às 15:23
+-- Tempo de geração: 04/11/2025 às 15:35
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -82,7 +82,7 @@ CREATE TABLE `funcionario` (
   `email` varchar(254) DEFAULT NULL,
   `tipoDeAcesso` tinyint(1) NOT NULL,
   `dtAdmissao` date NOT NULL,
-  `dtDemissao` date NOT NULL,
+  `dtDemissao` date DEFAULT NULL,
   `senha` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -91,7 +91,7 @@ CREATE TABLE `funcionario` (
 --
 
 INSERT INTO `funcionario` (`codigo`, `status`, `cpf`, `nome`, `endereco`, `logradouro`, `telefone`, `cep`, `uf`, `bairro`, `cidade`, `email`, `tipoDeAcesso`, `dtAdmissao`, `dtDemissao`, `senha`) VALUES
-(1, 1, '132456789', 'judite', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'asddf@gmail.com', 1, '2025-09-09', '0000-00-00', '132456');
+(1, 1, '132456789', 'user', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'user@gmail.com', 1, '2025-09-09', NULL, '1234');
 
 -- --------------------------------------------------------
 
