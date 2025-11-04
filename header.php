@@ -19,7 +19,7 @@ require_once("verificaautenticacao.php");
 
             <nav>
                 <ul>
-                    <li><a href="#"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                    <li><a href="adm.php"><i class="fas fa-home"></i> <span>Home</span></a></li>
                     <li><a href="#"><i class="fas fa-info-circle"></i> <span>About</span></a></li>
                     <li><a href="cadastros.php"><i class="fas fa-edit"></i> <span>Cadastros</span></a></li>
                     <li><a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
