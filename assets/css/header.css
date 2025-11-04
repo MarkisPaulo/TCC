@@ -123,7 +123,8 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #0700b8 0%, #00ff88 100%);
+            background: -webkit-linear-gradient(90deg, #3d0ff9,#7494ec,#e6f2fa);
+            background: linear-gradient(90deg, #3d0ff9,#7494ec,#e6f2fa);
             bottom: 0;
             left: 0;
             transition: width 0.3s;
@@ -152,15 +153,15 @@
             align-self: center;
         }
 
-    @media (max-width: 768px) {
-    body {
-        margin-left: 0;
+        @media (max-width: 768px) {
+        body {
+            margin-left: 0;
+        }
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
     }
-    .sidebar {
-        position: fixed;
-        width: 250px;
-        height: 100vh;
-        left: 0;
-        top: 0;
-    }
-}
