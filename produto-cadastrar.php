@@ -43,11 +43,13 @@ if (isset($_POST['cadastrar'])) {
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form>
+        <form method="POST">
+
             <div class="form-group">
                 <label for="nome">Nome do Produto*</label>
                 <input type="text" id="nome" placeholder="Digite o nome do produto" required>
             </div>
+
             <div class="form-row">
                 <div class="form-group">
                     <label for="precoUnitarioDaCompra">Preço Unitário da Compra*</label>
@@ -58,10 +60,6 @@ if (isset($_POST['cadastrar'])) {
                     <label for="precoUnitarioDaVenda">Preço Unitário da Venda*</label>
                     <input type="number" id="precoUnitarioDaVenda" placeholder="R$ 0,00" step="0.01" min="0" required>
                 </div>
-
-
-
-
             </div>
 
             <div class="form-row">
@@ -71,7 +69,7 @@ if (isset($_POST['cadastrar'])) {
                         <option value="">Selecione uma categoria</option>
                         <?php
                             $sql = "SELECT * FROM categoria ORDER BY nome";
-                            $result = mysqli_query($conn, $sql);
+                            $result = mysqli_query($conexao, $sql);
 
                             while ($row = mysqli_fetch_array($result)) { ?>
                                 <option value="<?= $row['codigo'] ?>"><?= $row['nome'] ?></option>
@@ -85,7 +83,7 @@ if (isset($_POST['cadastrar'])) {
                         <option value="">Selecione uma Marca</option>
                         <?php
                             $sql = "SELECT * FROM marca ORDER BY nome";
-                            $result = mysqli_query($conn, $sql);
+                            $result = mysqli_query($conexao, $sql);
 
                             while ($row = mysqli_fetch_array($result)) { ?>
                                 <option value="<?= $row['codigo'] ?>"><?= $row['nome'] ?></option>
