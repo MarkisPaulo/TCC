@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04/11/2025 às 15:35
+-- Tempo de geração: 06/11/2025 às 16:00
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -32,6 +32,18 @@ CREATE TABLE `categoria` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `nome` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `categoria`
+--
+
+INSERT INTO `categoria` (`codigo`, `status`, `nome`) VALUES
+(1, 1, 'Artefatos de Cimento'),
+(2, 1, 'Hidráulico'),
+(4, 1, 'Ferramentas'),
+(5, 1, 'Ferro '),
+(6, 1, 'Aço'),
+(7, 1, 'Pregos e Fixadores');
 
 -- --------------------------------------------------------
 
@@ -104,6 +116,16 @@ CREATE TABLE `marca` (
   `status` tinyint(1) NOT NULL DEFAULT 1,
   `nome` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `marca`
+--
+
+INSERT INTO `marca` (`codigo`, `status`, `nome`) VALUES
+(1, 1, 'Tigre'),
+(2, 1, 'Makita'),
+(3, 1, 'Votoran'),
+(4, 1, 'Gerdau');
 
 -- --------------------------------------------------------
 
@@ -210,7 +232,7 @@ ALTER TABLE `vendas`
 -- AUTO_INCREMENT de tabela `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `cliente`
@@ -228,7 +250,7 @@ ALTER TABLE `funcionario`
 -- AUTO_INCREMENT de tabela `marca`
 --
 ALTER TABLE `marca`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
