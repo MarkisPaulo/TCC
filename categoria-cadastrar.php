@@ -26,6 +26,7 @@ if (isset($_POST['cadastrar'])) {
 </head>
 
 <body>
+    <?php require_once("header.php"); ?>
     <div class="container">
         <div class="form-header">
             <h1><i class="fas fa-thin fa-tags"></i> Cadastro de Categoria</h1>
