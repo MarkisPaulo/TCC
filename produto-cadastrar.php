@@ -11,7 +11,7 @@ if (isset($_POST['cadastrar'])) {
     $cfop = $_POST['cfop'];
 
     $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop ) 
-    VALUES('$nome', '$precoUnitarioDaCompra', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop')";
+    VALUES('$nome', '$precoUnitarioDaVenda', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop')";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -47,18 +47,17 @@ if (isset($_POST['cadastrar'])) {
 
             <div class="form-group">
                 <label for="nome">Nome do Produto*</label>
-                <input type="text" id="nome" placeholder="Digite o nome do produto" required>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
             </div>
-
             <div class="form-row">
                 <div class="form-group">
                     <label for="precoUnitarioDaCompra">Preço Unitário da Compra*</label>
-                    <input type="number" id="precoUnitarioDaCompra" placeholder="R$ 0,00" step="0.01" min="0" required>
+                    <input type="text" id="precoUnitarioDaCompra" name="precoUnitarioDaCompra" placeholder="R$ 0,00" required>
                 </div>
 
                 <div class="form-group">
                     <label for="precoUnitarioDaVenda">Preço Unitário da Venda*</label>
-                    <input type="number" id="precoUnitarioDaVenda" placeholder="R$ 0,00" step="0.01" min="0" required>
+                    <input type="text" id="precoUnitarioDaVenda" name="precoUnitarioDaVenda" placeholder="R$ 0,00" required>
                 </div>
             </div>
 
@@ -93,7 +92,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="quantEstoque">Quantidade em Estoque*</label>
-                    <input type="number" id="quantEstoque" placeholder="Quantidade disponível" min="1" required>
+                    <input type="number" id="quantEstoque" name="quantEstoque" placeholder="Quantidade disponível" min="1" required>
                 </div>
             </div>
 
@@ -105,16 +104,63 @@ if (isset($_POST['cadastrar'])) {
                 </div>
                 <div class="form-group">
                     <label for="cfop">CFOP*</label>
-                    <input type="number" name="product-cfop" id="cfop" placeholder="Código Fiscal de Operações e Prestações" required>
+                    <input type="number" name="cfop" id="cfop" placeholder="Código Fiscal de Operações e Prestações" required>
                 </div>
             </div>
 
             <div class="button-group">
                 <button type="button" class="btn btn-secondary">Cancelar</button>
-                <button type="submit" class="btn">Cadastrar Produto</button>
+                <button type="submit" name="cadastrar" class="btn">Cadastrar Produto</button>
             </div>
         </form>
     </div>
 </body>
 
+
+
+<script>
+    (function(){
+        function formatCurrency(value){
+            const digits = String(value).replace(/\D/g,'')
+            const n = parseInt(digits || '0', 10)
+            return (n/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+        }
+
+        function unformatToNumber(value){
+            const digits = String(value).replace(/\D/g,'')
+            const n = parseInt(digits || '0', 10)
+            return (n/100).toFixed(2)
+        }
+
+        function attachFormatting(id){
+            const el = document.getElementById(id)
+            if(!el) return
+            el.addEventListener('input', function(e){
+                const cursorPos = el.selectionStart
+                const old = el.value
+                el.value = formatCurrency(old)
+                // move cursor to end (safer que tentar restaurar complexo)
+                el.setSelectionRange(el.value.length, el.value.length)
+            })
+            el.addEventListener('blur', function(){
+                if(el.value.trim() === '') return
+                el.value = formatCurrency(el.value)
+            })
+        }
+
+        attachFormatting('precoUnitarioDaCompra')
+        attachFormatting('precoUnitarioDaVenda')
+
+        // Antes de submeter, normaliza para número com ponto (ex: 1234.56)
+        const form = document.querySelector('form')
+        if(form){
+            form.addEventListener('submit', function(){
+                const pc = document.getElementById('precoUnitarioDaCompra')
+                const pv = document.getElementById('precoUnitarioDaVenda')
+                if(pc && pc.value !== '') pc.value = unformatToNumber(pc.value)
+                if(pv && pv.value !== '') pv.value = unformatToNumber(pv.value)
+            })
+        }
+    })();
+    </script>
 </html>
