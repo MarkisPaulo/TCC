@@ -60,6 +60,38 @@ if (isset($_POST['cadastrar'])) {
                 limpaCampos();
                 return;
             }
+        });
+
+        // NOVO: seleção do campo CPF e função de formatação
+        const cpfInput = document.getElementById('cpf');
+
+        function limpaCampos() {
+            logradouroInput.value = '';
+            bairroInput.value = '';
+            cidadeInput.value = '';
+            ufSelect.value = '';
+            enderecoInput.value = '';
+        }
+
+        function formatCEP(v) {
+            const d = v.replace(/\D/g, '').slice(0, 8);
+            return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d;
+        }
+
+        // formata CPF no padrão 000.000.000-00
+        function formatCPF(v) {
+            const d = v.replace(/\D/g, '').slice(0, 11);
+            if (d.length > 9) {
+                return d.slice(0, 3) + '.' + d.slice(3, 6) + '.' + d.slice(6, 9) + '-' + d.slice(9);
+            } else if (d.length > 6) {
+                return d.slice(0, 3) + '.' + d.slice(3, 6) + '.' + d.slice(6);
+            } else if (d.length > 3) {
+                return d.slice(0, 3) + '.' + d.slice(3);
+            } else {
+                return d;
+            }
+        }
+            }
 
             // indica carregamento
             logradouroInput.value = '...';
@@ -113,6 +145,7 @@ if (isset($_POST['cadastrar'])) {
 </head>
 
 <body>
+    <?php require_once("header.php"); ?>
     <div class="container">
         <div class="form-header">
             <h1><i class="fas fa-thin fa-user"></i> Cadastro de Funcionário</h1>
