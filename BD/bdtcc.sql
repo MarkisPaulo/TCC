@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 06/11/2025 às 16:00
+-- Tempo de geração: 06/11/2025 às 20:22
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -71,7 +71,8 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`codigo`, `status`, `cpf`, `nome`, `logradouro`, `endereco`, `cep`, `bairro`, `cidade`, `uf`, `telefone`, `email`) VALUES
-(1, 1, '132456789', 'judite', 'sdafdsa', 'adfafads', '87400-000', 'asdfadsfa', 'Cruzeiro do Oeste', 'PR', '44444444444', 'asddf@gmail.com');
+(1, 1, '132456789', 'judite', 'sdafdsa', 'adfafads', '87400-000', 'asdfadsfa', 'Cruzeiro do Oeste', 'PR', '44444444444', 'asddf@gmail.com'),
+(2, 1, '987.332.354-22', 'Wanderlei Cordeiro de Jesus', 'Rua', 'Getúlio Vargas', '87400-000', 'Centro', 'Cruzeiro do Oeste', 'PR', '(44) 89899-8988', 'wando_72@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -103,7 +104,8 @@ CREATE TABLE `funcionario` (
 --
 
 INSERT INTO `funcionario` (`codigo`, `status`, `cpf`, `nome`, `endereco`, `logradouro`, `telefone`, `cep`, `uf`, `bairro`, `cidade`, `email`, `tipoDeAcesso`, `dtAdmissao`, `dtDemissao`, `senha`) VALUES
-(1, 1, '132456789', 'user', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'user@gmail.com', 1, '2025-09-09', NULL, '1234');
+(1, 1, '132456789', 'user', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'user@gmail.com', 1, '2025-09-09', NULL, '1234'),
+(2, 1, '050.789.624-39', 'Penélope Agnes', 'Brasil n° 89', 'Avenida', '(44) 99918-0176', '87540-000', 'PR', 'jardim do gregos', 'Pérola', 'agnes_pe@gmail.com', 0, '2025-11-06', NULL, '963852');
 
 -- --------------------------------------------------------
 
@@ -143,6 +145,14 @@ CREATE TABLE `produto` (
   `ncm` varchar(10) NOT NULL,
   `cfop` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `produto`
+--
+
+INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`) VALUES
+(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 50, '72142000', '5102'),
+(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102');
 
 -- --------------------------------------------------------
 
@@ -238,13 +248,13 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de tabela `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `marca`
@@ -256,7 +266,7 @@ ALTER TABLE `marca`
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `recebimentos`
