@@ -32,6 +32,7 @@ if (isset($_POST['cadastrar'])) {
 </head>
 
 <body>
+    <?php require_once("header.php"); ?>
     <div class="container">
         <div class="form-header">
             <h1><i class="fas fa-box"></i> Cadastro de Produto</h1>
@@ -68,17 +69,33 @@ if (isset($_POST['cadastrar'])) {
                     <label for="product-category">Categoria*</label>
                     <select id="product-category" required>
                         <option value="">Selecione uma categoria</option>
-                        
+                        <?php
+                            $sql = "SELECT * FROM categoria ORDER BY nome";
+                            $result = mysqli_query($conn, $sql);
+
+                            while ($row = mysqli_fetch_array($result)) { ?>
+                                <option value="<?= $row['codigo'] ?>"><?= $row['nome'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-marca">Marca*</label>
+                    <select id="product-marca" required>
+                        <option value="">Selecione uma Marca</option>
+                        <?php
+                            $sql = "SELECT * FROM marca ORDER BY nome";
+                            $result = mysqli_query($conn, $sql);
+
+                            while ($row = mysqli_fetch_array($result)) { ?>
+                                <option value="<?= $row['codigo'] ?>"><?= $row['nome'] ?></option>
+                        <?php } ?>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="quantEstoque">Quantidade em Estoque*</label>
                     <input type="number" id="quantEstoque" placeholder="Quantidade disponível" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label for="product-brand">Marca*</label>
-                    <input type="text" id="product-brand" placeholder="Marca do produto" required>
                 </div>
             </div>
 
