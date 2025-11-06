@@ -28,111 +28,9 @@ if (isset($_POST['cadastrar'])) {
 }
 ?>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const cepInput = document.getElementById('cep');
-        const logradouroInput = document.getElementById('logradouro');
-        const bairroInput = document.getElementById('bairro');
-        const cidadeInput = document.getElementById('cidade');
-        const ufSelect = document.getElementById('uf');
-        const enderecoInput = document.getElementById('endereco');
-
-        function limpaCampos() {
-            logradouroInput.value = '';
-            bairroInput.value = '';
-            cidadeInput.value = '';
-            ufSelect.value = '';
-            enderecoInput.value = '';
-        }
-
-        function formatCEP(v) {
-            const d = v.replace(/\D/g, '').slice(0, 8);
-            return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d;
-        }
-
-        cepInput.addEventListener('input', function (e) {
-            e.target.value = formatCEP(e.target.value);
-        });
-
-        cepInput.addEventListener('blur', function () {
-            const cep = cepInput.value.replace(/\D/g, '');
-            if (cep.length !== 8) {
-                limpaCampos();
-                return;
-            }
-        });
-
-        // NOVO: seleção do campo CPF e função de formatação
-        const cpfInput = document.getElementById('cpf');
-
-        function limpaCampos() {
-            logradouroInput.value = '';
-            bairroInput.value = '';
-            cidadeInput.value = '';
-            ufSelect.value = '';
-            enderecoInput.value = '';
-        }
-
-        function formatCEP(v) {
-            const d = v.replace(/\D/g, '').slice(0, 8);
-            return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d;
-        }
-
-        // formata CPF no padrão 000.000.000-00
-        function formatCPF(v) {
-            const d = v.replace(/\D/g, '').slice(0, 11);
-            if (d.length > 9) {
-                return d.slice(0, 3) + '.' + d.slice(3, 6) + '.' + d.slice(6, 9) + '-' + d.slice(9);
-            } else if (d.length > 6) {
-                return d.slice(0, 3) + '.' + d.slice(3, 6) + '.' + d.slice(6);
-            } else if (d.length > 3) {
-                return d.slice(0, 3) + '.' + d.slice(3);
-            } else {
-                return d;
-            }
-        }
-            }
-
-            // indica carregamento
-            logradouroInput.value = '...';
-            bairroInput.value = '...';
-            cidadeInput.value = '...';
-            ufSelect.value = '';
-            enderecoInput.value = '...';
-
-            fetch('https://viacep.com.br/ws/' + cep + '/json/')
-                .then(res => res.json())
-                .then(data => {
-                    if (data.erro) {
-                        limpaCampos();
-                        alert('CEP não encontrado.');
-                        return;
-                    }
-                    logradouroInput.value = data.logradouro || '';
-                    bairroInput.value = data.bairro || '';
-                    cidadeInput.value = data.localidade || '';
-
-                    // normaliza UF e seleciona somente se existir a opção
-                    const ufFromApi = (data.uf || '').toUpperCase();
-                    if (Array.from(ufSelect.options).some(opt => opt.value === ufFromApi)) {
-                        ufSelect.value = ufFromApi;
-                    } else {
-                        ufSelect.value = '';
-                    }
-
-                    enderecoInput.value = data.logradouro ? data.logradouro + (data.complemento ? ', ' + data.complemento : '') : '';
-                })
-                .catch(err => {
-                    console.error(err);
-                    limpaCampos();
-                    alert('Erro ao consultar CEP. Tente novamente.');
-                });
-        });
-    });
-</script>
 
 <!DOCTYPE html>
-<html lang="pt-BR"></html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -282,8 +180,136 @@ if (isset($_POST['cadastrar'])) {
             </div>
         </form>
     </div>
-</body>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cepInput = document.getElementById('cep');
+        const logradouroInput = document.getElementById('logradouro');
+        const bairroInput = document.getElementById('bairro');
+        const cidadeInput = document.getElementById('cidade');
+        const ufSelect = document.getElementById('uf');
+        const enderecoInput = document.getElementById('endereco');
+
+        function limpaCampos() {
+            logradouroInput.value = '';
+            bairroInput.value = '';
+            cidadeInput.value = '';
+            ufSelect.value = '';
+            enderecoInput.value = '';
+        }
+
+        function formatCEP(v) {
+            const d = v.replace(/\D/g, '').slice(0, 8);
+            return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d;
+        }
+
+        cepInput.addEventListener('input', function (e) {
+            e.target.value = formatCEP(e.target.value);
+        });
+
+        // CPF
+        const cpfInput = document.getElementById('cpf');
+
+        function formatCPF(value) {
+            const v = value.replace(/\D/g, '').slice(0, 11);
+            return v
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        }
+
+        cpfInput.addEventListener('input', function (e) {
+            const cursorPos = e.target.selectionStart;
+            const oldValue = e.target.value;
+            e.target.value = formatCPF(oldValue);
+            const diff = e.target.value.length - oldValue.length;
+            const newPos = Math.max(0, cursorPos + diff);
+            e.target.setSelectionRange(newPos, newPos);
+        });
+
+        cpfInput.addEventListener('blur', function () {
+            const raw = cpfInput.value.replace(/\D/g, '');
+            if (raw && raw.length !== 11) {
+                cpfInput.value = formatCPF(raw);
+            }
+        });
+
+        // Formatação para telefone: (00) 00000-0000 ou (00) 0000-0000
+        const telefoneInput = document.getElementById('telefone');
+
+        function formatTelefone(value) {
+            const v = value.replace(/\D/g, '').slice(0, 11);
+            if (v.length <= 10) {
+                // formato antigo sem 9º dígito
+                return v
+                    .replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
+                    .replace(/-$/, '');
+            }
+            // formato com 9º dígito
+            return v
+                .replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3')
+                .replace(/-$/, '');
+        }
+
+        telefoneInput.addEventListener('input', function (e) {
+            const cursorPos = e.target.selectionStart;
+            const oldValue = e.target.value;
+            e.target.value = formatTelefone(oldValue);
+            const diff = e.target.value.length - oldValue.length;
+            const newPos = Math.max(0, cursorPos + diff);
+            e.target.setSelectionRange(newPos, newPos);
+        });
+
+        telefoneInput.addEventListener('blur', function () {
+            const raw = telefoneInput.value.replace(/\D/g, '');
+            if (raw) telefoneInput.value = formatTelefone(raw);
+        });
+
+        cepInput.addEventListener('blur', function () {
+            const cep = cepInput.value.replace(/\D/g, '');
+            if (cep.length !== 8) {
+                limpaCampos();
+                return;
+            }
+
+            // indica carregamento
+            logradouroInput.value = '...';
+            bairroInput.value = '...';
+            cidadeInput.value = '...';
+            ufSelect.value = '';
+            enderecoInput.value = '...';
+
+            fetch('https://viacep.com.br/ws/' + cep + '/json/')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.erro) {
+                        limpaCampos();
+                        alert('CEP não encontrado.');
+                        return;
+                    }
+                    logradouroInput.value = data.logradouro || '';
+                    bairroInput.value = data.bairro || '';
+                    cidadeInput.value = data.localidade || '';
+
+                    const ufFromApi = (data.uf || '').toUpperCase();
+                    if (Array.from(ufSelect.options).some(opt => opt.value === ufFromApi)) {
+                        ufSelect.value = ufFromApi;
+                    } else {
+                        ufSelect.value = '';
+                    }
+
+                    enderecoInput.value = data.logradouro ? data.logradouro + (data.complemento ? ', ' + data.complemento : '') : '';
+                })
+                .catch(err => {
+                    console.error(err);
+                    limpaCampos();
+                    alert('Erro ao consultar CEP. Tente novamente.');
+                });
+        });
+    });
+    </script>
+
+</body>
 
 
 </html>
