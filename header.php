@@ -21,7 +21,29 @@ require_once("verificaautenticacao.php");
                 <ul>
                     <li><a href="adm.php"><i class="fas fa-home"></i> <span>Home</span></a></li>
                     <li><a href="#"><i class="fas fa-info-circle"></i> <span>About</span></a></li>
-                    <li><a href="cadastros.php"><i class="fas fa-edit"></i> <span>Cadastros</span></a></li>
+
+                    <li class="has-dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fas fa-edit"></i> <span>Cadastros</span><i class="fas fa-chevron-down caret"></i></a>
+                        <ul class="dropdown">
+                            <li><a href="produto-cadastrar.php"><i class="fas fa-box"></i>Produto</a></li>
+                            <li><a href="categoria-cadastrar.php"><i class="fas fa-thin fa-tags"></i>Categoria</a></li>
+                            <li><a href="marca-cadastrar.php"><i class="fas fa-thin fa-registered"></i>Marca</a></li>
+                            <li><a href="funcionario-cadastrar.php"><i class="fas fa-thin fa-user-tie"></i>Funcionário</a></li>
+                            <li><a href="cliente-cadastrar.php"><i class="fas fa-thin fa-user"></i>Cliente</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="has-dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fas fa-list"></i> <span>Listagem</span><i class="fas fa-chevron-down caret"></i></a>
+                        <ul class="dropdown">
+                            <li><a href="produto-listar.php"><i class="fas fa-box"></i>Produto</a></li>
+                            <li><a href="categoria-listar.php"><i class="fas fa-thin fa-tags"></i>Categoria</a></li>
+                            <li><a href="marca-listar.php"><i class="fas fa-thin fa-registered"></i>Marca</a></li>
+                            <li><a href="funcionario-listar.php"><i class="fas fa-thin fa-user-tie"></i>Funcionário</a></li>
+                            <li><a href="cliente-listar.php"><i class="fas fa-thin fa-user"></i>Cliente</a></li>
+                        </ul>
+                    </li>
+
                     <li><a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
                 </ul>
             </nav>
@@ -36,6 +58,22 @@ require_once("verificaautenticacao.php");
             toggleBtn.addEventListener('click', function () {
                 sidebar.classList.toggle('collapsed');
                 document.body.classList.toggle('sidebar-collapsed');
+            });
+
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const li = btn.closest('.has-dropdown');
+                    li.classList.toggle('open');
+                });
+            });
+
+            // Fecha dropdown ao clicar fora
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.has-dropdown')) {
+                    document.querySelectorAll('.has-dropdown.open').forEach(openEl => openEl.classList.remove('open'));
+                }
             });
         });
     </script>
