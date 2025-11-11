@@ -91,8 +91,14 @@ if (isset($_POST['cadastrar'])) {
                 </div>
 
                 <div class="form-group">
-                    <label for="quantEstoque">Quantidade em Estoque*</label>
-                    <input type="number" id="quantEstoque" name="quantEstoque" placeholder="Quantidade disponível" min="1" required>
+                    <label for="quantEstoque">Unidade Comercial*</label>
+                    <select name="unidMedida" id="unidMedida" required>
+                        <option value="">Seleciona uma Unidade</option>
+                        <option value="BARRA">Barra</option>
+                        <option value="BISNAG">Bisnaga</option>
+                        <option value="CJ">Conjunto</option>
+                        <option value="CX"></option>
+                    </select>
                 </div>
             </div>
 
@@ -105,6 +111,10 @@ if (isset($_POST['cadastrar'])) {
                 <div class="form-group">
                     <label for="cfop">CFOP*</label>
                     <input type="number" name="cfop" id="cfop" placeholder="Código Fiscal de Operações e Prestações" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantEstoque">Quantidade em Estoque*</label>
+                    <input type="number" id="quantEstoque" name="quantEstoque" placeholder="Quantidade disponível" min="1" required>
                 </div>
             </div>
 

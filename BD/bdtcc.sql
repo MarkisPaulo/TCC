@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 06/11/2025 às 20:22
+-- Tempo de geração: 11/11/2025 às 16:06
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -143,16 +143,19 @@ CREATE TABLE `produto` (
   `precoUnitarioDaVenda` double(10,2) NOT NULL,
   `quantEstoque` int(11) NOT NULL,
   `ncm` varchar(10) NOT NULL,
-  `cfop` varchar(10) NOT NULL
+  `cfop` varchar(10) NOT NULL,
+  `idMarca` int(11) NOT NULL,
+  `idCategoria` int(11) NOT NULL,
+  `unidMedida` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `produto`
 --
 
-INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`) VALUES
-(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 50, '72142000', '5102'),
-(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102');
+INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`, `idMarca`, `idCategoria`, `unidMedida`) VALUES
+(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 50, '72142000', '5102', 0, 0, ''),
+(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102', 0, 0, '');
 
 -- --------------------------------------------------------
 
