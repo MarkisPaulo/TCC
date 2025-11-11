@@ -51,22 +51,34 @@ $resultado = mysqli_query($conexao, $sql);
                 <tr>
                     <th scope="col">Código</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">Email</th>
                     <th scope="col">Ativo</th>
+                    <th scope="col">Preço Unitário da Compra</th>
+                     <th scope="col">Preço Unitário da Venda</th>
+                     <th scope="col">Categoria</th>
+                     <th scope="col">Marca</th>
+                     <th scope="col">>Quantidade em Estoque</th>
+                     <th scope="col">NCM</th>
+                     <th scope="col">CFOP</th>
                     <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while($linha = mysqli_fetch_array($resultado)) { ?>
                 <tr>
-                    <td><?= $linha['id'] ?></td>
+                    <td><?= $linha['codigo'] ?></td>
                     <td><?= $linha['nome'] ?></td>
-                    <td><?= $linha['unimedida'] ?></td>
-                    <td><?= $linha['preco'] ?></td>
+                    <td><?= $linha['status'] ?></td>
+                    <td><?= $linha['precoUnitarioDaCompra'] ?></td>
+                    <td><?= $linha['precoUnitarioDaVenda'] ?></td>
+                    <td><?= $linha['product-category'] ?></td>
+                    <td><?= $linha['product-marca'] ?></td>
+                    <td><?= $linha['quantEstoque'] ?></td>
+                    <td><?= $linha['ncm'] ?></td>
+                    <td><?= $linha['cfop'] ?></td>
                     <td class="actions">
-                        <a href="produto-alterar.php?id=<?= $linha['id']?>" class="btn btn-warning">
+                        <a href="produto-alterar.php?id=<?= $linha['codigo']?>" class="btn btn-warning">
                             <i class="fas fa-solid fa-pen-to-square"></i>Alterar</a>
-                        <a href="produto-listar.php?id=<?= $linha['id'] ?>" class="btn btn-danger" 
+                        <a href="produto-listar.php?id=<?= $linha['codigo'] ?>" class="btn btn-danger"
                             onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
                     </td>
                 </tr>

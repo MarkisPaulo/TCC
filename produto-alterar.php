@@ -17,7 +17,7 @@ if (isset($_POST['salvar'])) {
     echo "Registro alterado com sucesso";
 }
 
-$sql = "SELECT * FROM produto WHERE id = " . $_GET['id'];
+$sql = "SELECT * FROM produto WHERE codigo = " . $_GET['id'];
 $resultado = mysqli_query($conexao, $sql);
 $linha = mysqli_fetch_array($resultado);
 
@@ -37,7 +37,7 @@ $linha = mysqli_fetch_array($resultado);
 </head>
 
 <body>
-    <?php require_once("menu.php"); ?>
+    <?php require_once("header.php"); ?>
     <div class="container">
         <div class="card mt-3">
             <div class="card-body">
