@@ -9,9 +9,12 @@ if (isset($_POST['cadastrar'])) {
     $quantEstoque = $_POST['quantEstoque'];
     $ncm = $_POST['ncm'];
     $cfop = $_POST['cfop'];
+    $unidMeidida = $_POST['unidMedida'];
+    $idMarca = $_POST['idMarca'];
+    $idCategoria = $_POST['idCategoria'];
 
-    $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop ) 
-    VALUES('$nome', '$precoUnitarioDaVenda', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop')";
+    $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop, idMarca, idCategoria, unidMedida) 
+    VALUES('$nome', '$precoUnitarioDaVenda', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop', '$idMarca', '$idCategoria', '$unidMeidida')";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -64,7 +67,7 @@ if (isset($_POST['cadastrar'])) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="product-category">Categoria*</label>
-                    <select id="product-category" required>
+                    <select id="idCategoria" name="idCategoria" required>
                         <option value="">Selecione uma categoria</option>
                         <?php
                             $sql = "SELECT * FROM categoria ORDER BY nome";
@@ -78,7 +81,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="product-marca">Marca*</label>
-                    <select id="product-marca" required>
+                    <select id="idMarca" name="idMarca" required>
                         <option value="">Selecione uma Marca</option>
                         <?php
                             $sql = "SELECT * FROM marca ORDER BY nome";
@@ -94,14 +97,23 @@ if (isset($_POST['cadastrar'])) {
                     <label for="quantEstoque">Unidade Comercial*</label>
                     <select name="unidMedida" id="unidMedida" required>
                         <option value="">Seleciona uma Unidade</option>
-                        <option value="BARRA">Barra</option>
-                        <option value="BISNAG">Bisnaga</option>
-                        <option value="CJ">Conjunto</option>
-                        <option value="CX"></option>
+                        <option value="UNID">UNIDADE</option>
+                        <option value="CX">Caixa</option>
+                        <option value="CENTO">CENTO</option>
+                        <option value="CJ">CONJUNTO</option>
+                        <option value="CM">CENTIMETRO</option>
+                        <option value="CM2">CENTIMETRO QUADRADO</option>
+                        <option value="JOGO">JOGO</option>
+                        <option value="KG">QUILOGRAMA</option>
+                        <option value="M">METRO</option>
+                        <option value="M2">METRO QUADRADO</option>
+                        <option value="M3">METRO CÚBICO</option>
+                        <option value="MILHEI">MILHEIRO</option>
+                        <option value="PC">PEÇA</option>
+                        <option value="TON">TONELADA</option>
                     </select>
                 </div>
             </div>
-
 
             <div class="form-row">
                 <div class="form-group">
