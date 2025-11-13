@@ -267,7 +267,7 @@ if (isset($_POST['cadastrar'])) {
             </div>
 
             <div class="button-group">
-                <button type="button" class="btn btn-secondary">Cancelar</button>
+              <a href="cliente-listar.php"><button type="button" class="btn btn-secondary">Cancelar</button></a>
                 <button name="cadastrar" type="submit" class="btn">Cadastrar Cliente</button>
             </div>
         </form>
