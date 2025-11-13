@@ -2,7 +2,7 @@
 require_once("conexao.php");
 if (isset($_POST['salvar'])) {
 
-   
+
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $telefone = $_POST['telefone'];
@@ -13,7 +13,7 @@ if (isset($_POST['salvar'])) {
     $bairro = $_POST['bairro'];
     $cidade = $_POST['cidade'];
     $uf = $_POST['uf'];
-    $tipoDeAcesso = $_POST['acess'];
+    $tipoDeAcesso = $_POST['tipoDeAcesso'];
     $dtAdmissao = $_POST['dtAdmissao'];
     $dtDemissao = $_POST['dtDemissao'];
     $senha = $_POST['senha'];
@@ -26,7 +26,7 @@ if (isset($_POST['salvar'])) {
     echo "Registro alterado com sucesso";
 }
 
-$sql = "SELECT * FROM cliente WHERE id = " . $_GET['id'];
+$sql = "SELECT * FROM funcionario WHERE codigo = " . $_GET['codigo'];
 $resultado = mysqli_query($conexao, $sql);
 $linha = mysqli_fetch_array($resultado);
 
@@ -46,56 +46,55 @@ $linha = mysqli_fetch_array($resultado);
 </head>
 
 <body>
-    <?php require_once("menu.php"); ?>
+    <?php require_once("header.php"); ?>
     <div class="container">
-        <div class="card mt-3">
-            <div class="card-body">
-                <h5 class="card-title">Alteração de Cliente</h5>
-            </div>
+        <div class="form-header">
+            <h1><i class="fas fa-thin fa-user"></i> Alteração de Funcionário</h1>
+            <p>Preencha os dados abaixo para alterar um novo funcionário</p>
         </div>
 
-        <form method="post">
-            <div class="mb-3">
+        <div class="info-box">
+            <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
                 <label for="nome" class="form-label">Nome</label>
                 <input name="nome" type="text" class="form-control" id="nome" value="<?= $linha['nome'] ?>">
             </div>
-            <div class="mb-3">
-                <label for="cpf" class="form-label">CPF</label>
-                <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cpf" class="form-label">CPF</label>
+                    <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input name="telefone" type="text" class="form-control" id="telefone"
+                        value="<?= $linha['telefone'] ?>">
+                </div>
             </div>
-            
-            <div class="mb-3">
-                <label for="cpf" class="form-label">CPF</label>
-                <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input name="email" type="email" class="form-control" id="email" value="<?= $linha['email'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input name="senha" type="password" class="form-control" id="senha" value="<?= $linha['senha'] ?>">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="telefone" class="form-label">Telefone</label>
-                <input name="telefone" type="text" class="form-control" id="telefone" value="<?= $linha['telefone'] ?>">
-            </div>
-            
-            <div class="mb-3">
-                <label for="endereco" class="form-label">Endereço</label>
-                <input name="endereco" type="text" class="form-control" id="endereco" value="<?= $linha['endereco'] ?>">
-            </div>
-             <div class="mb-3">
-                <label for="tel" class="form-label">Logradouro</label>
-                <input name="logradouro" type="text" class="form-control" id="logradouro" value="<?= $linha['logradouro'] ?>">
-            </div>
-            <div class="mb-3">
-                <label for="cep" class="form-label">CEP</label>
-                <input name="cep" type="text" class="form-control" id="cep" value="<?= $linha['cep'] ?>">
-            </div>
-            <div class="mb-3">
-                <label for="cidade" class="form-label">Cidade</label>
-                <input name="cidade" type="text" class="form-control" id="cidade" value="<?= $linha['cidade'] ?>">
-            </div>
-             <div class="mb-3">
-                <label for="bairro" class="form-label">Bairro</label>
-                <input name="bairro" type="text" class="form-control" id="bairro" value="<?= $linha['bairro'] ?>">
-            </div>
-            <div class="mb-3">
-                <label for="uf" class="form-label">UF</label>
-                <select id="uf" name="uf" required >
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cep" class="form-label">CEP*</label>
+                    <input name="cep" type="text" class="form-control" id="cep" value="<?= $linha['cep'] ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="uf" class="form-label">UF</label>
+                    <select id="uf" name="uf" required>
                         <option value="">Selecione</option>
                         <option value="AC" <?= ($linha['uf'] == 'AC') ? 'selected' : '' ?>>Acre</option>
                         <option value="AL" <?= ($linha['uf'] == 'AL') ? 'selected' : '' ?>>Alagoas</option>
@@ -125,32 +124,60 @@ $linha = mysqli_fetch_array($resultado);
                         <option value="SE" <?= ($linha['uf'] == 'SE') ? 'selected' : '' ?>>Sergipe</option>
                         <option value="TO" <?= ($linha['uf'] == 'TO') ? 'selected' : '' ?>>Tocantins</option>
                     </select>
-            </div>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input name="email" type="email" class="form-control" id="email" value="<?= $linha['email'] ?>">
+                </div>
+
             </div>
 
-             <div class="mb-3">
-                <label for="tipoDeAcesso" class="form-label">Tipo De Acesso</label>
-                <input name="tipoDeAcesso" type="text" class="form-control" id="tipoDeAcesso" value="<?= $linha['tipoDeAcesso'] ?>">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cidade" class="form-label">Cidade</label>
+                    <input name="cidade" type="text" class="form-control" id="cidade" value="<?= $linha['cidade'] ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="tel" class="form-label">Logradouro</label>
+                    <input name="logradouro" type="text" class="form-control" id="logradouro"
+                        value="<?= $linha['logradouro'] ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="endereco" class="form-label">Endereço</label>
+                    <input name="endereco" type="text" class="form-control" id="endereco"
+                        value="<?= $linha['endereco'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="bairro" class="form-label">Bairro</label>
+                    <input name="bairro" type="text" class="form-control" id="bairro" value="<?= $linha['bairro'] ?>">
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="dtAdmissao" class="form-label">Data de Admissão</label>
-                <input name="dtAdmissao" type="date" class="form-control" id="dtAdmissao" value="<?= $linha['dtAdmissao'] ?>">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipoDeAcesso" class="form-label">Tipo De Acesso</label>
+                    <input name="tipoDeAcesso" type="text" class="form-control" id="tipoDeAcesso"
+                        value="<?= $linha['tipoDeAcesso'] ?>">
+                </div>
 
-                <label for="dtDemissao" class="form-label">Data de Demissão</label>
-                <input name="dtDemissao" type="date" class="form-control" id="dtDemissao" value="<?= $linha['dtDemissao'] ?>">
 
-                <label for="senha" class="form-label">Senha</label>
-                <input name="senha" type="password" class="form-control" id="senha" value="<?= $linha['senha'] ?>">
+                <div class="form-group">
+                    <label for="dtAdmissao" class="form-label">Data de Admissão</label>
+                    <input name="dtAdmissao" type="date" class="form-control" id="dtAdmissao"
+                        value="<?= $linha['dtAdmissao'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="dtDemissao" class="form-label">Data de Demissão</label>
+                    <input name="dtDemissao" type="date" class="form-control" id="dtDemissao"
+                        value="<?= $linha['dtDemissao'] ?>">
+                </div>
 
-            <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
-            <a type="button" class="btn btn-secondary" href="cliente-listar.php">Voltar</a>
+                <div class="button-group">
+                    <a href="funcionario-listar.php"><button type="button"
+                            class="btn btn-secondary">Cancelar</button></a>
+                    <button name="salvar" type="submit" class="btn">Salvar Alterações</button>
+                </div>
         </form>
 
     </div>
 </body>
+
 </html>

@@ -76,9 +76,9 @@ $resultado = mysqli_query($conexao, $sql);
                     <td><?= $linha['ncm'] ?></td>
                     <td><?= $linha['cfop'] ?></td>
                     <td class="actions">
-                        <a href="produto-alterar.php?id=<?= $linha['codigo']?>" class="btn btn-warning">
+                        <a href="produto-alterar.php?codigo=<?= $linha['codigo']?>" class="btn btn-warning">
                             <i class="fas fa-solid fa-pen-to-square"></i>Alterar</a>
-                        <a href="produto-listar.php?id=<?= $linha['codigo'] ?>" class="btn btn-danger"
+                        <a href="produto-listar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-danger"
                             onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
                     </td>
                 </tr>
