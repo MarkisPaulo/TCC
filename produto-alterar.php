@@ -137,8 +137,10 @@ $linha = mysqli_fetch_array($resultado);
                         value="<?= $linha['quantEstoque'] ?>">
                 </div>
             </div>
-            <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
-            <a type="button" class="btn btn-secondary" href="cliente-listar.php">Voltar</a>
+           <div class="button-group">
+                <a href="produto-listar.php"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+                <button name="salvar" type="submit" class="btn">Salvar Alterações</button>
+            </div>
         </form>
 
     </div>
