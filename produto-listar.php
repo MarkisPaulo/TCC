@@ -7,7 +7,6 @@ if (isset($_GET['codigo'])) {
 }
 
 $sql = "SELECT * FROM produto ORDER BY codigo";
-
 $resultado = mysqli_query($conexao, $sql);
 
 ?>
@@ -22,6 +21,7 @@ $resultado = mysqli_query($conexao, $sql);
     <link rel="stylesheet" href="assets/css/listar.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -52,26 +52,35 @@ $resultado = mysqli_query($conexao, $sql);
                     <th scope="col">Código</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Ativo</th>
-                    <th scope="col">Preço Unitário da Compra</th>
-                     <th scope="col">Preço Unitário da Venda</th>
-                     <th scope="col">Categoria</th>
-                     <th scope="col">Marca</th>
-                     <th scope="col">>Quantidade em Estoque</th>
-                     <th scope="col">NCM</th>
-                     <th scope="col">CFOP</th>
+                    <th scope="col">Preço Unit da Compra</th>
+                    <th scope="col">Preço Unit da Venda</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Quantidade em Estoque</th>
+                    <th scope="col">NCM</th>
+                    <th scope="col">CFOP</th>
                     <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <?php while($linha = mysqli_fetch_array($resultado)) { ?>
+                <?php 
+                while($linha = mysqli_fetch_array($resultado) ) { ?>
                 <tr>
                     <td><?= $linha['codigo'] ?></td>
                     <td><?= $linha['nome'] ?></td>
                     <td><?= $linha['status'] ?></td>
                     <td><?= $linha['precoUnitarioDaCompra'] ?></td>
                     <td><?= $linha['precoUnitarioDaVenda'] ?></td>
-                    <td><?= $linha['product-category'] ?></td>
-                    <td><?= $linha['product-marca'] ?></td>
+                    <td><?php
+                    $sqlC = "SELECT nome FROM categoria WHERE codigo = " . $linha['idCategoria'];
+                    $resultC = mysqli_query($conexao, $sqlC);
+                    $rowC = mysqli_fetch_array($resultC);
+                    echo $rowC['nome'];
+                    ?></td>
+                    <td><?php 
+                    $sqlM = "SELECT nome FROM marca WHERE codigo = " . $linha['idMarca'];
+                    $resultM = mysqli_query($conexao, $sqlM);
+                    $rowM = mysqli_fetch_array($resultM); ?></td>
                     <td><?= $linha['quantEstoque'] ?></td>
                     <td><?= $linha['ncm'] ?></td>
                     <td><?= $linha['cfop'] ?></td>
