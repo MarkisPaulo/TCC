@@ -19,9 +19,8 @@ if (isset($_POST['salvar'])) {
     $senha = $_POST['senha'];
 
 
-    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao)
-    VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
-    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao')";
+    $sql = " UPDATE funcionario SET nome = '$nome', email ='$email', senha ='$senha', telefone ='$telefone', cpf='$cpf', endereco='$endereco',
+logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso',dtAdmissao ='$dtAdmissao', dtDemissao ='$dtDemissao' WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
 }
@@ -59,17 +58,17 @@ $linha = mysqli_fetch_array($resultado);
 
         <form method="POST">
             <div class="form-group">
-                <label for="nome" class="form-label">Nome</label>
+                <label for="nome" class="form-label">Nome*</label>
                 <input name="nome" type="text" class="form-control" id="nome" value="<?= $linha['nome'] ?>">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="cpf" class="form-label">CPF</label>
+                    <label for="cpf" class="form-label">CPF*</label>
                     <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
                 </div>
                 <div class="form-group">
-                    <label for="telefone" class="form-label">Telefone</label>
+                    <label for="telefone" class="form-label">Telefone*</label>
                     <input name="telefone" type="text" class="form-control" id="telefone"
                         value="<?= $linha['telefone'] ?>">
                 </div>
@@ -77,11 +76,11 @@ $linha = mysqli_fetch_array($resultado);
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">Email*</label>
                     <input name="email" type="email" class="form-control" id="email" value="<?= $linha['email'] ?>">
                 </div>
                 <div class="form-group">
-                    <label for="senha" class="form-label">Senha</label>
+                    <label for="senha" class="form-label">Senha*</label>
                     <input name="senha" type="password" class="form-control" id="senha" value="<?= $linha['senha'] ?>">
                 </div>
             </div>
@@ -93,7 +92,7 @@ $linha = mysqli_fetch_array($resultado);
                 </div>
 
                 <div class="form-group">
-                    <label for="uf" class="form-label">UF</label>
+                    <label for="uf" class="form-label">UF*</label>
                     <select id="uf" name="uf" required>
                         <option value="">Selecione</option>
                         <option value="AC" <?= ($linha['uf'] == 'AC') ? 'selected' : '' ?>>Acre</option>
@@ -130,51 +129,56 @@ $linha = mysqli_fetch_array($resultado);
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="cidade" class="form-label">Cidade</label>
+                    <label for="cidade" class="form-label">Cidade*</label>
                     <input name="cidade" type="text" class="form-control" id="cidade" value="<?= $linha['cidade'] ?>">
                 </div>
 
                 <div class="form-group">
-                    <label for="tel" class="form-label">Logradouro</label>
+                    <label for="tel" class="form-label">Logradouro*</label>
                     <input name="logradouro" type="text" class="form-control" id="logradouro"
                         value="<?= $linha['logradouro'] ?>">
                 </div>
 
                 <div class="form-group">
-                    <label for="endereco" class="form-label">Endereço</label>
+                    <label for="endereco" class="form-label">Endereço*</label>
                     <input name="endereco" type="text" class="form-control" id="endereco"
                         value="<?= $linha['endereco'] ?>">
                 </div>
                 <div class="form-group">
-                    <label for="bairro" class="form-label">Bairro</label>
+                    <label for="bairro" class="form-label">Bairro*</label>
                     <input name="bairro" type="text" class="form-control" id="bairro" value="<?= $linha['bairro'] ?>">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="tipoDeAcesso" class="form-label">Tipo De Acesso</label>
-                    <input name="tipoDeAcesso" type="text" class="form-control" id="tipoDeAcesso"
-                        value="<?= $linha['tipoDeAcesso'] ?>">
+                    <label>Tipo de Acesso*</label>
+                    <div class="radio-option">
+                        <input type="radio" id="acess1" name="tipoDeAcesso" value="1" <?= ($linha['tipoDeAcesso'] == '1') ? 'checked' : '' ?>>
+                        <label for="acess1">Funcionário</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="acess0" name="tipoDeAcesso" value="0" <?= ($linha['tipoDeAcesso'] == '0') ? 'checked' : '' ?>>
+                        <label for="acess0">Gerente</label>
+                    </div>
                 </div>
 
+            <div class="form-group">
+                <label for="dtAdmissao" class="form-label">Data de Admissão*</label>
+                <input name="dtAdmissao" type="date" class="form-control" id="dtAdmissao"
+                    value="<?= $linha['dtAdmissao'] ?>">
+            </div>
+            <div class="form-group">
+                <label for="dtDemissao" class="form-label">Data de Demissão</label>
+                <input name="dtDemissao" type="date" class="form-control" id="dtDemissao"
+                    value="<?= $linha['dtDemissao'] ?>">
+            </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="dtAdmissao" class="form-label">Data de Admissão</label>
-                    <input name="dtAdmissao" type="date" class="form-control" id="dtAdmissao"
-                        value="<?= $linha['dtAdmissao'] ?>">
-                </div>
-                <div class="form-group">
-                    <label for="dtDemissao" class="form-label">Data de Demissão</label>
-                    <input name="dtDemissao" type="date" class="form-control" id="dtDemissao"
-                        value="<?= $linha['dtDemissao'] ?>">
-                </div>
-
-                <div class="button-group">
-                    <a href="funcionario-listar.php"><button type="button"
-                            class="btn btn-secondary">Cancelar</button></a>
-                    <button name="salvar" type="submit" class="btn">Salvar Alterações</button>
-                </div>
+            <div class="button-group">
+                <a href="funcionario-listar.php"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+                <button name="salvar" type="submit" class="btn">Salvar Alterações</button>
+            </div>
         </form>
 
     </div>
