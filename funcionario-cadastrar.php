@@ -2,7 +2,7 @@
 require_once("verificaautenticacao.php");
 require_once("conexao.php");
 if (isset($_POST['cadastrar'])) {
-
+    
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $telefone = $_POST['telefone'];
@@ -15,14 +15,18 @@ if (isset($_POST['cadastrar'])) {
     $uf = $_POST['uf'];
     $tipoDeAcesso = $_POST['acess'];
     $dtAdmissao = $_POST['dtAdmissao'];
-    $dtDemissao = $_POST['dtDemissao'];
     $senha = $_POST['senha'];
 
+    $campo = "";
+    $dtDemissao = "";
+    if ($_POST['dtDemissao'] != '') {
+        $campo = ", dtDemissao";
+        $dtDemissao = ", '" . $_POST['dtDemissao'] . "'";
+    }
 
-    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso,dtAdmissao, dtDemissao)
-    VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco',
-    '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao', '$dtDemissao')";
-
+    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso, dtAdmissao $campo)
+    VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao' $dtDemissao)";
+    
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
 }

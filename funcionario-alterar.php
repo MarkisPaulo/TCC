@@ -15,12 +15,17 @@ if (isset($_POST['salvar'])) {
     $uf = $_POST['uf'];
     $tipoDeAcesso = $_POST['tipoDeAcesso'];
     $dtAdmissao = $_POST['dtAdmissao'];
-    $dtDemissao = $_POST['dtDemissao'];
     $senha = $_POST['senha'];
+    $campo = "";
+    $dtDemissao = "";
+    if ($_POST['dtDemissao'] != '') {
+        $campo = ", dtDemissao";
+        $dtDemissao = ", '" . $_POST['dtDemissao'] . "'";
+    }
 
 
     $sql = " UPDATE funcionario SET nome = '$nome', email ='$email', senha ='$senha', telefone ='$telefone', cpf='$cpf', endereco='$endereco',
-logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso',dtAdmissao ='$dtAdmissao', dtDemissao ='$dtDemissao' WHERE codigo = " . $_GET['codigo'];
+    logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso',dtAdmissao ='$dtAdmissao' $campo = $dtDemissao WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
 }
@@ -42,6 +47,7 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
