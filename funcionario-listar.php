@@ -7,7 +7,6 @@ if (isset($_GET['codigo'])) {
 }
 
 $sql = "SELECT * FROM funcionario ORDER BY codigo";
-
 $resultado = mysqli_query($conexao, $sql);
 
 ?>
@@ -22,6 +21,7 @@ $resultado = mysqli_query($conexao, $sql);
     <link rel="stylesheet" href="assets/css/listar.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
