@@ -21,8 +21,8 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
-    <title>Cadastro de Categoria</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Cadastro de Categoria</title>
 </head>
 
 <body>
