@@ -205,7 +205,7 @@ nav a:hover::after {
 .sidebar nav ul li .dropdown li a {
     display: block;
     padding: 6px 8px;
-    color: inherit;
+    color: #555;
     text-decoration: none;
     font-size: .95em;
 }
