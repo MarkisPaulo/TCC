@@ -25,22 +25,22 @@ require_once("verificaautenticacao.php");
                     <li class="has-dropdown">
                         <a href="#" class="dropdown-toggle"><i class="fas fa-edit"></i> <span>Cadastros</span><i class="fas fa-chevron-down caret"></i></a>
                         <ul class="dropdown">
-                            <li><a href="produto-cadastrar.php"><i class="fas fa-box"></i>Produto</a></li>
                             <li><a href="categoria-cadastrar.php"><i class="fas fa-thin fa-tags"></i>Categoria</a></li>
-                            <li><a href="marca-cadastrar.php"><i class="fas fa-thin fa-registered"></i>Marca</a></li>
-                            <li><a href="funcionario-cadastrar.php"><i class="fas fa-thin fa-user-tie"></i>Funcionário</a></li>
                             <li><a href="cliente-cadastrar.php"><i class="fas fa-thin fa-user"></i>Cliente</a></li>
+                            <li><a href="funcionario-cadastrar.php"><i class="fas fa-thin fa-user-tie"></i>Funcionário</a></li>
+                            <li><a href="marca-cadastrar.php"><i class="fas fa-thin fa-registered"></i>Marca</a></li>
+                            <li><a href="produto-cadastrar.php"><i class="fas fa-box"></i>Produto</a></li>
                         </ul>
                     </li>
 
                     <li class="has-dropdown">
                         <a href="#" class="dropdown-toggle"><i class="fas fa-list"></i> <span>Listagem</span><i class="fas fa-chevron-down caret"></i></a>
                         <ul class="dropdown">
-                            <li><a href="produto-listar.php"><i class="fas fa-box"></i>Produto</a></li>
                             <li><a href="categoria-listar.php"><i class="fas fa-thin fa-tags"></i>Categoria</a></li>
-                            <li><a href="marca-listar.php"><i class="fas fa-thin fa-registered"></i>Marca</a></li>
-                            <li><a href="funcionario-listar.php"><i class="fas fa-thin fa-user-tie"></i>Funcionário</a></li>
                             <li><a href="cliente-listar.php"><i class="fas fa-thin fa-user"></i>Cliente</a></li>
+                            <li><a href="funcionario-listar.php"><i class="fas fa-thin fa-user-tie"></i>Funcionário</a></li>
+                            <li><a href="marca-listar.php"><i class="fas fa-thin fa-registered"></i>Marca</a></li>
+                            <li><a href="produto-listar.php"><i class="fas fa-box"></i>Produto</a></li>
                         </ul>
                     </li>
 
