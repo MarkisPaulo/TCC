@@ -16,18 +16,17 @@ if (isset($_POST['salvar'])) {
     $tipoDeAcesso = $_POST['tipoDeAcesso'];
     $dtAdmissao = $_POST['dtAdmissao'];
     $senha = $_POST['senha'];
-    $campo = "";
     $dtDemissao = "";
     if ($_POST['dtDemissao'] != '') {
-        $campo = ", dtDemissao";
-        $dtDemissao = ", '" . $_POST['dtDemissao'] . "'";
+        $dtDemissao = ", dtDemissao = '" . $_POST['dtDemissao'] . "'";
     }
 
 
     $sql = " UPDATE funcionario SET nome = '$nome', email ='$email', senha ='$senha', telefone ='$telefone', cpf='$cpf', endereco='$endereco',
-    logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso',dtAdmissao ='$dtAdmissao' $campo = $dtDemissao WHERE codigo = " . $_GET['codigo'];
+    logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso', dtAdmissao ='$dtAdmissao' $dtDemissao WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
+    header("Location: funcionario-listar.php");
 }
 
 $sql = "SELECT * FROM funcionario WHERE codigo = " . $_GET['codigo'];
@@ -37,7 +36,7 @@ $linha = mysqli_fetch_array($resultado);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
