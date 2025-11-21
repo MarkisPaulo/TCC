@@ -12,6 +12,7 @@ if (isset($_POST['salvar'])) {
     $unidMeidida = $_POST['unidMedida'];
     $idMarca = $_POST['idMarca'];
     $idCategoria = $_POST['idCategoria'];
+    $status = $_POST['status'];
 
 
     $sql = "UPDATE produto SET nome = '$nome', status = '$status', precoUnitarioDaCompra = '$precoUnitarioDaCompra', precoUnitarioDaVenda = '$precoUnitarioDaVenda',
@@ -19,16 +20,17 @@ if (isset($_POST['salvar'])) {
     WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
+    header("Location: produto-listar.php");
 }
 
-$sql = "SELECT * FROM produto WHERE codigo = " . $_GET['id'];
+$sql = "SELECT * FROM produto WHERE codigo = " . $_GET['codigo'];
 $resultado = mysqli_query($conexao, $sql);
 $linha = mysqli_fetch_array($resultado);
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -70,6 +72,19 @@ $linha = mysqli_fetch_array($resultado);
                     <input name="precoUnitarioDaVenda" type="number" class="form-control" id="precoUnitarioDaVenda"
                         value="<?= $linha['precoUnitarioDaVenda'] ?>">
                 </div>
+                <div class="form-group">
+                    <label>Status*</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="status-ativo" name="status" value="1" <?= $linha['status'] == 1 ? 'checked' : '' ?>>
+                            <label for="status-ativo">Ativo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="status-inativo" name="status" value="0" <?= $linha['status'] == 0 ? 'checked' : '' ?>>
+                            <label for="status-inativo">Inativo</label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -81,7 +96,7 @@ $linha = mysqli_fetch_array($resultado);
                         $result = mysqli_query($conexao, $sql);
 
                         while ($row = mysqli_fetch_array($result)) { ?>
-                            <option value="<?= $row['codigo'] ?> <?= ($row['codigo']) == $linha['idCategoria'] ? 'selected' : '' ?>" ><?= $row['nome'] ?></option>
+                            <option value="<?= $row['codigo'] ?>" <?= ($row['codigo']) == $linha['idCategoria'] ? 'selected' : '' ?>><?= $row['nome'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -91,11 +106,11 @@ $linha = mysqli_fetch_array($resultado);
                     <select id="idMarca" name="idMarca" required>
                         <option value="">Selecione uma Marca</option>
                         <?php
-                        $sql = "SELECT * FROM marca ORDER BY nome";
+                        $sql = "SELECT * FROM marca ORDER BY codigo";
                         $result = mysqli_query($conexao, $sql);
 
                         while ($row = mysqli_fetch_array($result)) { ?>
-                            <option value="<?= $row['codigo'] ?> <?= ($row['codigo']) == $linha['idMarca'] ? 'selected' : '' ?>"><?= $row['nome'] ?></option>
+                            <option value="<?= $row['codigo'] ?>" <?= ($row['codigo']) == $linha['idMarca'] ? 'selected' : '' ?>><?= $row['nome'] ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -127,9 +142,9 @@ $linha = mysqli_fetch_array($resultado);
                     <label for="ncm" class="form-label">NCM</label>
                     <input name="ncm" type="number" class="form-control" id="ncm" value="<?= $linha['ncm'] ?>">
                 </div>
-                <div class="mb-3">
+                <div class="form-group">
                     <label for="cfop" class="form-label">CFOP</label>
-                    <input name="cfop" type="cfop" class="form-control" id="cfop" value="<?= $linha['cfop'] ?>">
+                    <input name="cfop" type="number" class="form-control" id="cfop" value="<?= $linha['cfop'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="quantEstoque" class="form-label">Quantidade em Estoque</label>
