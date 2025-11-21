@@ -80,7 +80,7 @@ $resultado = mysqli_query($conexao, $sql);
                         ?>
                     </td>
                     <td>
-                    <?php 
+                    <?php
                         $sqlM = "SELECT nome FROM marca WHERE codigo = " . $linha['idMarca'];
                         $resultM = mysqli_query($conexao, $sqlM);
                         $rowM = mysqli_fetch_array($resultM);
