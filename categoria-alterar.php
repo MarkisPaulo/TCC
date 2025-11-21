@@ -36,8 +36,8 @@ $linha = mysqli_fetch_array($resultado);
     <?php require_once("header.php"); ?>
     <div class="container">
         <div class="form-header">
-            <h1><i class="fas fa-thin fa-user"></i> Alteração de Marca</h1>
-            <p>Preencha os dados abaixo para alterar a marca</p>
+            <h1><i class="fas fa-thin fa-user"></i> Alteração de Categoria</h1>
+            <p>Preencha os dados abaixo para alterar a categoria</p>
         </div>
 
         <div class="info-box">
@@ -67,7 +67,7 @@ $linha = mysqli_fetch_array($resultado);
                 </div>
             </div>
             <div class="button-group">
-                <a type="button" class="btn btn-secondary" href="categoria-listar.php"><button type="button" class="btn btn-secondary">Voltar</button></a>
+                <a href="categoria-listar.php"><button type="button" class="btn btn-secondary">Cancelar</button></a>
                 <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
             </div>
         </form>

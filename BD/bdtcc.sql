@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21/11/2025 às 03:07
+-- Tempo de geração: 21/11/2025 às 16:10
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -44,7 +44,7 @@ INSERT INTO `categoria` (`codigo`, `status`, `nome`) VALUES
 (5, 1, 'Ferro '),
 (6, 1, 'Aço'),
 (7, 1, 'Pregos e Fixadores'),
-(8, 0, 'testeAllllll');
+(9, 0, 'teste 2');
 
 -- --------------------------------------------------------
 
@@ -72,9 +72,10 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`codigo`, `status`, `cpf`, `nome`, `logradouro`, `endereco`, `cep`, `bairro`, `cidade`, `uf`, `telefone`, `email`) VALUES
-(1, 1, '132456789', 'judite', 'sdafdsa', 'adfafads', '87400-000', 'asdfadsfa', 'Cruzeiro do Oeste', 'PR', '44444444444', 'asddf@gmail.com'),
+(1, 0, '132456789', 'judith', 'Av', 'Brasil n 889', '87400-000', 'centro', 'Cruzeiro do Oeste', 'PR', '4499598888', 'juh@gmail.com'),
 (2, 1, '987.332.354-22', 'Wanderlei Cordeiro de Jesus', 'Rua', 'Getúlio Vargas', '87400-000', 'Centro', 'Cruzeiro do Oeste', 'PR', '(44) 89899-8988', 'wando_72@gmail.com'),
-(3, 0, '11111111111', 'teste2', 'rua', 'Avenida Foz do Iguaçu 397', '87400-000', 'Sul Brasileiro 1', 'Cruzeiro do Oeste', 'PR', '(44) 99839-4465', 'markispaulo.atanasio3@gmail.com');
+(3, 0, '11111111111', 'teste2', 'rua', 'Avenida Foz do Iguaçu 397', '87400-000', 'Sul Brasileiro 1', 'Cruzeiro do Oeste', 'PR', '(44) 99839-4465', 'markispaulo.atanasio3@gmail.com'),
+(4, 1, '784.568.745-63', 'Leandro Coelho', 'Rua dos Papagaios', 'Rua dos Papagaios', '87075-260', 'Parque Hortência', 'Maringá', 'PR', '(44) 99982-6168', 'sargento@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -106,9 +107,10 @@ CREATE TABLE `funcionario` (
 --
 
 INSERT INTO `funcionario` (`codigo`, `status`, `cpf`, `nome`, `endereco`, `logradouro`, `telefone`, `cep`, `uf`, `bairro`, `cidade`, `email`, `tipoDeAcesso`, `dtAdmissao`, `dtDemissao`, `senha`) VALUES
-(1, 1, '132456789', 'user', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'user@gmail.com', 1, '2025-09-09', NULL, '1234'),
-(2, 1, '050.789.624-39', 'Penélope Agnes', 'Brasil n° 89', 'Avenida', '(44) 99918-0176', '87540-000', 'PR', 'jardim do gregos', 'Pérola', 'agnes_pe@gmail.com', 0, '2025-11-06', NULL, '963852'),
-(3, 1, '150.715.699-57', 'teste', 'Avenida Foz do Iguaçu 397', 'rua', '(44) 99839-4465', '87400-000', 'PR', 'Sul Brasileiro 1', 'Cruzeiro do Oeste', 'markispaulo.atanasio3@gmail.com', 1, '2025-11-20', NULL, '1234444');
+(1, 1, '132456789', 'user', 'adfafads', 'sdafdsa', '44444444444', '87400-000', 'PR', 'asdfadsfa', 'Cruzeiro do Oeste', 'user@gmail.com', 1, '2025-09-09', '2025-11-21', '1234'),
+(2, 0, '050.789.624-39', 'Penélope Agnes', 'Brasil n° 89', 'Avenida', '(44) 99918-0176', '87540-000', 'PR', 'jardim do gregos', 'Pérola', 'agnes_pe@gmail.com', 0, '2025-11-06', '2025-11-21', '963852'),
+(3, 1, '150.715.679-57', 'Marquessss', 'Avenida Foz do Iguaçu 397', 'rua', '(44) 99839-4466', '87400-000', 'PR', 'Sul Brasileiro 1', 'Cruzeiro do Oeste', 'markispaulo.atanasio3@gmail.com', 0, '2025-11-20', NULL, '1234444'),
+(4, 1, '070.956.982-45', ' Dirce Gomes', 'Rua Coronel Armando Mendes', 'Rua Coronel Armando Mendes', '(44) 99999-9999', '49048-060', 'SE', 'Luzia', 'Aracaju', 'dirce321@hotmail.com', 1, '2025-11-21', NULL, '741258');
 
 -- --------------------------------------------------------
 
@@ -131,7 +133,8 @@ INSERT INTO `marca` (`codigo`, `status`, `nome`) VALUES
 (2, 1, 'Makita'),
 (3, 1, 'Votoran'),
 (4, 1, 'Gerdau'),
-(5, 0, 'Blukit1');
+(5, 0, 'Blukit1'),
+(6, 0, 'testinho');
 
 -- --------------------------------------------------------
 
@@ -158,9 +161,9 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`, `idMarca`, `idCategoria`, `unidMedida`) VALUES
-(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 50, '72142000', '5102', 4, 5, ''),
+(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 51, '72142000', '5102', 4, 5, 'UNID'),
 (2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102', 2, 4, ''),
-(3, 1, 'teste', 10.00, 15.00, 50, '000000001', '0000000001', 1, 6, 'JOGO');
+(4, 1, 'Abraçadeira de nylon ', 0.40, 1.50, 200, '39269090', '5102', 6, 9, 'UNID');
 
 -- --------------------------------------------------------
 
@@ -258,31 +261,31 @@ ALTER TABLE `vendas`
 -- AUTO_INCREMENT de tabela `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `marca`
 --
 ALTER TABLE `marca`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `recebimentos`
