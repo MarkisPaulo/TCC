@@ -15,7 +15,7 @@ if (isset($_POST['salvar'])) {
     $email = $_POST['email'];
     $status = $_POST['status'];
 
-    $sql = "UPDATE cliente SET nome = '$nome', status ='$status' cpf = '$cpf', telefone = '$telefone', logradouro = '$logradouro', endereco = '$endereco', cidade = '$cidade', cep = '$cep',uf = '$uf', bairro = '$bairro', email = '$email' 
+    $sql = "UPDATE cliente SET nome = '$nome', status ='$status', cpf = '$cpf', telefone = '$telefone', logradouro = '$logradouro', endereco = '$endereco', cidade = '$cidade', cep = '$cep',uf = '$uf', bairro = '$bairro', email = '$email' 
     WHERE codigo = " . $_GET['codigo'];
 
     mysqli_query($conexao, $sql);
