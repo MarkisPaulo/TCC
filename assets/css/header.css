@@ -116,6 +116,11 @@ nav a span {
     width: 0;
 }
 
+.sidebar.collapsed.has-dropdown nav a span {
+    opacity: 0;
+    width: 0;
+}
+
 /* Efeito after sublinhado */
 nav a::after {
     content: '';
@@ -212,6 +217,10 @@ nav a:hover::after {
 
 /* opcional: hover */
 .sidebar nav ul li .dropdown li a:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.sidebar nav ul li:hover>a {
     background: rgba(0, 0, 0, 0.06);
 }
 
