@@ -19,7 +19,7 @@ $linha = mysqli_fetch_array($resultado);
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -67,8 +67,8 @@ $linha = mysqli_fetch_array($resultado);
                 </div>
             </div>
             <div class="button-group">
+                <a type="button" class="btn btn-secondary" href="categoria-listar.php"><button type="button" class="btn btn-secondary">Voltar</button></a>
                 <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
-                <a type="button" class="btn btn-secondary" href="categoria-listar.php">Voltar</a>
             </div>
         </form>
     </div>

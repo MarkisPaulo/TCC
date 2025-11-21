@@ -19,7 +19,7 @@ $linha = mysqli_fetch_array($resultado);
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -53,7 +53,6 @@ $linha = mysqli_fetch_array($resultado);
             </div>
 
           <div class="form-row">
-
                 <div class="form-group">
                     <label>Status*</label>
                     <div class="radio-group">
@@ -70,8 +69,8 @@ $linha = mysqli_fetch_array($resultado);
             </div>
 
             <div class="button-group">
+                <a href="marca-listar.php"><button type="button" class="btn btn-secondary">Voltar</button></a>
                 <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
-                <a type="button" class="btn btn-secondary" href="marca-listar.php">Voltar</a>
             </div>
         </form>
 
