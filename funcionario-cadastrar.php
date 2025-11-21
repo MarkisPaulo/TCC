@@ -13,7 +13,7 @@ if (isset($_POST['cadastrar'])) {
     $bairro = $_POST['bairro'];
     $cidade = $_POST['cidade'];
     $uf = $_POST['uf'];
-    $tipoDeAcesso = $_POST['acess'];
+    $tipoDeAcesso = $_POST['tipoDeAcesso'];
     $dtAdmissao = $_POST['dtAdmissao'];
     $senha = $_POST['senha'];
 
@@ -158,11 +158,11 @@ if (isset($_POST['cadastrar'])) {
                     <label>Tipo de Acesso*</label>
                     <div class="radio-group">
                         <div class="radio-option">
-                            <input type="radio" id="acess" name="acess" value="1" checked>
+                            <input type="radio" id="acess" name="tipoDeAcesso" value="1" checked>
                             <label for="acess">Funcionário</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="acess" name="acess" value="0">
+                            <input type="radio" id="acess" name="tipoDeAcesso" value="0">
                             <label for="acess">Gerente</label>
                         </div>
                     </div>
