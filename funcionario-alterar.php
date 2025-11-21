@@ -17,13 +17,15 @@ if (isset($_POST['salvar'])) {
     $dtAdmissao = $_POST['dtAdmissao'];
     $senha = $_POST['senha'];
     $dtDemissao = "";
+    $status = "";
     if ($_POST['dtDemissao'] != '') {
         $dtDemissao = ", dtDemissao = '" . $_POST['dtDemissao'] . "'";
+        $status = ", status = '" . 0 . "',";
     }
 
 
     $sql = " UPDATE funcionario SET nome = '$nome', email ='$email', senha ='$senha', telefone ='$telefone', cpf='$cpf', endereco='$endereco',
-    logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso', dtAdmissao ='$dtAdmissao' $dtDemissao WHERE codigo = " . $_GET['codigo'];
+    logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso', dtAdmissao ='$dtAdmissao' $status $dtDemissao WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
     header("Location: funcionario-listar.php");
