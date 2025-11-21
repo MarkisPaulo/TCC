@@ -14,29 +14,25 @@
             background-color: var(--cinza-claro);
             color: #333;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
         
         .container {
             max-width: 1600px;
             margin: 0 auto;
             padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .containerFun {
             max-width: 1700px;
             margin: 0 auto;
             padding: 20px;
-        }
-        
-        header {
-            background-color: var(--azul-principal);
-            color: var(--branco);
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        } 
         
         .logo {
             font-size: 28px;
