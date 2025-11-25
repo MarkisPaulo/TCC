@@ -51,9 +51,7 @@ function initializeMasks() {
     });
 
     // Remove classes quando ganha foco
-    input.addEventListener("focus", function () {
-      this.classList.remove("campo-invalido");
-    });
+    
   });
 }
 
@@ -81,11 +79,11 @@ function aplicarMascara(input, valorNumerico) {
         input.value =
           valorNumerico.length <= 10
             ? valorNumerico
-                .replace(/(\d{2})(\d)/, "($1) $2")
-                .replace(/(\d{4})(\d{1,4})$/, "$1-$2")
+              .replace(/(\d{2})(\d)/, "($1) $2")
+              .replace(/(\d{4})(\d{1,4})$/, "$1-$2")
             : valorNumerico
-                .replace(/(\d{2})(\d)/, "($1) $2")
-                .replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+              .replace(/(\d{2})(\d)/, "($1) $2")
+              .replace(/(\d{5})(\d{1,4})$/, "$1-$2");
       }
       break;
 
@@ -113,6 +111,33 @@ function aplicarMascara(input, valorNumerico) {
       }
       break;
 
+    case "ncm":
+      if (valorNumerico.length <= 8) {
+        // Formato: 0000.00.00
+        let valorFormatado = valorNumerico;
+
+        if (valorNumerico.length > 4) {
+          valorFormatado = valorNumerico.replace(/(\d{4})(\d)/, "$1.$2");
+        }
+        if (valorNumerico.length > 6) {
+          valorFormatado = valorFormatado.replace(/(\d{4}\.\d{2})(\d)/, "$1.$2");
+        }
+
+        input.value = valorFormatado;
+      }
+      break;
+
+    case "numerico":
+      // Campo apenas numérico - sem formatação, apenas validação
+      input.value = valorNumerico;
+
+      // Feedback visual opcional
+      if (valorNumerico.length > 0 ) {
+        input.classList.add('campo-valido');
+      } else {
+        input.classList.remove('campo-valido');
+      }
+      break;
     default:
       // Para tipos desconhecidos, apenas mantém os números
       input.value = valorNumerico;
@@ -137,7 +162,7 @@ function validarFormulario(formId) {
       switch (tipo) {
         case "cpf-cnpj":
           campoValido =
-            valorNumerico.length === 11 || valorNumerico.length === 14;
+            valorNumerico.length === 11 || valorNumerico.length === 14 && valorNumerico.length > 13;
           break;
         case "tel":
           campoValido = valorNumerico.length >= 10;
@@ -151,12 +176,19 @@ function validarFormulario(formId) {
         case "valor":
           campoValido = valorNumerico.length > 0;
           break;
+        case "ncm":
+          campoValido = valorNumerico.length === 8;
+          break;
+        case "numerico":
+          campoValido = valorNumerico.length > 0;
+          break;
         default:
           campoValido = valorNumerico.length > 0;
       }
 
       if (!campoValido && campo.value !== "") {
         campo.classList.add("campo-invalido");
+        campo.classList.remove("campo-valido");
         formularioValido = false;
         camposInvalidos.push(campo);
       }
@@ -174,6 +206,7 @@ function validarFormulario(formId) {
         });
       }
 
+      console.log("a");
       alert("Por favor, verifique os campos destacados em vermelho.");
     }
   });
