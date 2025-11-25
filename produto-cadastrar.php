@@ -30,6 +30,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/masks.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Cadastro de Produto</title>
 </head>
@@ -55,12 +56,12 @@ if (isset($_POST['cadastrar'])) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="precoUnitarioDaCompra">Preço Unitário da Compra*</label>
-                    <input type="text" id="precoUnitarioDaCompra" name="precoUnitarioDaCompra" placeholder="R$ 0,00" required>
+                    <input type="text" id="precoUnitarioDaCompra" name="precoUnitarioDaCompra" data-mask="valor" placeholder="R$ 0,00" required>
                 </div>
 
                 <div class="form-group">
                     <label for="precoUnitarioDaVenda">Preço Unitário da Venda*</label>
-                    <input type="text" id="precoUnitarioDaVenda" name="precoUnitarioDaVenda" placeholder="R$ 0,00" required>
+                    <input type="text" id="precoUnitarioDaVenda" name="precoUnitarioDaVenda" data-mask="valor" placeholder="R$ 0,00" required>
                 </div>
             </div>
 
@@ -136,53 +137,6 @@ if (isset($_POST['cadastrar'])) {
             </div>
         </form>
     </div>
+    <script src="assets/js/masks.js"></script>
 </body>
-
-
-
-<script>
-    (function(){
-        function formatCurrency(value){
-            const digits = String(value).replace(/\D/g,'')
-            const n = parseInt(digits || '0', 10)
-            return (n/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-        }
-
-        function unformatToNumber(value){
-            const digits = String(value).replace(/\D/g,'')
-            const n = parseInt(digits || '0', 10)
-            return (n/100).toFixed(2)
-        }
-
-        function attachFormatting(id){
-            const el = document.getElementById(id)
-            if(!el) return
-            el.addEventListener('input', function(e){
-                const cursorPos = el.selectionStart
-                const old = el.value
-                el.value = formatCurrency(old)
-                // move cursor to end (safer que tentar restaurar complexo)
-                el.setSelectionRange(el.value.length, el.value.length)
-            })
-            el.addEventListener('blur', function(){
-                if(el.value.trim() === '') return
-                el.value = formatCurrency(el.value)
-            })
-        }
-
-        attachFormatting('precoUnitarioDaCompra')
-        attachFormatting('precoUnitarioDaVenda')
-
-        // Antes de submeter, normaliza para número com ponto (ex: 1234.56)
-        const form = document.querySelector('form')
-        if(form){
-            form.addEventListener('submit', function(){
-                const pc = document.getElementById('precoUnitarioDaCompra')
-                const pv = document.getElementById('precoUnitarioDaVenda')
-                if(pc && pc.value !== '') pc.value = unformatToNumber(pc.value)
-                if(pv && pv.value !== '') pv.value = unformatToNumber(pv.value)
-            })
-        }
-    })();
-    </script>
 </html>

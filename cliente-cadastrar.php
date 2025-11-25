@@ -3,7 +3,7 @@ require_once("conexao.php");
 require_once("verificaautenticacao.php");
 if (isset($_POST['cadastrar'])) {
 
-    $cpf = $_POST['cpf'];
+    $cpf_cnpj = $_POST['cpf_cnpj'];
     $nome = $_POST['nome'];
     $telefone = $_POST['telefone'];
     $endereco = $_POST['endereco'];
@@ -15,7 +15,7 @@ if (isset($_POST['cadastrar'])) {
     $email = $_POST['email'];
 
 
-    $sql = "INSERT INTO cliente (nome, cpf, telefone, endereco, logradouro, cep, bairro, cidade, uf, email) VALUES('$nome', '$cpf', '$telefone', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$email')";
+    $sql = "INSERT INTO cliente (nome, cpf_cnpj, telefone, endereco, logradouro, cep, bairro, cidade, uf, email) VALUES('$nome', '$cpf_cnpj', '$telefone', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$email')";
 
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -33,6 +33,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/masks.css">
 </head>
 
 <script>
@@ -61,63 +62,6 @@ if (isset($_POST['cadastrar'])) {
             e.target.value = formatCEP(e.target.value);
         });
 
-        // CPF
-        const cpfInput = document.getElementById('cpf');
-
-        function formatCPF(value) {
-            const v = value.replace(/\D/g, '').slice(0, 11);
-            return v
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        }
-
-        cpfInput.addEventListener('input', function (e) {
-            const cursorPos = e.target.selectionStart;
-            const oldValue = e.target.value;
-            e.target.value = formatCPF(oldValue);
-            const diff = e.target.value.length - oldValue.length;
-            const newPos = Math.max(0, cursorPos + diff);
-            e.target.setSelectionRange(newPos, newPos);
-        });
-
-        cpfInput.addEventListener('blur', function () {
-            const raw = cpfInput.value.replace(/\D/g, '');
-            if (raw && raw.length !== 11) {
-                cpfInput.value = formatCPF(raw);
-            }
-        });
-
-        // Formatação para telefone: (00) 00000-0000 ou (00) 0000-0000
-        const telefoneInput = document.getElementById('telefone');
-
-        function formatTelefone(value) {
-            const v = value.replace(/\D/g, '').slice(0, 11);
-            if (v.length <= 10) {
-                // formato antigo sem 9º dígito
-                return v
-                    .replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
-                    .replace(/-$/, '');
-            }
-            // formato com 9º dígito
-            return v
-                .replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3')
-                .replace(/-$/, '');
-        }
-
-        telefoneInput.addEventListener('input', function (e) {
-            const cursorPos = e.target.selectionStart;
-            const oldValue = e.target.value;
-            e.target.value = formatTelefone(oldValue);
-            const diff = e.target.value.length - oldValue.length;
-            const newPos = Math.max(0, cursorPos + diff);
-            e.target.setSelectionRange(newPos, newPos);
-        });
-
-        telefoneInput.addEventListener('blur', function () {
-            const raw = telefoneInput.value.replace(/\D/g, '');
-            if (raw) telefoneInput.value = formatTelefone(raw);
-        });
 
         cepInput.addEventListener('blur', function () {
             const cep = cepInput.value.replace(/\D/g, '');
@@ -183,8 +127,8 @@ if (isset($_POST['cadastrar'])) {
             </div>
 
             <div class="form-group">
-                <label for="cpf">CPF*</label>
-                <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required>
+                <label for="cpf_cnpj">CPF/CNPJ*</label>
+                <input type="text" name="cpf_cnpj" id="cpf-cnpj" data-mask="cpf-cnpj" placeholder="000.000.000-00  00.000.000/0000-00" maxlength="18" required>
             </div>
 
 
@@ -192,7 +136,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="cep">CEP*</label>
-                    <input type="text" name="cep" id="cep" placeholder="00000-000" required>
+                    <input type="text" name="cep" id="cep" data-mask="cep" placeholder="00000-000" maxlength="9" required>
                 </div>
 
                 <div class="form-group">
@@ -262,7 +206,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="telefone">Telefone*</label>
-                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" required>
+                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" data-mask="tel" maxlength="15" required>
                 </div>
             </div>
 
@@ -272,6 +216,7 @@ if (isset($_POST['cadastrar'])) {
             </div>
         </form>
     </div>
+    <script src="assets/js/masks.js"></script>
 </body>
 
 </html>

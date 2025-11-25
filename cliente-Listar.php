@@ -52,7 +52,7 @@ $resultado = mysqli_query($conexao, $sql);
                     <th scope="col">Código</th>
                     <th scope="col">Status</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">CPF</th>
+                    <th scope="col">CPF/CNPJ</th>
                     <th scope="col">Telefone</th>
                     <th scope="col">Endereço</th>
                     <th scope="col">Logradouro</th>
@@ -69,7 +69,7 @@ $resultado = mysqli_query($conexao, $sql);
                         <td><?= $linha['codigo'] ?></td>
                         <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo'?></td>
                         <td><?= $linha['nome'] ?></td>
-                        <td><?= $linha['cpf'] ?></td>
+                        <td><?= $linha['cpf_cnpj'] ?></td>
                         <td><?= $linha['telefone'] ?></td>
                         <td><?= $linha['endereco'] ?></td>
                         <td><?= $linha['logradouro'] ?></td>

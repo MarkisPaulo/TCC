@@ -1,0 +1,40 @@
+/* styles.css - LEVE E EFICIENTE */
+.campo-numerico {
+    padding: 10px 12px;
+    border: 2px solid #e1e5e9;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.campo-numerico:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.campo-invalido {
+    border-color: #dc3545 !important;
+    background-color: #fff5f5;
+    animation: tremor 0.3s ease-in-out;
+}
+
+.campo-valido {
+    border-color: #28a745 !important;
+    background-color: #f8fff9;
+}
+
+@keyframes tremor {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+/* Placeholder styling */
+.campo-numerico::placeholder {
+    color: #6c757d;
+    opacity: 0.7;
+}

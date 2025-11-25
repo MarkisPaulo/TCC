@@ -44,6 +44,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/masks.css">
 </head>
 
 <body>
@@ -58,7 +59,7 @@ if (isset($_POST['cadastrar'])) {
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form method="post">
+        <form method="POST">
 
             <div class="form-group">
                 <label for="nome">Nome Completo*</label>
@@ -68,11 +69,11 @@ if (isset($_POST['cadastrar'])) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="cpf">CPF*</label>
-                    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" required>
+                    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" data-mask="cpf-cnpj" maxlength="14" required>
                 </div>
                 <div class="form-group">
                     <label for="telefone">Telefone*</label>
-                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" required>
+                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000" data-mask="tel" maxlength="15" required>
                 </div>
             </div>
 
@@ -92,7 +93,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="cep">CEP*</label>
-                    <input type="text" name="cep" id="cep" placeholder="00000-000" required>
+                    <input type="text" name="cep" id="cep" placeholder="00000-000" data-mask="cep" maxlength="9" required>
                 </div>
 
                 <div class="form-group">
@@ -170,12 +171,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="dtAdmissao">Data de Admissão*</label>
-                    <input type="date" name="dtAdmissao" id="dtAdmissao" placeholder="00/00/0000" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="dtDemissao">Data de Demissão</label>
-                    <input type="date" name="dtDemissao" id="dtDemissao" placeholder="00/00/0000" >
+                    <input type="date" name="dtAdmissao" id="dtAdmissao" placeholder="00/00/0000" data-mask="data" maxlength="10" required>
                 </div>
             </div>
             <div class="button-group">
@@ -211,64 +207,7 @@ if (isset($_POST['cadastrar'])) {
             e.target.value = formatCEP(e.target.value);
         });
 
-        // CPF
-        const cpfInput = document.getElementById('cpf');
-
-        function formatCPF(value) {
-            const v = value.replace(/\D/g, '').slice(0, 11);
-            return v
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d)/, '$1.$2')
-                .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-        }
-
-        cpfInput.addEventListener('input', function (e) {
-            const cursorPos = e.target.selectionStart;
-            const oldValue = e.target.value;
-            e.target.value = formatCPF(oldValue);
-            const diff = e.target.value.length - oldValue.length;
-            const newPos = Math.max(0, cursorPos + diff);
-            e.target.setSelectionRange(newPos, newPos);
-        });
-
-        cpfInput.addEventListener('blur', function () {
-            const raw = cpfInput.value.replace(/\D/g, '');
-            if (raw && raw.length !== 11) {
-                cpfInput.value = formatCPF(raw);
-            }
-        });
-
-        // Formatação para telefone: (00) 00000-0000 ou (00) 0000-0000
-        const telefoneInput = document.getElementById('telefone');
-
-        function formatTelefone(value) {
-            const v = value.replace(/\D/g, '').slice(0, 11);
-            if (v.length <= 10) {
-                // formato antigo sem 9º dígito
-                return v
-                    .replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
-                    .replace(/-$/, '');
-            }
-            // formato com 9º dígito
-            return v
-                .replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3')
-                .replace(/-$/, '');
-        }
-
-        telefoneInput.addEventListener('input', function (e) {
-            const cursorPos = e.target.selectionStart;
-            const oldValue = e.target.value;
-            e.target.value = formatTelefone(oldValue);
-            const diff = e.target.value.length - oldValue.length;
-            const newPos = Math.max(0, cursorPos + diff);
-            e.target.setSelectionRange(newPos, newPos);
-        });
-
-        telefoneInput.addEventListener('blur', function () {
-            const raw = telefoneInput.value.replace(/\D/g, '');
-            if (raw) telefoneInput.value = formatTelefone(raw);
-        });
-
+        
         cepInput.addEventListener('blur', function () {
             const cep = cepInput.value.replace(/\D/g, '');
             if (cep.length !== 8) {
@@ -312,7 +251,7 @@ if (isset($_POST['cadastrar'])) {
         });
     });
     </script>
-
+<script src="assets/js/masks.js"></script>
 </body>
 
 
