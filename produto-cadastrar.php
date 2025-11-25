@@ -47,7 +47,7 @@ if (isset($_POST['cadastrar'])) {
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form method="POST">
+        <form method="POST"  id="form" data-validate>
 
             <div class="form-group">
                 <label for="nome">Nome do Produto*</label>
@@ -119,15 +119,15 @@ if (isset($_POST['cadastrar'])) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="ncm">NCM*</label>
-                    <input type="number" name="ncm" id="product-ncm" placeholder="Nomenclatura Comum do Mercosul" required>
+                    <input type="text" name="ncm" id="product-ncm" data-mask="ncm" maxlength="10" placeholder="Nomenclatura Comum do Mercosul" required>
                 </div>
                 <div class="form-group">
                     <label for="cfop">CFOP*</label>
-                    <input type="number" name="cfop" id="cfop" placeholder="Código Fiscal de Operações e Prestações" required>
+                    <input type="text" name="cfop" id="cfop" data-mask="numerico" maxlength="4" placeholder="Código Fiscal de Operações e Prestações" required>
                 </div>
                 <div class="form-group">
                     <label for="quantEstoque">Quantidade em Estoque*</label>
-                    <input type="number" id="quantEstoque" name="quantEstoque" placeholder="Quantidade disponível" min="1" required>
+                    <input type="text" id="quantEstoque" name="quantEstoque" data-mask="numerico" maxlength="11" placeholder="Quantidade disponível" min="1" required>
                 </div>
             </div>
 
