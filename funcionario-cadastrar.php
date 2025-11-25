@@ -17,15 +17,8 @@ if (isset($_POST['cadastrar'])) {
     $dtAdmissao = $_POST['dtAdmissao'];
     $senha = $_POST['senha'];
 
-    $campo = "";
-    $dtDemissao = "";
-    if ($_POST['dtDemissao'] != '') {
-        $campo = ", dtDemissao";
-        $dtDemissao = ", '" . $_POST['dtDemissao'] . "'";
-    }
-
-    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso, dtAdmissao $campo)
-    VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao' $dtDemissao)";
+    $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso)
+    VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao')";
     
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
@@ -59,7 +52,7 @@ if (isset($_POST['cadastrar'])) {
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form method="POST">
+        <form method="POST"  id="form" data-validate>
 
             <div class="form-group">
                 <label for="nome">Nome Completo*</label>
@@ -171,7 +164,7 @@ if (isset($_POST['cadastrar'])) {
 
                 <div class="form-group">
                     <label for="dtAdmissao">Data de Admissão*</label>
-                    <input type="date" name="dtAdmissao" id="dtAdmissao" placeholder="00/00/0000" data-mask="data" maxlength="10" required>
+                    <input type="text" name="dtAdmissao" id="dtAdmissao" placeholder="00/00/0000" data-mask="data" maxlength="10" >
                 </div>
             </div>
             <div class="button-group">
