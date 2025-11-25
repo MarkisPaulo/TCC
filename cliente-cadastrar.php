@@ -119,7 +119,7 @@ if (isset($_POST['cadastrar'])) {
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form method="post">
+        <form  method="POST" id="form" data-validate>
 
             <div class="form-group">
                 <label for="nome">Nome Completo*</label>
@@ -128,7 +128,7 @@ if (isset($_POST['cadastrar'])) {
 
             <div class="form-group">
                 <label for="cpf_cnpj">CPF/CNPJ*</label>
-                <input type="text" name="cpf_cnpj" id="cpf-cnpj" data-mask="cpf-cnpj" placeholder="000.000.000-00  00.000.000/0000-00" maxlength="18" required>
+                <input type="text" name="cpf_cnpj" id="cpf-cnpj" data-mask="cpf-cnpj" placeholder="000.000.000-00  00.000.000/0000-00" maxlength="18" minlength="14" required>
             </div>
 
 
