@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 21/11/2025 às 16:10
+-- Tempo de geração: 25/11/2025 às 14:05
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -43,8 +43,7 @@ INSERT INTO `categoria` (`codigo`, `status`, `nome`) VALUES
 (4, 1, 'Ferramentas'),
 (5, 1, 'Ferro '),
 (6, 1, 'Aço'),
-(7, 1, 'Pregos e Fixadores'),
-(9, 0, 'teste 2');
+(7, 1, 'Pregos e Fixadores');
 
 -- --------------------------------------------------------
 
@@ -55,7 +54,7 @@ INSERT INTO `categoria` (`codigo`, `status`, `nome`) VALUES
 CREATE TABLE `cliente` (
   `codigo` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `cpf` varchar(20) NOT NULL,
+  `cpf_cnpj` varchar(20) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `logradouro` varchar(45) NOT NULL,
   `endereco` varchar(100) NOT NULL,
@@ -71,7 +70,7 @@ CREATE TABLE `cliente` (
 -- Despejando dados para a tabela `cliente`
 --
 
-INSERT INTO `cliente` (`codigo`, `status`, `cpf`, `nome`, `logradouro`, `endereco`, `cep`, `bairro`, `cidade`, `uf`, `telefone`, `email`) VALUES
+INSERT INTO `cliente` (`codigo`, `status`, `cpf_cnpj`, `nome`, `logradouro`, `endereco`, `cep`, `bairro`, `cidade`, `uf`, `telefone`, `email`) VALUES
 (1, 0, '132456789', 'judith', 'Av', 'Brasil n 889', '87400-000', 'centro', 'Cruzeiro do Oeste', 'PR', '4499598888', 'juh@gmail.com'),
 (2, 1, '987.332.354-22', 'Wanderlei Cordeiro de Jesus', 'Rua', 'Getúlio Vargas', '87400-000', 'Centro', 'Cruzeiro do Oeste', 'PR', '(44) 89899-8988', 'wando_72@gmail.com'),
 (3, 0, '11111111111', 'teste2', 'rua', 'Avenida Foz do Iguaçu 397', '87400-000', 'Sul Brasileiro 1', 'Cruzeiro do Oeste', 'PR', '(44) 99839-4465', 'markispaulo.atanasio3@gmail.com'),
@@ -162,8 +161,7 @@ CREATE TABLE `produto` (
 
 INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`, `idMarca`, `idCategoria`, `unidMedida`) VALUES
 (1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 51, '72142000', '5102', 4, 5, 'UNID'),
-(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102', 2, 4, ''),
-(4, 1, 'Abraçadeira de nylon ', 0.40, 1.50, 200, '39269090', '5102', 6, 9, 'UNID');
+(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102', 2, 4, '');
 
 -- --------------------------------------------------------
 
