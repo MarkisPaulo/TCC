@@ -126,7 +126,7 @@ $linha = mysqli_fetch_array($resultado);
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form method="POST">
+        <form method="POST"  id="form" data-validate>
 
             <div class="form-group">
                 <label for="nome">Nome Completo*</label>

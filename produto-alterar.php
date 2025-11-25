@@ -55,7 +55,7 @@ $linha = mysqli_fetch_array($resultado);
             <p><i class="fas fa-info-circle"></i> Campos marcados com * são obrigatórios</p>
         </div>
 
-        <form method="POST">
+        <form method="POST"  id="form" data-validate>
             <div class="form-group">
                 <label for="nome" class="form-label">Nome do Produto*</label>
                 <input name="nome" type="text" class="form-control" id="nome" value="<?= $linha['nome'] ?>" required>
