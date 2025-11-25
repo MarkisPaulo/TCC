@@ -20,8 +20,7 @@ require_once("verificaautenticacao.php");
             <nav>
                 <ul>
                     <li><a href="adm.php"><i class="fas fa-home"></i> <span>Home</span></a></li>
-                    <li><a href="#"><i class="fas fa-info-circle"></i> <span>About</span></a></li>
-
+                    
                     <li class="has-dropdown">
                         <a href="#" class="dropdown-toggle"><i class="fas fa-edit"></i> <span>Cadastros</span><i class="fas fa-chevron-down caret"></i></a>
                         <ul class="dropdown">
@@ -32,7 +31,7 @@ require_once("verificaautenticacao.php");
                             <li><a href="produto-cadastrar.php"><i class="fas fa-box"></i> <span>Produto</span></a></li>
                         </ul>
                     </li>
-
+                    
                     <li class="has-dropdown">
                         <a href="#" class="dropdown-toggle"><i class="fas fa-list"></i> <span>Listagem</span><i class="fas fa-chevron-down caret"></i></a>
                         <ul class="dropdown">
@@ -43,7 +42,7 @@ require_once("verificaautenticacao.php");
                             <li><a href="produto-listar.php"><i class="fas fa-box"></i> <span>Produto</span></a></li>
                         </ul>
                     </li>
-
+                    <li><a href="venda.php"><i class="fas fa-store"></i> <span>Venda</span></a></li>
                     <li><a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
                 </ul>
             </nav>

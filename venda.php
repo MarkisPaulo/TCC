@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDV - Sistema de Vendas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="assets/css/venda.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/reset.css">
@@ -77,8 +77,6 @@
                     <div class="price">R$ 35,00</div>
                     <div class="price">R$ 105,00</div>
                     <div class="product-actions">
-                        <button class="action-btn"><i class="fas fa-print"></i></button>
-                        <button class="action-btn"><i class="fas fa-edit"></i></button>
                         <button class="action-btn"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
