@@ -15,7 +15,7 @@ $resultado = mysqli_query($conexao, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listagem</title>
+    <title>Listagem de Funcionário</title>
 
     <script src="https://kit.fontawesome.com/836f33e838.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/listar.css">
