@@ -34,6 +34,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/masks.css">
+    <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 
 <script>

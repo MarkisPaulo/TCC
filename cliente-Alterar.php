@@ -41,6 +41,7 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 
 <script>

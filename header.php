@@ -11,8 +11,7 @@ require_once("verificaautenticacao.php");
             <!-- Logo com espaço para imagem -->
             <div class="logo-container">
                 <div class="logo-img-placeholder">
-                    <!-- SUA IMAGEM AQUI -->
-                    <!-- <img src="caminho/para/sua-imagem.png" alt="NEXUS Logo"> -->
+                   <a href="adm.php"><img src="assets/img/logoNexus.png" alt="NEXUS Logo"></a>
                 </div>
                 <div class="logo-text">NEXUS</div>
             </div>
