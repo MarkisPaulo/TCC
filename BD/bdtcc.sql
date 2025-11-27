@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 25/11/2025 às 14:05
+-- Tempo de geração: 27/11/2025 às 16:04
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -133,7 +133,8 @@ INSERT INTO `marca` (`codigo`, `status`, `nome`) VALUES
 (3, 1, 'Votoran'),
 (4, 1, 'Gerdau'),
 (5, 0, 'Blukit1'),
-(6, 0, 'testinho');
+(6, 0, 'testinho'),
+(7, 1, 'sei la');
 
 -- --------------------------------------------------------
 
@@ -161,7 +162,11 @@ CREATE TABLE `produto` (
 
 INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`, `idMarca`, `idCategoria`, `unidMedida`) VALUES
 (1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 51, '72142000', '5102', 4, 5, 'UNID'),
-(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102', 2, 4, '');
+(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102', 2, 4, ''),
+(5, 1, 'cimento', 20.00, 30.00, 100, '', '5102', 3, 1, 'UNID'),
+(6, 1, 'teste', 0.00, 0.00, 100, '2312.13.21', '5102', 6, 1, 'PC'),
+(7, 1, 'teste', 0.00, 0.00, 100, '2312.13.21', '5102', 7, 2, 'TON'),
+(8, 1, 'teste', 20.00, 30.00, 100, '2312.13.21', '5102', 4, 6, 'PC');
 
 -- --------------------------------------------------------
 
@@ -183,16 +188,29 @@ CREATE TABLE `recebimentos` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `vendahasproduto`
+--
+
+CREATE TABLE `vendahasproduto` (
+  `id` int(11) NOT NULL,
+  `FkNumeroDaVenda` int(11) NOT NULL,
+  `FkCodigoProduto` int(11) NOT NULL,
+  `quantidade` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `vendas`
 --
 
 CREATE TABLE `vendas` (
   `numeroDaVenda` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1,
-  `data/hora` datetime NOT NULL,
+  `data/hora` datetime NOT NULL DEFAULT current_timestamp(),
   `valorTotal` double NOT NULL,
   `formaDeRecebimento` varchar(45) NOT NULL,
-  `observacoes` varchar(100) NOT NULL,
+  `observacoes` varchar(100) DEFAULT NULL,
   `data/horaEntrega` datetime NOT NULL,
   `enderecoEntrega` varchar(100) NOT NULL,
   `statusEntrega` tinyint(1) NOT NULL,
@@ -244,6 +262,14 @@ ALTER TABLE `recebimentos`
   ADD KEY `FKidVenda` (`idVenda`);
 
 --
+-- Índices de tabela `vendahasproduto`
+--
+ALTER TABLE `vendahasproduto`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FkNumerodaVenda` (`FkNumeroDaVenda`),
+  ADD KEY `FkCodigoProduto` (`FkCodigoProduto`);
+
+--
 -- Índices de tabela `vendas`
 --
 ALTER TABLE `vendas`
@@ -277,19 +303,25 @@ ALTER TABLE `funcionario`
 -- AUTO_INCREMENT de tabela `marca`
 --
 ALTER TABLE `marca`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `recebimentos`
 --
 ALTER TABLE `recebimentos`
   MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `vendahasproduto`
+--
+ALTER TABLE `vendahasproduto`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `vendas`
@@ -313,6 +345,13 @@ ALTER TABLE `produto`
 --
 ALTER TABLE `recebimentos`
   ADD CONSTRAINT `FKidVenda` FOREIGN KEY (`idVenda`) REFERENCES `vendas` (`numeroDaVenda`);
+
+--
+-- Restrições para tabelas `vendahasproduto`
+--
+ALTER TABLE `vendahasproduto`
+  ADD CONSTRAINT `FkCodigoProduto` FOREIGN KEY (`FkCodigoProduto`) REFERENCES `produto` (`codigo`),
+  ADD CONSTRAINT `FkNumerodaVenda` FOREIGN KEY (`FkNumeroDaVenda`) REFERENCES `vendas` (`numeroDaVenda`);
 
 --
 -- Restrições para tabelas `vendas`
