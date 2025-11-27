@@ -7,6 +7,28 @@ $resultadoNum = mysqli_query($conexao, $sqlNum);
 $rowNum = mysqli_fetch_array($resultadoNum);
 $numeroDaVenda = ($rowNum['maxVenda'] ?? 0) + 1;
 
+// Busca produtos quando o formulário for enviado
+$produtosEncontrados = [];
+$textoBusca = '';
+
+if (isset($_GET['busca']) && !empty($_GET['busca'])) {
+    $textoBusca = $_GET['busca'];
+
+    // Versão simplificada (escapa a entrada)
+    $textoBuscaEscaped = mysqli_real_escape_string($conexao, $textoBusca);
+    $sql = "SELECT p.codigo, p.nome, p.precoUnitarioDaVenda, p.quantEstoque, m.nome as marca 
+            FROM produto p 
+            INNER JOIN marca m ON p.idMarca = m.codigo 
+            WHERE p.status = 1 
+            AND (p.nome LIKE '%$textoBuscaEscaped%' OR p.codigo LIKE '%$textoBuscaEscaped%')
+            LIMIT 10";
+    $resultado = mysqli_query($conexao, $sql);
+
+    while ($row = mysqli_fetch_assoc($resultado)) {
+        $produtosEncontrados[] = $row;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -40,13 +62,51 @@ $numeroDaVenda = ($rowNum['maxVenda'] ?? 0) + 1;
             </div>
 
             <div class="panel-content">
-
                 <div class="form-group">
                     <label>Buscar Produto</label>
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Digite o nome ou código do produto">
-                    </div>
+
+                    <!-- Formulário de busca -->
+                    <form method="GET" action="">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" name="busca" placeholder="Digite o nome ou código do produto"
+                                value="<?= htmlspecialchars($textoBusca) ?>" autofocus>
+                        </div>
+                    </form>
+
+                    <!-- Resultados da busca -->
+                    <?php if (!empty($textoBusca)): ?>
+                        <div class="search-results">
+                            <?php if (count($produtosEncontrados) > 0): ?>
+                                <?php foreach ($produtosEncontrados as $produto): ?>
+                                    <div class="result-item">
+                                        <h4><?= htmlspecialchars($produto['nome']) ?></h4>
+                                        <p>
+                                            Código: <?= $produto['codigo'] ?> |
+                                            <?= htmlspecialchars($produto['marca']) ?> |
+                                            Estoque: <?= $produto['quantEstoque'] ?>
+                                        </p>
+                                        <p class="result-price">
+                                            R$ <?= number_format($produto['precoUnitarioDaVenda'], 2, ',', '.') ?>
+                                        </p>
+
+                                        <!-- Botão para adicionar o produto -->
+                                        <form method="POST" action="adicionar_item.php" style="display: inline;">
+                                            <input type="hidden" name="codigo_produto" value="<?= $produto['codigo'] ?>">
+                                            <input type="hidden" name="numero_venda" value="<?= $numeroDaVenda ?>">
+                                            <button type="submit" class="btn-adicionar">
+                                                <i class="fas fa-plus"></i> Adicionar
+                                            </button>
+                                        </form>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="no-results">
+                                    Nenhum produto encontrado para "<?= htmlspecialchars($textoBusca) ?>"
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -105,26 +165,14 @@ $numeroDaVenda = ($rowNum['maxVenda'] ?? 0) + 1;
     </div>
 
     <script>
-        // Toggle das abas
+        // Apenas o toggle das abas (bem simples)
         document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
+            tab.addEventListener('click', function () {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
             });
         });
-
-        // Atualizar total dinamicamente
-        function atualizarTotal() {
-            let total = 0;
-            document.querySelectorAll('.product-item').forEach(item => {
-                const subtotal = parseFloat(item.querySelector('.price:nth-child(4)').textContent.replace('R$ ', '').replace(',', '.'));
-                total += subtotal;
-            });
-            document.querySelector('.total-value').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-        }
-
-        // Simular adição de produtos
-        document.addEventListener('DOMContentLoaded', atualizarTotal);
     </script>
 </body>
+
 </html>

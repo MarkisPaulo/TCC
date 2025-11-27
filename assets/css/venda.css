@@ -373,6 +373,73 @@
             color: var(--accent-color);
         }
 
+        /* Estilos para os resultados da busca */
+        .search-results {
+            margin-top: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .result-item:hover {
+            background: #f5f5f5;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .result-item p {
+            margin: 0;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .result-price {
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .btn-adicionar {
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-adicionar:hover {
+            background: #2980b9;
+        }
+
+        .no-results {
+            padding: 12px;
+            text-align: center;
+            color: #999;
+        }
+
+        .search-box input[type="text"] {
+            width: 100%;
+        }
+
         @media (max-width: 1200px) {
             .left-panel {
                 width: 300px;
