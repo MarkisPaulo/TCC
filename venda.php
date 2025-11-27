@@ -1,5 +1,17 @@
+<?php
+require_once("conexao.php");
+require_once("verificaautenticacao.php");
+
+$sqlNum = "SELECT MAX(numeroDaVenda) AS maxVenda FROM vendas";
+$resultadoNum = mysqli_query($conexao, $sqlNum);
+$rowNum = mysqli_fetch_array($resultadoNum);
+$numeroDaVenda = ($rowNum['maxVenda'] ?? 0) + 1;
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +22,15 @@
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
+
 <body>
-    <?php require_once("header.php");?>
+    <?php require_once("header.php"); ?>
     <div class="pdv-container">
         <!-- Painel Esquerdo -->
         <div class="left-panel">
             <div class="panel-header">
                 <h2>Sistema de Vendas</h2>
-                <p class="venda-numero">Venda - Pedido #348</p>
+                <p class="venda-numero">Venda - Pedido #<?= $numeroDaVenda ?></p>
             </div>
 
             <div class="tabs">
