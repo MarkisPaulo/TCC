@@ -4,18 +4,22 @@ require_once("verificaautenticacao.php");
 if (isset($_POST['cadastrar'])) {
 
     $nome = $_POST['nome'];
-    $precoUnitarioDaCompra = $_POST['precoUnitarioDaCompra'];
-    $precoUnitarioDaVenda = $_POST['precoUnitarioDaVenda'];
-    $quantEstoque = $_POST['quantEstoque'];
+    // Remove R$, espaços e converte vírgula em ponto
+    $precoCompraLimpo = preg_replace('/[^0-9,]/', '', $_POST['precoUnitarioDaCompra']);
+    $precoVendaLimpo = preg_replace('/[^0-9,]/', '', $_POST['precoUnitarioDaVenda']);
+
+    $precoUnitarioDaCompra = floatval(str_replace(',', '.', $precoCompraLimpo));
+    $precoUnitarioDaVenda = floatval(str_replace(',', '.', $precoVendaLimpo));
+
+    $quantEstoque = (int)$_POST['quantEstoque'];
     $ncm = $_POST['ncm'];
     $cfop = $_POST['cfop'];
     $unidMeidida = $_POST['unidMedida'];
-    $idMarca = $_POST['idMarca'];
-    $idCategoria = $_POST['idCategoria'];
+    $idMarca = (int)$_POST['idMarca'];
+    $idCategoria = (int)$_POST['idCategoria'];
 
     $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop, idMarca, idCategoria, unidMedida) 
-    VALUES('$nome', '$precoUnitarioDaVenda', '$precoUnitarioDaCompra', '$quantEstoque', '$ncm', '$cfop', '$idMarca', '$idCategoria', '$unidMeidida')";
-
+    VALUES('$nome', $precoUnitarioDaVenda, $precoUnitarioDaCompra, $quantEstoque, '$ncm', '$cfop', $idMarca, $idCategoria, '$unidMeidida')";
     mysqli_query($conexao, $sql);
     echo "Registro salvo com sucesso";
 }
