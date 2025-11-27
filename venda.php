@@ -4,7 +4,7 @@ require_once("verificaautenticacao.php");
 
 $sqlNum = "SELECT MAX(numeroDaVenda) AS maxVenda FROM vendas";
 $resultadoNum = mysqli_query($conexao, $sqlNum);
-$rowNum = mysqli_fetch_array($resultadoNum);
+$rowNum = mysqli_fetch_assoc($resultadoNum);
 $numeroDaVenda = ($rowNum['maxVenda'] ?? 0) + 1;
 
 // Busca produtos quando o formulário for enviado
@@ -14,7 +14,7 @@ $textoBusca = '';
 if (isset($_GET['busca']) && !empty($_GET['busca'])) {
     $textoBusca = $_GET['busca'];
 
-    // Versão simplificada (escapa a entrada)
+    // Versão simplificada (escapa a entrada) sem caractere especial
     $textoBuscaEscaped = mysqli_real_escape_string($conexao, $textoBusca);
     $sql = "SELECT p.codigo, p.nome, p.precoUnitarioDaVenda, p.quantEstoque, m.nome as marca 
             FROM produto p 
@@ -27,6 +27,22 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
     while ($row = mysqli_fetch_assoc($resultado)) {
         $produtosEncontrados[] = $row;
     }
+}
+$addProduto = [];
+$quantidade = 0;
+if (isset($_POST['addProduto'])) {
+    $codigoProduto = $_POST['codigoProduto'];
+    $sql = "SELECT p.codigo, p.nome, p.precoUnitarioDaVenda, p.quantEstoque, p.unidMedida, m.nome as marca 
+            FROM produto p 
+            INNER JOIN marca m ON p.idMarca = m.codigo 
+            WHERE p.status = 1 
+            AND p.codigo = '$codigoProduto'
+            LIMIT 1";
+    $resultado = mysqli_query($conexao, $sql);
+    while ($row = mysqli_fetch_assoc($resultado)) {
+        $addProduto[] = $row;
+    }
+    $quantidade = intval($_POST['quantidade']);
 }
 
 ?>
@@ -70,20 +86,20 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
                         <div class="search-box">
                             <i class="fas fa-search"></i>
                             <input type="text" name="busca" placeholder="Digite o nome ou código do produto"
-                                value="<?= htmlspecialchars($textoBusca) ?>" autofocus>
+                                value="<?= $textoBusca ?>" autofocus>
                         </div>
                     </form>
 
                     <!-- Resultados da busca -->
-                    <?php if (!empty($textoBusca)): ?>
+                    <?php if (!empty($textoBusca)) { ?>
                         <div class="search-results">
-                            <?php if (count($produtosEncontrados) > 0): ?>
-                                <?php foreach ($produtosEncontrados as $produto): ?>
+                            <?php if (count($produtosEncontrados) > 0) { ?>
+                                <?php foreach ($produtosEncontrados as $produto) { ?>
                                     <div class="result-item">
-                                        <h4><?= htmlspecialchars($produto['nome']) ?></h4>
-                                        <p>
+                                        <h4><?= $produto['nome'] ?></h4>
+                                        <p class="p">
                                             Código: <?= $produto['codigo'] ?> |
-                                            <?= htmlspecialchars($produto['marca']) ?> |
+                                            <?= $produto['marca'] ?> |
                                             Estoque: <?= $produto['quantEstoque'] ?>
                                         </p>
                                         <p class="result-price">
@@ -91,22 +107,26 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
                                         </p>
 
                                         <!-- Botão para adicionar o produto -->
-                                        <form method="POST" action="adicionar_item.php" style="display: inline;">
-                                            <input type="hidden" name="codigo_produto" value="<?= $produto['codigo'] ?>">
-                                            <input type="hidden" name="numero_venda" value="<?= $numeroDaVenda ?>">
-                                            <button type="submit" class="btn-adicionar">
-                                                <i class="fas fa-plus"></i> Adicionar
-                                            </button>
+                                        <form method="POST" style="display: inline;">
+                                            <input type="hidden" name="codigoProduto" value="<?= $produto['codigo'] ?>">
+                                            <input type="hidden" name="numeroDaVenda" value="<?= $numeroDaVenda ?>">
+                                            <div class="quantidade-group">
+                                                <label>Qtde:</label>
+                                                <input type="text" name="quantidade" data-mask="numerico" value="1" min="1" max="<?= $produto['quantEstoque'] ?>" maxlength="5" class="input-quantidade" required>
+                                                <button type="submit" name="addProduto" class="btn-adicionar">
+                                                    <i class="fas fa-plus"></i> Adicionar
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
+                                <?php } ?>
+                            <?php } else { ?>
                                 <div class="no-results">
-                                    Nenhum produto encontrado para "<?= htmlspecialchars($textoBusca) ?>"
+                                    Nenhum produto encontrado para "<?= $textoBusca ?>"
                                 </div>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
-                    <?php endif; ?>
+                    <?php } ?>
                 </div>
             </div>
 
@@ -133,7 +153,8 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
 
             <div class="products-header">
                 <div>Produto</div>
-                <div style="text-align: center;">Qtde.</div>
+                <div style="text-align: left;">Unid. Medida</div>
+                <div style="text-align: right;">Qtde.</div>
                 <div style="text-align: right;">Preço</div>
                 <div style="text-align: right;">Subtotal</div>
                 <div style="text-align: right;">Ações</div>
@@ -141,18 +162,21 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
 
             <div class="products-list">
                 <div class="product-item">
+                    <?php foreach ($addProduto as $produto) { ?>
                     <div class="product-info">
-                        <h4>Vergalhão 8mm CA50</h4>
-                        <p>Código: 001 | Gerdau</p>
+                        <h4><?= $produto['nome'] ?></h4>
+                        <p>Código: <?= $produto['codigo'] ?> | <?= $produto['marca'] ?></p>
                         <div class="product-toggle">
                         </div>
                     </div>
-                    <div class="quantity">3</div>
-                    <div class="price">R$ 35,00</div>
-                    <div class="price">R$ 105,00</div>
+                    <div class="unidMedida"><?= $produto['unidMedida'] ?></div>
+                    <div class="quantity"><?= $quantidade ?></div>
+                    <div class="price">R$ <?= number_format($produto['precoUnitarioDaVenda'], 2, ',', '.') ?></div>
+                    <div class="price">R$ <?= number_format($produto['precoUnitarioDaVenda'] * $quantidade, 2, ',', '.') ?></div>
                     <div class="product-actions">
                         <button class="action-btn"><i class="fas fa-trash"></i></button>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
 
@@ -163,7 +187,7 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
         </div>
 
     </div>
-
+    <script src="assets/js/masks.js"></script>
     <script>
         // Apenas o toggle das abas (bem simples)
         document.querySelectorAll('.tab').forEach(tab => {

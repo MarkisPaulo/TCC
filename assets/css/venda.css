@@ -23,7 +23,7 @@
 
         /* Painel Esquerdo */
         .left-panel {
-            width: 460px;
+            width: 420px;
             background: white;
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -90,8 +90,7 @@
 
         .form-group select,
         .form-group input {
-            width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 14px;
@@ -274,7 +273,7 @@
             padding: 15px 20px;
             border-bottom: 1px solid var(--border-color);
             display: grid;
-            grid-template-columns: 3fr 80px 100px 120px 100px;
+            grid-template-columns: 3fr 60px 60px 100px 120px 100px;
             gap: 15px;
             font-weight: 600;
             color: var(--accent-color);
@@ -292,8 +291,8 @@
             padding: 20px;
             border-bottom: 1px solid #f0f0f0;
             display: grid;
-            grid-template-columns: 3fr 80px 100px 120px 100px;
-            gap: 15px;
+            grid-template-columns: 2.5fr 80px 80px 100px 120px 100px;
+            gap: 10px;
             align-items: center;
             transition: background 0.2s;
         }
@@ -319,8 +318,14 @@
             gap: 8px;
         }
 
-        .quantity {
+        .unidMedida {
             text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .quantity {
+            text-align: right;
             font-weight: 600;
             font-size: 16px;
         }
@@ -379,7 +384,7 @@
             background: white;
             border: 1px solid #ddd;
             border-radius: 5px;
-            max-height: 600px;
+            max-height: 360px;
             overflow-y: auto;
         }
 
@@ -403,7 +408,7 @@
             font-size: 14px;
         }
 
-        .result-item p {
+        .result-item .p {
             margin: 0;
             color: #666;
             font-size: 12px;
@@ -411,8 +416,9 @@
 
         .result-price {
             color: #27ae60;
-            font-weight: bold;
+            font-weight: 750;
             margin-top: 5px;
+            text-align: right;
         }
 
         .btn-adicionar {
@@ -440,6 +446,63 @@
             width: 100%;
         }
 
+
+        .form-adicionar {
+            margin-top: 10px;
+        }
+
+        .quantidade-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .quantidade-group label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .input-quantidade {
+            width: 80px;
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .input-quantidade:focus {
+            outline: none;
+            border-color: #3d0ff9;
+            box-shadow: 0 0 0 3px rgba(61, 15, 249, 0.1);
+        }
+
+        .btn-adicionar {
+            flex: 1;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #3d0ff9, #7494ec);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-adicionar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(61, 15, 249, 0.3);
+        }
+
+        .btn-adicionar i {
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 1200px) {
             .left-panel {
                 width: 300px;
@@ -447,7 +510,7 @@
 
             .products-header,
             .product-item {
-                grid-template-columns: 2fr 60px 80px 100px 80px;
+                grid-template-columns: 1.5fr 60px 60px 80px 100px 80px;
                 gap: 10px;
             }
         }
