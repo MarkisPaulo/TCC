@@ -3,7 +3,7 @@ require_once("conexao.php");
 if (isset($_POST['salvar'])) {
 
     $nome = $_POST['nome'];
-    $cpf = $_POST['cpf'];
+    $cpf_cnpj = $_POST['cpf_cnpj'];
     $nome = $_POST['nome'];
     $telefone = $_POST['telefone'];
     $endereco = $_POST['endereco'];
@@ -15,7 +15,7 @@ if (isset($_POST['salvar'])) {
     $email = $_POST['email'];
     $status = $_POST['status'];
 
-    $sql = "UPDATE cliente SET nome = '$nome', status ='$status', cpf = '$cpf', telefone = '$telefone', logradouro = '$logradouro', endereco = '$endereco', cidade = '$cidade', cep = '$cep',uf = '$uf', bairro = '$bairro', email = '$email' 
+    $sql = "UPDATE cliente SET nome = '$nome', status ='$status', cpf_cnpj = '$cpf_cnpj', telefone = '$telefone', logradouro = '$logradouro', endereco = '$endereco', cidade = '$cidade', cep = '$cep',uf = '$uf', bairro = '$bairro', email = '$email' 
     WHERE codigo = " . $_GET['codigo'];
 
     mysqli_query($conexao, $sql);
@@ -138,8 +138,8 @@ $linha = mysqli_fetch_array($resultado);
             <div class="form-row">
 
                 <div class="form-group">
-                    <label for="cpf">CPF*</label>
-                    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" value="<?= $linha['cpf'] ?>"
+                    <label for="cpf">CPF/CNPJ*</label>
+                    <input type="text" name="cpf_cnpj" name="cpf_cnpj" id="cpf_cnpj" placeholder="000.000.000-00" value="<?= $linha['cpf_cnpj'] ?>"
                         required>
                 </div>
 
@@ -162,7 +162,7 @@ $linha = mysqli_fetch_array($resultado);
 
                 <div class="form-group">
                     <label for="cep">CEP*</label>
-                    <input type="text" name="cep" id="cep" placeholder="00000-000" value="<?= $linha['cep'] ?>"
+                    <input type="text" name="cep" id="cep" data-mask="cep" placeholder="00000-000" value="<?= $linha['cep'] ?>"
                         required>
                 </div>
 
@@ -237,7 +237,7 @@ $linha = mysqli_fetch_array($resultado);
 
                 <div class="form-group">
                     <label for="telefone">Telefone*</label>
-                    <input type="tel" name="telefone" id="telefone" placeholder="(00) 00000-0000"
+                    <input type="tel" name="telefone" data-mask="tel" id="telefone" placeholder="(00) 00000-0000"
                         value="<?= $linha['telefone'] ?>" required>
                 </div>
             </div>
@@ -248,6 +248,7 @@ $linha = mysqli_fetch_array($resultado);
             </div>
         </form>
     </div>
+    <script src="assets/js/masks.js"></script>
 </body>
 
 </html>

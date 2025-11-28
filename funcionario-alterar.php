@@ -68,18 +68,18 @@ $linha = mysqli_fetch_array($resultado);
 
         <form method="POST"  id="form" data-validate>
             <div class="form-group">
-                <label for="nome" class="form-label">Nome*</label>
+                <label for="nome" class="form-label">Nome Completo*</label>
                 <input name="nome" type="text" class="form-control" id="nome" value="<?= $linha['nome'] ?>">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="cpf" class="form-label">CPF*</label>
-                    <input name="cpf" type="text" class="form-control" id="cpf" value="<?= $linha['cpf'] ?>">
+                    <input name="cpf" type="text" class="form-control" id="cpf" data-mask="cpf-cnpj" maxlength="14" value="<?= $linha['cpf'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="telefone" class="form-label">Telefone*</label>
-                    <input name="telefone" type="text" class="form-control" id="telefone"
+                    <input name="telefone" type="tel" class="form-control" data-mask="tel" maxlength="15" id="telefone"
                         value="<?= $linha['telefone'] ?>">
                 </div>
             </div>
@@ -98,7 +98,7 @@ $linha = mysqli_fetch_array($resultado);
             <div class="form-row">
                 <div class="form-group">
                     <label for="cep" class="form-label">CEP*</label>
-                    <input name="cep" type="text" class="form-control" id="cep" value="<?= $linha['cep'] ?>">
+                    <input name="cep" type="text" class="form-control" id="cep" data-mask="cep" maxlength="9" value="<?= $linha['cep'] ?>">
                 </div>
 
                 <div class="form-group">
@@ -175,12 +175,12 @@ $linha = mysqli_fetch_array($resultado);
 
             <div class="form-group">
                 <label for="dtAdmissao" class="form-label">Data de Admissão*</label>
-                <input name="dtAdmissao" type="date" class="form-control" id="dtAdmissao"
+                <input name="dtAdmissao" type="date" class="form-control" id="dtAdmissao" data-mask="data" maxlength="10"
                     value="<?= $linha['dtAdmissao'] ?>">
             </div>
             <div class="form-group">
                 <label for="dtDemissao" class="form-label">Data de Demissão</label>
-                <input name="dtDemissao" type="date" class="form-control" id="dtDemissao"
+                <input name="dtDemissao" type="date" class="form-control" id="dtDemissao" data-mask="data" maxlength="10"
                     value="<?= $linha['dtDemissao'] ?>">
             </div>
             </div>
@@ -190,7 +190,7 @@ $linha = mysqli_fetch_array($resultado);
                 <button name="salvar" type="submit" class="btn">Salvar Alterações</button>
             </div>
         </form>
-
+    <script src="assets/js/masks.js"></script>
     </div>
 </body>
 

@@ -4,14 +4,18 @@ if (isset($_POST['salvar'])) {
 
 
     $nome = $_POST['nome'];
-    $precoUnitarioDaCompra = $_POST['precoUnitarioDaCompra'];
-    $precoUnitarioDaVenda = $_POST['precoUnitarioDaVenda'];
-    $quantEstoque = $_POST['quantEstoque'];
+    // Remove R$, espaços e converte vírgula em ponto
+    $precoCompraLimpo = preg_replace('/[^0-9,]/', '', $_POST['precoUnitarioDaCompra']);
+    $precoVendaLimpo = preg_replace('/[^0-9,]/', '', $_POST['precoUnitarioDaVenda']);
+
+    $precoUnitarioDaCompra = floatval(str_replace(',', '.', $precoCompraLimpo));
+    $precoUnitarioDaVenda = floatval(str_replace(',', '.', $precoVendaLimpo));
+    $quantEstoque = (int)$_POST['quantEstoque'];
     $ncm = $_POST['ncm'];
     $cfop = $_POST['cfop'];
     $unidMeidida = $_POST['unidMedida'];
-    $idMarca = $_POST['idMarca'];
-    $idCategoria = $_POST['idCategoria'];
+    $idMarca = (int)$_POST['idMarca'];
+    $idCategoria = (int)$_POST['idCategoria'];
     $status = $_POST['status'];
 
 
@@ -64,13 +68,13 @@ $linha = mysqli_fetch_array($resultado);
             <div class="form-row">
                 <div class="form-group">
                     <label for="precoUnitarioDaCompra" class="form-label">Preço Unitário da Compra</label>
-                    <input name="precoUnitarioDaCompra" type="number" class="form-control" id="precoUnitarioDaCompra"
+                    <input name="precoUnitarioDaCompra" type="text" class="form-control" data-mask="valor" id="precoUnitarioDaCompra"
                         value="<?= $linha['precoUnitarioDaCompra'] ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="precoUnitarioDaVenda" class="form-label">Preço Unitário da Venda</label>
-                    <input name="precoUnitarioDaVenda" type="number" class="form-control" id="precoUnitarioDaVenda"
+                    <input name="precoUnitarioDaVenda" type="text" class="form-control" data-mask="valor" id="precoUnitarioDaVenda"
                         value="<?= $linha['precoUnitarioDaVenda'] ?>">
                 </div>
                 <div class="form-group">
@@ -141,15 +145,15 @@ $linha = mysqli_fetch_array($resultado);
             <div class="form-row">
                 <div class="form-group">
                     <label for="ncm" class="form-label">NCM</label>
-                    <input name="ncm" type="number" class="form-control" id="ncm" value="<?= $linha['ncm'] ?>">
+                    <input name="ncm" type="text" class="form-control" id="ncm" data-mask="ncm" maxlength="10" value="<?= $linha['ncm'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="cfop" class="form-label">CFOP</label>
-                    <input name="cfop" type="number" class="form-control" id="cfop" value="<?= $linha['cfop'] ?>">
+                    <input name="cfop" type="text" class="form-control" id="cfop" data-mask="numerico" maxlength="4" value="<?= $linha['cfop'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="quantEstoque" class="form-label">Quantidade em Estoque</label>
-                    <input name="quantEstoque" type="number" class="form-control" id="quantEstoque"
+                    <input name="quantEstoque" type="text" class="form-control" data-mask="numerico" maxlength="11" id="quantEstoque"
                         value="<?= $linha['quantEstoque'] ?>">
                 </div>
             </div>
