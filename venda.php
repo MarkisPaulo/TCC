@@ -95,8 +95,10 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
                                             <label>Qtde:</label>
                                             <input type="text" id="qtd-<?= $produto['codigo'] ?>" value="1" min="1"
                                                 max="<?= $produto['quantEstoque'] ?>" maxlength="5" data-mask="numerico" class="input-quantidade">
-                                            <button type="button" class="btn-adicionar" data-codigo="<?= $produto['codigo'] ?>"
-                                                data-nome="<?= $produto['nome'] ?>" data-marca="<?= $produto['marca'] ?>"
+                                            <button type="button" class="btn-adicionar" 
+                                                data-codigo="<?= $produto['codigo'] ?>"
+                                                data-nome="<?= $produto['nome'] ?>" 
+                                                data-marca="<?= $produto['marca'] ?>"
                                                 data-unidmedida="<?= $produto['unidMedida'] ?>"
                                                 data-preco="<?= $produto['precoUnitarioDaVenda'] ?>"
                                                 data-estoque="<?= $produto['quantEstoque'] ?>">
