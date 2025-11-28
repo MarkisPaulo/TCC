@@ -65,18 +65,18 @@ $resultado = mysqli_query($conexao, $sql);
             </thead>
             <tbody>
                 <?php 
-                while($linha = mysqli_fetch_array($resultado) ) { ?>
+                while($linha = mysqli_fetch_assoc($resultado) ) { ?>
                 <tr>
                     <td><?= $linha['codigo'] ?></td>
                     <td><?= $linha['nome'] ?></td>
-                    <td><?= ($linha['status'] == 1 ? 'Ativo' : 'Inativo') ?></td>
+                    <td><?= $linha['status'] == 1 ? 'Ativo' : 'Inativo' ?></td>
                     <td><?= $linha['precoUnitarioDaCompra'] ?></td>
                     <td><?= $linha['precoUnitarioDaVenda'] ?></td>
                     <td>
                         <?php
                             $sqlC = "SELECT nome FROM categoria WHERE codigo = " . $linha['idCategoria'];
                             $resultC = mysqli_query($conexao, $sqlC);
-                            $rowC = mysqli_fetch_array($resultC);
+                            $rowC = mysqli_fetch_assoc($resultC);
                             echo $rowC['nome'];
                         ?>
                     </td>
@@ -84,7 +84,7 @@ $resultado = mysqli_query($conexao, $sql);
                     <?php
                         $sqlM = "SELECT nome FROM marca WHERE codigo = " . $linha['idMarca'];
                         $resultM = mysqli_query($conexao, $sqlM);
-                        $rowM = mysqli_fetch_array($resultM);
+                        $rowM = mysqli_fetch_assoc($resultM);
                         echo $rowM['nome'];
                     ?>
                     </td>
