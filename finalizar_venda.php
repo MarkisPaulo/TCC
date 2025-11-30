@@ -3,88 +3,69 @@ require_once("conexao.php");
 require_once("verificaautenticacao.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $numeroDaVenda = (int) $_POST['numeroDaVenda'];
     $itensJSON = $_POST['itens'];
     $itens = json_decode($itensJSON, true);
+    
+    // NOVOS CAMPOS DE PAGAMENTO
+    $idCliente = (int)$_POST['idCliente'];
+    $formaRecebimento = $_POST['formaRecebimento'];
+    $valorPago = floatval(str_replace(',', '.', preg_replace('/[^0-9,]/', '', $_POST['valorPago'])));
+    $observacoes = isset($_POST['observacoes']) ? $_POST['observacoes'] : '';
 
-    // Validações
-    if (empty($itens) || !is_array($itens)) {
-        header("Location: venda.php?erro=dados_invalidos");
-        exit;
-    }
-
-    // Calcula total
     $valorTotal = 0;
     foreach ($itens as $item) {
-        $totalVenda += $item['precoUnitario'] * $item['quantidade'];
+        $valorTotal += $item['precoUnitario'] * $item['quantidade'];
     }
 
-    // Inicia transação
-    mysqli_begin_transaction($conexao);
+        $idFuncionario = $_SESSION['codigo'];
+        $dataHora = date('Y-m-d H:i:s');
+        
+        // 1. Insere a VENDA
+        $sqlVenda = "INSERT INTO vendas (valorTotal, formaDeRecebimento, observacoes, idFuncionario, idCliente) 
+                     VALUES ($valorTotal, '$formaRecebimento', '$observacoes', $idFuncionario, $idCliente)";
+        
+        mysqli_query($conexao, $sqlVenda);
+        
+        $numeroDaVenda = mysqli_insert_id($conexao);
 
-    try {
-        // 1. Insere na tabela VENDAS
-        $idFuncionario = $_SESSION['id'] ?? 1; // Pega do usuário logado
-
-        $sqlVenda = "INSERT INTO vendas ( dataVenda, valorTotal, idFuncionario) 
-                     VALUES ('$dataVenda', $valorTotal, $idFuncionario)";
-
-        if (!mysqli_query($conexao, $sqlVenda)) {
-            throw new Exception("Erro ao inserir venda: " . mysqli_error($conexao));
-        }
-
-        // 2. Insere na tabela VENDA_HAS_PRODUTO (ou vendaHasProduto)
+        // 2. Insere itens da venda
         foreach ($itens as $item) {
-            $codigoProduto = (int) $item['codigo'];
-            $quantidade = (int) $item['quantidade'];
-            $precoUnitario = (float) $item['precoUnitario'];
+            $codigoProduto = (int)$item['codigo'];
+            $quantidade = (int)$item['quantidade'];
+            $precoUnitario = (float)$item['precoUnitario'];
 
-            // Verifica estoque
             $sqlEstoque = "SELECT quantEstoque FROM produto WHERE codigo = $codigoProduto";
             $resultEstoque = mysqli_query($conexao, $sqlEstoque);
             $produtoEstoque = mysqli_fetch_assoc($resultEstoque);
 
-            if ($produtoEstoque['quantEstoque'] < $quantidade) {
-                throw new Exception("Estoque insuficiente para o produto código $codigoProduto");
-            }
-
-            // Insere item da venda
-            $sqlItem = "INSERT INTO vendahasProduto (numeroDaVenda, codigoProduto, quantidade, precoUnitario) 
+            $sqlItem = "INSERT INTO vendahasproduto (FkNumeroDaVenda, FkCodigoProduto, quantidade, precoUnitDaVenda) 
                         VALUES ($numeroDaVenda, $codigoProduto, $quantidade, $precoUnitario)";
 
-            if (!mysqli_query($conexao, $sqlItem)) {
-                throw new Exception("Erro ao inserir item: " . mysqli_error($conexao));
-            }
+            mysqli_query($conexao, $sqlItem);
 
-            // Atualiza estoque
             $sqlUpdateEstoque = "UPDATE produto 
                                  SET quantEstoque = quantEstoque - $quantidade 
                                  WHERE codigo = $codigoProduto";
 
-            if (!mysqli_query($conexao, $sqlUpdateEstoque)) {
-                throw new Exception("Erro ao atualizar estoque: " . mysqli_error($conexao));
-            }
+            mysqli_query($conexao, $sqlUpdateEstoque);
         }
 
-        // Confirma transação
-        mysqli_commit($conexao);
+        // 3. REGISTRA O RECEBIMENTO
+        $valorRecebido = $valorPago;
+        $valorReceber = $valorTotal - $valorPago;
+        $statusRecebimento = ($valorReceber <= 0) ? 1 : 0; // 1 = pago, 0 = prazo
+        
+        $dataVencimento = date('Y-m-d', strtotime("+30 days"));
+        $dataRecebimento = $statusRecebimento == 1 ? date('Y-m-d') : '0000-00-00';
+        
+        $sqlRecebimento = "INSERT INTO recebimentos 
+            (formaDeRecebimento, valorRecebido, valorReceber, dataVencimento, dataRecebimento, status, idVenda) 
+            VALUES ('$formaRecebimento', $valorRecebido, $valorReceber, '$dataVencimento', '$dataRecebimento', $statusRecebimento, $numeroDaVenda)";
+        
+        mysqli_query($conexao, $sqlRecebimento);
 
-        // Redireciona com sucesso
-        header("Location: venda.php?sucesso=1&numero=$numeroVenda");
+        header("Location: venda.php?sucesso=1&numero=$numeroDaVenda&limpar=1");
         exit;
 
-    } catch (Exception $e) {
-        // Desfaz tudo em caso de erro
-        mysqli_rollback($conexao);
-
-        error_log("Erro na venda: " . $e->getMessage());
-        header("Location: venda.php?erro=processamento&msg=" . urlencode($e->getMessage()));
-        exit;
-    }
-
-} else {
-    header("Location: venda.php");
-    exit;
-}
+} 
 ?>
