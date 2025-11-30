@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 28/11/2025 às 16:04
+-- Tempo de geração: 30/11/2025 às 02:34
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `bdtcc`
 --
+CREATE DATABASE IF NOT EXISTS `bdtcc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `bdtcc`;
 
 -- --------------------------------------------------------
 
@@ -73,7 +75,7 @@ CREATE TABLE `cliente` (
 INSERT INTO `cliente` (`codigo`, `status`, `cpf_cnpj`, `nome`, `logradouro`, `endereco`, `cep`, `bairro`, `cidade`, `uf`, `telefone`, `email`) VALUES
 (1, 0, '132456789', 'judith', 'Av', 'Brasil n 889', '87400-000', 'centro', 'Cruzeiro do Oeste', 'PR', '4499598888', 'juh@gmail.com'),
 (2, 1, '987.332.354-22', 'Wanderlei Cordeiro de Jesus', 'Rua', 'Getúlio Vargas', '87400-000', 'Centro', 'Cruzeiro do Oeste', 'PR', '(44) 89899-8988', 'wando_72@gmail.com'),
-(3, 0, '11111111111', 'teste2', 'rua', 'Avenida Foz do Iguaçu 397', '87400-000', 'Sul Brasileiro 1', 'Cruzeiro do Oeste', 'PR', '(44) 99839-4465', 'markispaulo.atanasio3@gmail.com'),
+(3, 1, '000.268.821-67', 'Ikaoss TH', 'rua', 'Avenida Foz do Iguaçu 397', '87400-000', 'Sul Brasileiro 1', 'Cruzeiro do Oeste', 'PR', '(44) 99839-4465', 'markispaulo.atanasio3@gmail.com'),
 (4, 1, '784.568.745-63', 'Leandro Coelho', 'Rua dos Papagaios', 'Rua dos Papagaios', '87075-260', 'Parque Hortência', 'Maringá', 'PR', '(44) 99982-6168', 'sargento@gmail.com');
 
 -- --------------------------------------------------------
@@ -161,11 +163,11 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`, `idMarca`, `idCategoria`, `unidMedida`) VALUES
-(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 51, '72142000', '5102', 4, 5, 'UNID'),
-(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 5, '84659310', '5102', 2, 4, ''),
-(5, 1, 'cimento', 20.00, 30.00, 100, '', '5102', 3, 1, 'UNID'),
+(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 41, '72142000', '5102', 4, 5, 'UNID'),
+(2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 4, '84659310', '5102', 2, 4, ''),
+(5, 1, 'cimento', 20.00, 37.00, 80, '2131.31.25', '5102', 3, 1, 'UNID'),
 (6, 1, 'teste', 0.00, 0.00, 100, '2312.13.21', '5102', 6, 1, 'PC'),
-(7, 1, 'teste', 0.00, 0.00, 100, '2312.13.21', '5102', 7, 2, 'TON'),
+(7, 1, 'teste', 10.00, 35.50, 100, '2312.13.21', '5102', 7, 2, 'TON'),
 (8, 1, 'teste', 20.00, 30.00, 100, '2312.13.21', '5102', 4, 6, 'PC');
 
 -- --------------------------------------------------------
@@ -185,6 +187,15 @@ CREATE TABLE `recebimentos` (
   `idVenda` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `recebimentos`
+--
+
+INSERT INTO `recebimentos` (`codigo`, `status`, `formaDeRecebimento`, `valorRecebido`, `valorReceber`, `dataVencimento`, `dataRecebimento`, `idVenda`) VALUES
+(1, 1, 'Dinheiro', 720, 0, '2025-11-29', '2025-11-29', 1),
+(2, 1, 'A Prazo', 400, 50, '2025-11-29', '2025-11-29', 2),
+(3, 1, 'A Prazo', 550, -180, '2025-12-30', '2025-11-30', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -198,6 +209,16 @@ CREATE TABLE `vendahasproduto` (
   `quantidade` int(4) NOT NULL,
   `precoUnitDaVenda` double(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `vendahasproduto`
+--
+
+INSERT INTO `vendahasproduto` (`id`, `FkNumeroDaVenda`, `FkCodigoProduto`, `quantidade`, `precoUnitDaVenda`) VALUES
+(1, 1, 1, 10, 35.00),
+(2, 1, 5, 10, 37.00),
+(3, 2, 2, 1, 450.00),
+(4, 3, 5, 10, 37.00);
 
 -- --------------------------------------------------------
 
@@ -218,6 +239,15 @@ CREATE TABLE `vendas` (
   `idFuncionario` int(11) NOT NULL,
   `idCliente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `vendas`
+--
+
+INSERT INTO `vendas` (`numeroDaVenda`, `status`, `data/hora`, `valorTotal`, `formaDeRecebimento`, `observacoes`, `data/horaEntrega`, `enderecoEntrega`, `statusEntrega`, `idFuncionario`, `idCliente`) VALUES
+(1, 1, '2025-11-29 12:13:23', 720, 'Dinheiro', 'Entregar depois das 14:00H', '0000-00-00 00:00:00', '', 0, 1, 4),
+(2, 1, '2025-11-29 12:23:42', 450, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 2),
+(3, 1, '2025-11-29 21:02:37', 370, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 4);
 
 --
 -- Índices para tabelas despejadas
@@ -316,19 +346,19 @@ ALTER TABLE `produto`
 -- AUTO_INCREMENT de tabela `recebimentos`
 --
 ALTER TABLE `recebimentos`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `vendahasproduto`
 --
 ALTER TABLE `vendahasproduto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `vendas`
 --
 ALTER TABLE `vendas`
-  MODIFY `numeroDaVenda` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `numeroDaVenda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrições para tabelas despejadas
