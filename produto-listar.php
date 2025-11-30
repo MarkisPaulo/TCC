@@ -70,8 +70,8 @@ $resultado = mysqli_query($conexao, $sql);
                     <td><?= $linha['codigo'] ?></td>
                     <td><?= $linha['nome'] ?></td>
                     <td><?= $linha['status'] == 1 ? 'Ativo' : 'Inativo' ?></td>
-                    <td><?= $linha['precoUnitarioDaCompra'] ?></td>
-                    <td><?= $linha['precoUnitarioDaVenda'] ?></td>
+                    <td><?= "R$ " . number_format($linha['precoUnitarioDaCompra'], 2, ',', '.') ?></td>
+                    <td><?= "R$ " . number_format($linha['precoUnitarioDaVenda'], 2, ',', '.') ?></td>
                     <td>
                         <?php
                             $sqlC = "SELECT nome FROM categoria WHERE codigo = " . $linha['idCategoria'];
