@@ -164,6 +164,7 @@ $linha = mysqli_fetch_array($resultado);
         </form>
 
     </div>
+    <script src="assets/js/masks.js"></script>
 </body>
 
 </html>
