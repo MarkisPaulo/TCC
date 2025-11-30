@@ -139,7 +139,7 @@ $linha = mysqli_fetch_array($resultado);
 
                 <div class="form-group">
                     <label for="cpf">CPF/CNPJ*</label>
-                    <input type="text" name="cpf_cnpj" name="cpf_cnpj" id="cpf_cnpj" placeholder="000.000.000-00" value="<?= $linha['cpf_cnpj'] ?>"
+                    <input type="text" name="cpf_cnpj" id="cpf_cnpj" data-mask="cpf-cnpj" placeholder="000.000.000-00 / 00.000.000/0000-00" maxlength="18" minlength="14" value="<?= $linha['cpf_cnpj'] ?>"
                         required>
                 </div>
 
