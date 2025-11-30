@@ -51,6 +51,7 @@ require_once("verificaautenticacao.php");
                         <li><a href="produto-listar.php"><i class="fas fa-box"></i> <span>Produto</span></a></li>
                     </ul>
                 </li>
+                <li><a href="recebimento_listar.php"><i class="fas fa-money-bill-wave"></i> <span>Recebimentos</span></a></li>
                 <li><a href="venda.php"><i class="fas fa-store"></i> <span>Venda</span></a></li>
                 <li><a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
             </ul>
