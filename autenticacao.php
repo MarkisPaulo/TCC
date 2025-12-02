@@ -17,6 +17,7 @@ if (isset($_POST['entrar'])) {
         $_SESSION["codigo"] = $funcionario["codigo"];
         $_SESSION["nome"] = $funcionario["nome"];
         $_SESSION["email"] = $funcionario["email"];
+        $_SESSION["tipoDeAcesso"] = $funcionario["tipoDeAcesso"];
 
         header("location: adm.php");
     }else{

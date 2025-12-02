@@ -1,6 +1,14 @@
 <?php
 require_once("verificaautenticacao.php");
 require_once("conexao.php");
+
+if($_SESSION["tipoDeAcesso"] = 1){
+    header("location: adm.php");
+    echo "<script>alert('Seu tipo de acesso não permite acessar essa página.');</script>";
+    exit();
+
+}
+
 if (isset($_POST['cadastrar'])) {
     
     $nome = $_POST['nome'];
