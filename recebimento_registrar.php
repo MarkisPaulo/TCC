@@ -5,14 +5,16 @@ require_once("verificaautenticacao.php");
 if (isset($_POST['confirmar'])) {
     $codigo = $_POST['codigo'];
     $valorRecebido = floatval(str_replace(',', '.', preg_replace('/[^0-9,]/', '', $_POST['valorRecebido'])));
-    $dataRecebimento = $_POST['dataRecebimento'];
+    $dataRecebimento = date('d-m-Y');
+    $valorReceber = $_POST['valorReceber'] - $valorRecebido;
+    $statusRecebimento = ($valorReceber <= 0) ? 1 : 0;
     
     // Atualiza o recebimento
     $sql = "UPDATE recebimentos SET 
             valorRecebido = valorRecebido + $valorRecebido,
-            valorReceber = valorReceber - $valorRecebido,
+            valorReceber = $valorReceber,
             dataRecebimento = '$dataRecebimento',
-            status = IF(valorReceber - $valorRecebido <= 0, 1, 0)
+            status = '$statusRecebimento'
             WHERE codigo = $codigo";
     
     if (mysqli_query($conexao, $sql)) {
@@ -84,11 +86,6 @@ $recebimento = mysqli_fetch_assoc($resultado);
                        value="R$ <?= number_format($recebimento['valorReceber'], 2, ',', '.') ?>"
                        required>
                 <small style="color: #666;">Você pode receber um valor parcial</small>
-            </div>
-
-            <div class="form-group">
-                <label>Data do Recebimento*</label>
-                <input type="date" name="dataRecebimento" value="<?= date('Y-m-d') ?>" required>
             </div>
 
             <div class="button-group">
