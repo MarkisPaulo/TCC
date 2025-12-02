@@ -290,7 +290,7 @@ foreach ($_SESSION['carrinho'] as $item) {
                     </div>
 
                     <div class="form-group">
-                        <a href="cliente-cadastrar.php" target="_blank">
+                        <a href="cliente-cadastrar.php" style="text-decoration:none;" target="_blank">
                             <button type="button" class="btn btn-secondary">
                                 <i class="fas fa-user-plus"></i> Cadastrar Novo Cliente
                             </button>
