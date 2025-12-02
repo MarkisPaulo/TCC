@@ -3,16 +3,31 @@ require_once("conexao.php");
 require_once("verificaautenticacao.php");
 
 if (isset($_POST['confirmar'])) {
-    $codigo = $_POST['codigo'];
+    $codigo = intval($_POST['codigo']);
     $valorRecebido = floatval(str_replace(',', '.', preg_replace('/[^0-9,]/', '', $_POST['valorRecebido'])));
-    $dataRecebimento = date('d-m-Y');
-    $valorReceber = $_POST['valorReceber'] - $valorRecebido;
-    $statusRecebimento = ($valorReceber <= 0) ? 1 : 0;
+    $dataRecebimento = date('Y-m-d'); // Formato correto para MySQL
+    
+    // BUSCA O VALOR ATUAL DO BANCO ANTES DE ATUALIZAR
+    $sqlBusca = "SELECT valorReceber, valorRecebido FROM recebimentos WHERE codigo = $codigo";
+    $resultBusca = mysqli_query($conexao, $sqlBusca);
+    $dadosAtuais = mysqli_fetch_assoc($resultBusca);
+    
+    // CALCULA CORRETAMENTE
+    $novoValorRecebido = $dadosAtuais['valorRecebido'] + $valorRecebido;
+    $novoValorReceber = $dadosAtuais['valorReceber'] - $valorRecebido;
+    
+    // Se o valor receber ficou negativo ou zero, está pago
+    $statusRecebimento = ($novoValorReceber <= 0) ? 1 : 0;
+    
+    // Se pagou a mais, ajusta para não ficar negativo
+    if ($novoValorReceber < 0) {
+        $novoValorReceber = 0;
+    }
     
     // Atualiza o recebimento
     $sql = "UPDATE recebimentos SET 
-            valorRecebido = valorRecebido + $valorRecebido,
-            valorReceber = $valorReceber,
+            valorRecebido = $novoValorRecebido,
+            valorReceber = $novoValorReceber,
             dataRecebimento = '$dataRecebimento',
             status = '$statusRecebimento'
             WHERE codigo = $codigo";

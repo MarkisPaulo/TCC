@@ -1,13 +1,25 @@
 <?php
 require_once("conexao.php");
-if (isset($_GET['codigo'])) {
-    $sql = "DELETE FROM produto WHERE codigo = " . $_GET['codigo'];
+if (isset($_GET['codigo']) && $_GET['status'] == 1) {
+    $sql = "UPDATE produto SET status = 0 WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    $mensagem = "Exclusão realizada com sucesso.";
+    $mensagem = "Produto Inativado com sucesso.";
+} else if (isset($_GET["codigo"]) && $_GET["status"] == 0) {
+    $sql = "UPDATE produto SET status = 1 WHERE codigo = " . $_GET['codigo'];
+    mysqli_query($conexao, $sql);
+    $mensagem = "Produto Ativado com sucesso.";
 }
 
-$sql = "SELECT * FROM produto ORDER BY codigo";
+$sql = "SELECT * FROM produto WHERE status = 1 ORDER BY codigo";
 $resultado = mysqli_query($conexao, $sql);
+
+$quantI = [];
+
+$sqlI = "SELECT * FROM produto WHERE status = 0 ORDER BY codigo";
+$resultadoI = mysqli_query($conexao, $sqlI);
+while ($row = mysqli_fetch_assoc($resultadoI)) {
+    $quantI[] = $row;
+}
 
 ?>
 <!DOCTYPE html>
@@ -44,6 +56,16 @@ $resultado = mysqli_query($conexao, $sql);
                         <i class="fas fa-solid fa-circle-plus"></i> Novo Produto
                     </a>
                 </h5>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou status..." onkeyup="filtrarTabela()">
+                <button onclick="limparPesquisa()" id="clearBtn" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         </div>
 
@@ -94,13 +116,75 @@ $resultado = mysqli_query($conexao, $sql);
                     <td class="actions">
                         <a href="produto-alterar.php?codigo=<?= $linha['codigo']?>" class="btn btn-warning">
                             <i class="fas fa-solid fa-pen-to-square"></i>Alterar</a>
-                        <a href="produto-listar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-danger"
-                            onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
+                        <a href="produto-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>" class="btn btn-danger"
+                            onclick="return confirm('Confirma inativação?')"><i class="fas fa-solid fa-circle-xmark"></i>Inativar</a>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
+
+        <?php if (count($quantI) > 0) { ?>
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-body">
+                    <h5 class="title">
+                        Listagem de Produtos Inativados
+                    </h5>
+                </div>
+            </div>
+
+            <table class="table-container">
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Preço Unit da Compra</th>
+                        <th scope="col">Preço Unit da Venda</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Quantidade em Estoque</th>
+                        <th scope="col">NCM</th>
+                        <th scope="col">CFOP</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($quantI as $linha) { ?>
+                    <tr>
+                        <td><?= $linha['codigo'] ?></td>
+                        <td><?= $linha['nome'] ?></td>
+                        <td><?= $linha['status'] == 1 ? 'Ativo' : 'Inativo' ?></td>
+                        <td><?= "R$ " . number_format($linha['precoUnitarioDaCompra'], 2, ',', '.') ?></td>
+                        <td><?= "R$ " . number_format($linha['precoUnitarioDaVenda'], 2, ',', '.') ?></td>
+                        <td>
+                            <?php
+                                $sqlC = "SELECT nome FROM categoria WHERE codigo = " . $linha['idCategoria'];
+                                $resultC = mysqli_query($conexao, $sqlC);
+                                $rowC = mysqli_fetch_assoc($resultC);
+                                echo $rowC['nome'];
+                            ?>
+                        </td>
+                        <td>
+                        <?php
+                            $sqlM = "SELECT nome FROM marca WHERE codigo = " . $linha['idMarca'];
+                            $resultM = mysqli_query($conexao, $sqlM);
+                            $rowM = mysqli_fetch_assoc($resultM);
+                            echo $rowM['nome'];
+                        ?>
+                        </td>
+                        <td><?= $linha['quantEstoque'] ?></td>
+                        <td><?= $linha['ncm'] ?></td>
+                        <td><?= $linha['cfop'] ?></td>
+                        <td class="actions">
+                            <a href="produto-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>" class="btn btn-ativar"
+                                onclick="return confirm('Confirma ativação?')"><i class="fas fa-solid fa-circle-check"></i> Ativar</a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        <?php } ?>
 
     </div>
 </body>

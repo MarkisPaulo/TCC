@@ -35,7 +35,7 @@ if ($filtroPeriodo == 'vencidos') {
     $sql .= " AND r.dataVencimento BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
 }
 
-$sql .= " ORDER BY r.dataVencimento ASC, r.status ASC";
+$sql .= " ORDER BY r.codigo ASC";
 $resultado = mysqli_query($conexao, $sql);
 
 // Calcula totais

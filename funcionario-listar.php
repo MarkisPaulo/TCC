@@ -1,13 +1,25 @@
 <?php
 require_once("conexao.php");
-if (isset($_GET['codigo'])) {
-    $sql = "DELETE FROM funcionario WHERE codigo = " . $_GET['codigo'];
+if (isset($_GET['codigo']) && $_GET['status'] == 1) {
+    $sql = "UPDATE funcionario SET status = 0 WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    $mensagem = "Exclusão realizada com sucesso.";
+    $mensagem = "Funcionário Inativado com sucesso.";
+} else if (isset($_GET["codigo"]) && $_GET["status"] == 0) {
+    $sql = "UPDATE funcionario SET status = 1 WHERE codigo = " . $_GET['codigo'];
+    mysqli_query($conexao, $sql);
+    $mensagem = "Funcionário Ativado com sucesso.";
 }
 
-$sql = "SELECT * FROM funcionario ORDER BY codigo";
+$sql = "SELECT * FROM funcionario WHERE status = 1 ORDER BY codigo";
 $resultado = mysqli_query($conexao, $sql);
+
+$quantI = [];
+
+$sqlI = "SELECT * FROM funcionario WHERE status = 0 ORDER BY codigo";
+$resultadoI = mysqli_query($conexao, $sqlI);
+while ($row = mysqli_fetch_assoc($resultadoI)) {
+    $quantI[] = $row;
+}
 
 ?>
 <!DOCTYPE html>
@@ -36,7 +48,6 @@ $resultado = mysqli_query($conexao, $sql);
 
     <div class="containerFun">
 
-
         <div class="card">
             <div class="card-body">
                 <h5 class="title">
@@ -45,6 +56,16 @@ $resultado = mysqli_query($conexao, $sql);
                         <i class="fas fa-solid fa-circle-plus"></i> Novo Funcionário
                     </a>
                 </h5>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou status..." onkeyup="filtrarTabela()">
+                <button onclick="limparPesquisa()" id="clearBtn" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         </div>
 
@@ -66,7 +87,6 @@ $resultado = mysqli_query($conexao, $sql);
                     <th scope="col">Data Admissão</th>
                     <th scope="col">Data Demissão</th>
                     <th scope="col">Ações</th>
-                    
                 </tr>
             </thead>
             <tbody>
@@ -89,13 +109,69 @@ $resultado = mysqli_query($conexao, $sql);
                     <td class="actions">
                         <a href="funcionario-alterar.php?codigo=<?= $linha['codigo']?>" class="btn btn-warning">
                             <i class="fas fa-solid fa-pen-to-square"></i>Alterar</a>
-                        <a href="funcionario-listar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-danger"
-                        onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
+                        <a href="funcionario-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>" class="btn btn-danger"
+                        onclick="return confirm('Confirma inativação?')"><i class="fas fa-solid fa-circle-xmark"></i>Inativar</a>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
+
+        <?php if (count($quantI) > 0) { ?>
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-body">
+                    <h5 class="title">
+                        Listagem de Funcionários Inativados
+                    </h5>
+                </div>
+            </div>
+
+            <table class="table-container">
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">CPF</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">Logradouro</th>
+                        <th scope="col">CEP</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">UF</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Acesso</th>
+                        <th scope="col">Data Admissão</th>
+                        <th scope="col">Data Demissão</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($quantI as $linha) { ?>
+                    <tr>
+                        <td><?= $linha['codigo'] ?></td>
+                        <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo'?></td>
+                        <td><?= $linha['nome'] ?></td>
+                        <td><?= $linha['cpf'] ?></td>
+                        <td><?= $linha['telefone'] ?></td>
+                        <td><?= $linha['endereco'] ?></td>
+                        <td><?= $linha['logradouro'] ?></td>
+                        <td><?= $linha['cep'] ?></td>
+                        <td><?= $linha['cidade']?></td>
+                        <td><?= $linha['uf'] ?></td>
+                        <td><?= $linha['email'] ?></td>
+                        <td><?= ($linha['tipoDeAcesso'] == 1) ? 'Funcionário' : 'Gerente'?></td>
+                        <td><?= $linha['dtAdmissao'] ?></td>
+                        <td><?= $linha['dtDemissao'] ?></td>
+                        <td class="actions">
+                            <a href="funcionario-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>" class="btn btn-ativar"
+                            onclick="return confirm('Confirma ativação?')"><i class="fas fa-solid fa-circle-check"></i> Ativar</a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        <?php } ?>
 
     </div>
 </body>

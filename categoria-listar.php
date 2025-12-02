@@ -1,13 +1,25 @@
 <?php
 require_once("conexao.php");
-if (isset($_GET['codigo'])) {
-    $sql = "DELETE FROM categoria WHERE codigo = " . $_GET['codigo'];
+if (isset($_GET['codigo']) && $_GET['status'] == 1) {
+    $sql = "UPDATE categoria SET status = 0 WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    $mensagem = "Exclusão realizada com sucesso.";
+    $mensagem = "Categoria Inativada com sucesso.";
+} else if (isset($_GET["codigo"]) && $_GET["status"] == 0) {
+    $sql = "UPDATE categoria SET status = 1 WHERE codigo = " . $_GET['codigo'];
+    mysqli_query($conexao, $sql);
+    $mensagem = "Categoria Ativada com sucesso.";
 }
 
-$sql = "SELECT * FROM categoria ORDER BY codigo";
-$resultado = mysqli_query($conexao, $sql);
+$sqlA = "SELECT * FROM categoria WHERE status = 1 ORDER BY codigo";
+$resultadoA = mysqli_query($conexao, $sqlA);
+
+$quantI = [];
+
+$sqlI = "SELECT * FROM categoria WHERE status = 0 ORDER BY codigo";
+$resultadoI = mysqli_query($conexao, $sqlI);
+while ($row = mysqli_fetch_assoc($resultadoI)) {
+    $quantI[] = $row;
+}
 
 ?>
 <!DOCTYPE html>
@@ -24,6 +36,7 @@ $resultado = mysqli_query($conexao, $sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
+
 <body>
 
     <?php require_once("header.php"); ?>
@@ -47,6 +60,16 @@ $resultado = mysqli_query($conexao, $sql);
             </div>
         </div>
 
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou status..." onkeyup="filtrarTabela()">
+                <button onclick="limparPesquisa()" id="clearBtn" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
         <table class="table-container">
             <thead>
                 <tr>
@@ -57,23 +80,58 @@ $resultado = mysqli_query($conexao, $sql);
                 </tr>
             </thead>
             <tbody>
-                <?php while ($linha = mysqli_fetch_array($resultado)) { ?>
+                <?php while ($linha = mysqli_fetch_assoc($resultadoA)) { ?>
                     <tr>
                         <td><?= $linha['codigo'] ?></td>
-                        <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo'?></td>
+                        <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo' ?></td>
                         <td><?= $linha['nome'] ?></td>
                         <td class="actions">
                             <a href="categoria-alterar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-warning">
                                 <i class="fas fa-solid fa-pen-to-square"></i> Alterar</a>
-                            <a href="categoria-listar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-danger"
-                                onclick="return confirm('Confirma exclusão?')"><i class="fas fa-solid fa-trash-can"></i>Excluir</a>
+                            <a href="categoria-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>"
+                                class="btn btn-danger" onclick="return confirm('Confirma Inativação?')"><i
+                                    class="fas fa-solid fa-circle-xmark"></i>Inativar</a>
                         </td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
 
-    </div>
+        <?php if (count($quantI) > 0) { ?>
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-body">
+                        <h5 class="title">
+                            Listagem de Categorias Inativadas
+                        </h5>
+                    </div>
+                </div>
+
+                <table class="table-container">
+                    <thead>
+                        <tr>
+                            <th scope="col">Código</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($quantI as $linha) { ?>
+                            <tr>
+                                <td><?= $linha['codigo'] ?></td>
+                                <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo' ?></td>
+                                <td><?= $linha['nome'] ?></td>
+                                <td class="actions">
+                                    <a href="categoria-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>"
+                                        class="btn btn-ativar" onclick="return confirm('Confirma Ativação?')">
+                                        <i class="fas fa-solid fa-circle-check"></i> Ativar </a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            <?php } ?>
+        </div>
 </body>
 
 </html>

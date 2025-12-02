@@ -13,9 +13,8 @@ if (isset($_POST['salvar'])) {
     $cidade = $_POST['cidade'];
     $uf = $_POST['uf'];
     $email = $_POST['email'];
-    $status = $_POST['status'];
 
-    $sql = "UPDATE cliente SET nome = '$nome', status ='$status', cpf_cnpj = '$cpf_cnpj', telefone = '$telefone', logradouro = '$logradouro', endereco = '$endereco', cidade = '$cidade', cep = '$cep',uf = '$uf', bairro = '$bairro', email = '$email' 
+    $sql = "UPDATE cliente SET nome = '$nome', cpf_cnpj = '$cpf_cnpj', telefone = '$telefone', logradouro = '$logradouro', endereco = '$endereco', cidade = '$cidade', cep = '$cep',uf = '$uf', bairro = '$bairro', email = '$email' 
     WHERE codigo = " . $_GET['codigo'];
 
     mysqli_query($conexao, $sql);

@@ -16,10 +16,9 @@ if (isset($_POST['salvar'])) {
     $unidMeidida = $_POST['unidMedida'];
     $idMarca = (int)$_POST['idMarca'];
     $idCategoria = (int)$_POST['idCategoria'];
-    $status = $_POST['status'];
 
 
-    $sql = "UPDATE produto SET nome = '$nome', status = '$status', precoUnitarioDaCompra = '$precoUnitarioDaCompra', precoUnitarioDaVenda = '$precoUnitarioDaVenda',
+    $sql = "UPDATE produto SET nome = '$nome', precoUnitarioDaCompra = '$precoUnitarioDaCompra', precoUnitarioDaVenda = '$precoUnitarioDaVenda',
         quantEstoque = '$quantEstoque', ncm = '$ncm', cfop = '$cfop', idMarca = '$idMarca', idCategoria = '$idCategoria', unidMedida = '$unidMeidida'
     WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);

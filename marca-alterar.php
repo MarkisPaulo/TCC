@@ -3,10 +3,8 @@ require_once("conexao.php");
 if (isset($_POST['salvar'])) {
 
     $nome = $_POST['nome'];
-    $status = $_POST['status'];
 
-
-    $sql = "UPDATE marca SET nome = '$nome', status = '$status' WHERE codigo = " . $_GET['codigo'];
+    $sql = "UPDATE marca SET nome = '$nome' WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
     header("Location: marca-listar.php");
@@ -47,13 +45,13 @@ $linha = mysqli_fetch_array($resultado);
 
         <form method="POST">
 
-        
+
             <div class="form-group">
                 <label for="nome" class="form-label">Nome*</label>
                 <input name="nome" type="text" class="form-control" id="nome" value="<?= $linha['nome'] ?>">
             </div>
 
-          <div class="form-row">
+            <div class="form-row">
                 <div class="form-group">
                     <label>Status*</label>
                     <div class="radio-group">
@@ -78,4 +76,5 @@ $linha = mysqli_fetch_array($resultado);
     </div>
     </div>
 </body>
+
 </html>

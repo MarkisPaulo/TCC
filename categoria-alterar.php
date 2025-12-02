@@ -3,10 +3,8 @@ require_once("conexao.php");
 if (isset($_POST['salvar'])) {
 
     $nome = $_POST['nome'];
-    $status = $_POST['status'];
 
-
-    $sql = "UPDATE categoria SET nome = '$nome', status = '$status' WHERE codigo = " . $_GET['codigo'];
+    $sql = "UPDATE categoria SET nome = '$nome' WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     echo "Registro alterado com sucesso";
     header("Location: categoria-listar.php");
@@ -53,20 +51,6 @@ $linha = mysqli_fetch_array($resultado);
 
           <div class="form-row">
 
-                <div class="form-group">
-                    <label>Status*</label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="status-ativo" name="status" value="1" <?= $linha['status'] == 1 ? 'checked' : '' ?>>
-                            <label for="status-ativo">Ativo</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="status-inativo" name="status" value="0" <?= $linha['status'] == 0 ? 'checked' : '' ?>>
-                            <label for="status-inativo">Inativo</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="button-group">
                 <a href="categoria-listar.php"><button type="button" class="btn btn-secondary">Cancelar</button></a>
                 <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
