@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 02/12/2025 às 16:18
+-- Tempo de geração: 03/12/2025 às 15:47
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -161,9 +161,9 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`codigo`, `status`, `nome`, `precoUnitarioDaCompra`, `precoUnitarioDaVenda`, `quantEstoque`, `ncm`, `cfop`, `idMarca`, `idCategoria`, `unidMedida`) VALUES
-(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 31, '72142000', '5102', 4, 5, 'UNID'),
+(1, 1, 'Vergalhão 8mm CA50', 24.00, 35.00, 41, '72142000', '5102', 4, 5, 'UNID'),
 (2, 1, 'ESMERILHADEIRA ANGULAR 115MM (4 1/2 POL) 840W 220V 9557HNG', 280.00, 450.00, 3, '84659310', '5102', 2, 4, ''),
-(5, 1, 'cimento', 20.00, 37.00, 80, '2131.31.25', '5102', 3, 1, 'UNID'),
+(5, 1, 'cimento', 20.00, 37.00, 100, '2131.31.25', '5102', 3, 1, 'UNID'),
 (6, 1, 'teste', 0.00, 0.00, 100, '2312.13.21', '5102', 6, 1, 'PC'),
 (7, 1, 'teste', 10.00, 35.50, 91, '2312.13.21', '5102', 7, 2, 'TON'),
 (8, 1, 'teste', 20.00, 30.00, 80, '2312.13.21', '5102', 4, 6, 'PC');
@@ -197,7 +197,8 @@ INSERT INTO `recebimentos` (`codigo`, `status`, `formaDeRecebimento`, `valorRece
 (5, 1, 'A Prazo', 310, -10, '2026-01-01', '2025-12-01', 5),
 (6, 1, 'A Prazo', 130, -30, '2026-01-01', '0000-00-00', 6),
 (7, 1, 'A Prazo', 109, -1.5, '2026-01-01', '0000-00-00', 7),
-(8, 1, 'A Prazo', 600, 0, '2026-01-01', '2025-12-02', 8);
+(8, 1, 'A Prazo', 600, 0, '2026-01-01', '2025-12-02', 8),
+(9, 0, 'A Prazo', 340, 10, '2026-01-02', '2025-12-03', 9);
 
 -- --------------------------------------------------------
 
@@ -226,7 +227,8 @@ INSERT INTO `vendahasproduto` (`id`, `FkNumeroDaVenda`, `FkCodigoProduto`, `quan
 (6, 5, 1, 10, 35.00),
 (7, 6, 7, 4, 35.50),
 (8, 7, 7, 5, 35.50),
-(9, 8, 8, 20, 30.00);
+(9, 8, 8, 20, 30.00),
+(10, 9, 1, 10, 35.00);
 
 -- --------------------------------------------------------
 
@@ -241,8 +243,8 @@ CREATE TABLE `vendas` (
   `valorTotal` double NOT NULL,
   `formaDeRecebimento` varchar(45) NOT NULL,
   `observacoes` varchar(100) DEFAULT NULL,
-  `data/horaEntrega` datetime NOT NULL,
-  `enderecoEntrega` varchar(100) NOT NULL,
+  `dataHoraEntrega` datetime DEFAULT NULL,
+  `enderecoEntrega` varchar(100) DEFAULT NULL,
   `statusEntrega` tinyint(1) NOT NULL,
   `idFuncionario` int(11) NOT NULL,
   `idCliente` int(11) NOT NULL
@@ -252,15 +254,16 @@ CREATE TABLE `vendas` (
 -- Despejando dados para a tabela `vendas`
 --
 
-INSERT INTO `vendas` (`numeroDaVenda`, `status`, `data/hora`, `valorTotal`, `formaDeRecebimento`, `observacoes`, `data/horaEntrega`, `enderecoEntrega`, `statusEntrega`, `idFuncionario`, `idCliente`) VALUES
-(1, 1, '2025-11-29 12:13:23', 720, 'Dinheiro', 'Entregar depois das 14:00H', '0000-00-00 00:00:00', '', 0, 1, 4),
+INSERT INTO `vendas` (`numeroDaVenda`, `status`, `data/hora`, `valorTotal`, `formaDeRecebimento`, `observacoes`, `dataHoraEntrega`, `enderecoEntrega`, `statusEntrega`, `idFuncionario`, `idCliente`) VALUES
+(1, 0, '2025-11-29 12:13:23', 720, 'Dinheiro', 'Entregar depois das 14:00H', '0000-00-00 00:00:00', '', 0, 1, 4),
 (2, 1, '2025-11-29 12:23:42', 450, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 2),
 (3, 1, '2025-11-29 21:02:37', 370, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 4),
 (4, 1, '2025-12-02 08:41:11', 450, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 4),
 (5, 1, '2025-12-02 08:47:18', 350, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 2),
 (6, 1, '2025-12-02 09:06:53', 142, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 3),
 (7, 1, '2025-12-02 09:08:32', 177.5, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 3),
-(8, 1, '2025-12-02 09:53:51', 600, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 2);
+(8, 1, '2025-12-02 09:53:51', 600, 'A Prazo', '', '0000-00-00 00:00:00', '', 0, 1, 2),
+(9, 1, '2025-12-03 09:25:02', 350, 'A Prazo', '', '2025-12-03 12:00:00', 'Avenida Foz do Iguaçu 397', 0, 1, 3);
 
 --
 -- Índices para tabelas despejadas
@@ -359,19 +362,19 @@ ALTER TABLE `produto`
 -- AUTO_INCREMENT de tabela `recebimentos`
 --
 ALTER TABLE `recebimentos`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `vendahasproduto`
 --
 ALTER TABLE `vendahasproduto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `vendas`
 --
 ALTER TABLE `vendas`
-  MODIFY `numeroDaVenda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `numeroDaVenda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restrições para tabelas despejadas
