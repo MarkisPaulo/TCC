@@ -2,6 +2,8 @@
 require_once("conexao.php");
 require_once("verificaautenticacao.php");
 
+date_default_timezone_set('America/Sao_Paulo');
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Pega os itens do carrinho da sessão
     $itens = $_SESSION['carrinho'];
@@ -54,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Validação 2: Se a data for hoje, a hora não pode ser anterior à hora atual
         if ($diff->days === 0) { // Mesma data (hoje)
             // Converte as horas para timestamp para comparação
-            $horaAtualTimestamp = strtotime(date('H:i'));
-            $horaEntregaTimestamp = strtotime($horaEntrega);
+            $horaAtual = strtotime(date('H:i'));
+            $horaEntregaStr = strtotime($horaEntrega);
 
-            if ($horaEntregaTimestamp < $horaAtualTimestamp) {
+            if ($horaEntregaStr < $horaAtual) {
                 $erros[] = "A hora de entrega não pode ser anterior à hora atual.";
             }
         }

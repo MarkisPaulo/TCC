@@ -2,6 +2,8 @@
 require_once("conexao.php");
 require_once("verificaautenticacao.php");
 
+date_default_timezone_set('America/Sao_Paulo');
+
 // Filtros
 $filtroStatus = isset($_GET['status']) ? $_GET['status'] : '';
 $filtroPeriodo = isset($_GET['periodo']) ? $_GET['periodo'] : '';
