@@ -18,7 +18,7 @@ require_once("verificaautenticacao.php");
 
         <nav>
             <ul>
-                <li><a href="adm.php"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                <li><a href="adm.php"><i class="fas fa-home"></i> <span>ADM</span></a></li>
 
                 <li class="has-dropdown">
                     <a href="#" class="dropdown-toggle"><i class="fas fa-edit"></i> <span>Cadastros</span><i
@@ -49,9 +49,12 @@ require_once("verificaautenticacao.php");
                         <li><a href="marca-listar.php"><i class="fas fa-thin fa-registered"></i> <span>Marca</span></a>
                         </li>
                         <li><a href="produto-listar.php"><i class="fas fa-box"></i> <span>Produto</span></a></li>
+                        <li><a href="vendas-listar.php"><i class="fas fa-shopping-bag"></i> <span>Vendas</span></a></li>
                     </ul>
                 </li>
-                <li><a href="recebimento_listar.php"><i class="fas fa-money-bill-wave"></i> <span>Recebimentos</span></a></li>
+                <li><a href="entregas-listar.php"><i class="fas fa-truck"></i> <span>Entregas</span></a></li>
+                <li><a href="recebimento_listar.php"><i class="fas fa-money-bill-wave"></i>
+                        <span>Recebimentos</span></a></li>
                 <li><a href="venda.php"><i class="fas fa-store"></i> <span>Venda</span></a></li>
                 <li><a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
             </ul>
@@ -66,7 +69,7 @@ require_once("verificaautenticacao.php");
 
 
         const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        
+
         // Aplica o estado salvo ao carregar a página
         if (isSidebarCollapsed) {
             sidebar.classList.add('collapsed');
