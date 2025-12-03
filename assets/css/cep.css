@@ -1,0 +1,37 @@
+/* Estilos para busca de CEP */
+.campo-carregando {
+    color: #666;
+    font-style: italic;
+}
+
+.btn-buscar-cep {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-buscar-cep:hover {
+    background-color: #1976D2;
+}
+
+.btn-buscar-cep:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Container para campo CEP com botão */
+.cep-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.cep-container .form-group {
+    flex: 1;
+}
