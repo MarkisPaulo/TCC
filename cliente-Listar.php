@@ -10,15 +10,34 @@ if (isset($_GET['codigo']) && $_GET['status'] == 1) {
     $mensagem = "Cliente Ativado com sucesso.";
 }
 
-$sqlA = "SELECT * FROM cliente WHERE status = 1 ORDER BY codigo";
-$resultadoA = mysqli_query($conexao, $sqlA);
+$textoBusca = "";
+if (isset($_GET['busca']) && !empty($_GET['busca'])) {
+    $textoBusca = $_GET['busca'];
+    $sqlA = "SELECT * FROM cliente  
+                WHERE status = 1
+             AND (nome LIKE '%$textoBusca%' OR codigo LIKE '%$textoBusca%' OR cpf_cnpj LIKE '%$textoBusca%')
+             ORDER BY codigo";
+    $resultadoA = mysqli_query($conexao, $sqlA);
 
-$quantI = [];
+    $sqlI = "SELECT * FROM cliente  
+                WHERE status = 0
+             AND (nome LIKE '%$textoBusca%' OR codigo LIKE '%$textoBusca%' OR cpf_cnpj LIKE '%$textoBusca%')
+             ORDER BY codigo";              
+    $resultadoI = mysqli_query($conexao, $sqlI);
+    $quantI = [];
+    while ($row = mysqli_fetch_assoc($resultadoI)) {
+        $quantI[] = $row;
+    }
+} else {
+    $sqlA = "SELECT * FROM cliente WHERE status = 1 ORDER BY codigo";
+    $resultadoA = mysqli_query($conexao, $sqlA);
 
-$sqlI = "SELECT * FROM cliente WHERE status = 0 ORDER BY codigo";
-$resultadoI = mysqli_query($conexao, $sqlI);
-while ($row = mysqli_fetch_assoc($resultadoI)) {
-    $quantI[] = $row;
+    $quantI = [];
+    $sqlI = "SELECT * FROM cliente WHERE status = 0 ORDER BY codigo";
+    $resultadoI = mysqli_query($conexao, $sqlI);
+    while ($row = mysqli_fetch_assoc($resultadoI)) {
+        $quantI[] = $row;
+    }
 }
 
 ?>
@@ -60,13 +79,12 @@ while ($row = mysqli_fetch_assoc($resultadoI)) {
         </div>
 
         <div class="search-container">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou status..." onkeyup="filtrarTabela()">
-                <button onclick="limparPesquisa()" id="clearBtn" style="display: none;">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <form method="GET">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou CPF/CNPJ..." name="busca" value="<?= $textoBusca ?>">
+                </div>
+            </form>
         </div>
 
         <table class="table-container">

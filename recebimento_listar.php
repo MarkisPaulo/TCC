@@ -5,6 +5,7 @@ require_once("verificaautenticacao.php");
 // Filtros
 $filtroStatus = isset($_GET['status']) ? $_GET['status'] : '';
 $filtroPeriodo = isset($_GET['periodo']) ? $_GET['periodo'] : '';
+$buscaCliente = isset($_GET['buscaCliente']) ? $_GET['buscaCliente'] : '';
 
 $sql = "SELECT 
     r.codigo,
@@ -16,11 +17,17 @@ $sql = "SELECT
     r.status,
     v.numeroDaVenda,
     v.valorTotal,
-    c.nome as nomeCliente
+    c.nome as nomeCliente,
+    c.codigo as codigoCliente
 FROM recebimentos r
 INNER JOIN vendas v ON r.idVenda = v.numeroDaVenda
 INNER JOIN cliente c ON v.idCliente = c.codigo
 WHERE 1=1";
+
+// Aplica filtro de busca por cliente
+if ($buscaCliente !== '') {
+    $sql .= " AND (c.nome LIKE '%$buscaCliente%' OR c.codigo LIKE '%$buscaCliente%')";
+}
 
 // Aplica filtros
 if ($filtroStatus !== '') {
@@ -49,7 +56,7 @@ $totais = mysqli_fetch_assoc($resultTotais);
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head>  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Recebimentos</title>
@@ -80,6 +87,8 @@ $totais = mysqli_fetch_assoc($resultTotais);
         <!-- Barra de Filtros -->
         <div class="filter-bar">
             <form method="GET" style="display: flex; gap: 15px; flex-wrap: wrap; width: 100%;">
+                <input type="text" name="buscaCliente" placeholder="Pesquisar por cliente (nome ou código)..." value="<?= $buscaCliente ?>" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; flex: 1; min-width: 250px;">
+                
                 <select name="status">
                     <option value="">Todos os Status</option>
                     <option value="1" <?= $filtroStatus === '1' ? 'selected' : '' ?>>Pagos</option>

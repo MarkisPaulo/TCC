@@ -10,13 +10,28 @@ if (isset($_GET['codigo']) && $_GET['status'] == 1) {
     $mensagem = "Funcionário Ativado com sucesso.";
 }
 
-$sql = "SELECT * FROM funcionario WHERE status = 1 ORDER BY codigo";
-$resultado = mysqli_query($conexao, $sql);
+$textoBusca = "";
+if (isset($_GET['busca']) && !empty($_GET['busca'])) {
+    $textoBusca = $_GET['busca'];
+    $sql = "SELECT * FROM funcionario 
+            WHERE status = 1
+            AND (nome LIKE '%$textoBusca%' OR codigo LIKE '%$textoBusca%' OR cpf LIKE '%$textoBusca%')
+            ORDER BY codigo";
+    $resultado = mysqli_query($conexao, $sql);
 
-$quantI = [];
+    $sqlI = "SELECT * FROM funcionario 
+             WHERE status = 0
+             AND (nome LIKE '%$textoBusca%' OR codigo LIKE '%$textoBusca%' OR cpf LIKE '%$textoBusca%')
+             ORDER BY codigo";
+} else {
+    $sql = "SELECT * FROM funcionario WHERE status = 1 ORDER BY codigo";
+    $resultado = mysqli_query($conexao, $sql);
 
-$sqlI = "SELECT * FROM funcionario WHERE status = 0 ORDER BY codigo";
+    $sqlI = "SELECT * FROM funcionario WHERE status = 0 ORDER BY codigo";
+}
+
 $resultadoI = mysqli_query($conexao, $sqlI);
+$quantI = [];
 while ($row = mysqli_fetch_assoc($resultadoI)) {
     $quantI[] = $row;
 }
@@ -60,13 +75,12 @@ while ($row = mysqli_fetch_assoc($resultadoI)) {
         </div>
 
         <div class="search-container">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou status..." onkeyup="filtrarTabela()">
-                <button onclick="limparPesquisa()" id="clearBtn" style="display: none;">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <form method="GET">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou CPF" name="busca" value="<?= $textoBusca ?>">
+                </div>
+            </form>
         </div>
 
         <table class="table-container">

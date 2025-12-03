@@ -10,15 +10,35 @@ if (isset($_GET['codigo']) && $_GET['status'] == 1) {
     $mensagem = "Categoria Ativada com sucesso.";
 }
 
-$sqlA = "SELECT * FROM categoria WHERE status = 1 ORDER BY codigo";
-$resultadoA = mysqli_query($conexao, $sqlA);
+$textoBusca = "";
+if (isset($_GET['busca']) && !empty($_GET['busca'])) {
+    $textoBusca = $_GET['busca'];
+    $sqlA = "SELECT * FROM categoria  
+                WHERE status = 1
+             AND (nome LIKE '%$textoBusca%' OR codigo LIKE '%$textoBusca%')
+             ORDER BY codigo";
+    $resultadoA = mysqli_query($conexao, $sqlA);
 
-$quantI = [];
+    $sqlI = "SELECT * FROM categoria  
+                WHERE status = 0
+             AND (nome LIKE '%$textoBusca%' OR codigo LIKE '%$textoBusca%')
+             ORDER BY codigo";
+    $resultadoI = mysqli_query($conexao, $sqlI);
+    $quantI = [];
+    while ($row = mysqli_fetch_assoc($resultadoI)) {
+        $quantI[] = $row;
+    }
+} else {
+    $sqlA = "SELECT * FROM categoria WHERE status = 1 ORDER BY codigo";
+    $resultadoA = mysqli_query($conexao, $sqlA);
 
-$sqlI = "SELECT * FROM categoria WHERE status = 0 ORDER BY codigo";
-$resultadoI = mysqli_query($conexao, $sqlI);
-while ($row = mysqli_fetch_assoc($resultadoI)) {
-    $quantI[] = $row;
+    $quantI = [];
+
+    $sqlI = "SELECT * FROM categoria WHERE status = 0 ORDER BY codigo";
+    $resultadoI = mysqli_query($conexao, $sqlI);
+    while ($row = mysqli_fetch_assoc($resultadoI)) {
+        $quantI[] = $row;
+    }
 }
 
 ?>
@@ -61,13 +81,14 @@ while ($row = mysqli_fetch_assoc($resultadoI)) {
         </div>
 
         <div class="search-container">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Pesquisar por código, nome ou status..." onkeyup="filtrarTabela()">
-                <button onclick="limparPesquisa()" id="clearBtn" style="display: none;">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <form method="GET">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Pesquisar por código ou nome" name="busca"
+                        value="<?= $textoBusca ?>">
+                    </button>
+                </div>
+            </form>
         </div>
 
         <table class="table-container">
@@ -98,40 +119,40 @@ while ($row = mysqli_fetch_assoc($resultadoI)) {
         </table>
 
         <?php if (count($quantI) > 0) { ?>
-                <div class="card" style="margin-top: 20px;">
-                    <div class="card-body">
-                        <h5 class="title">
-                            Listagem de Categorias Inativadas
-                        </h5>
-                    </div>
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-body">
+                    <h5 class="title">
+                        Listagem de Categorias Inativadas
+                    </h5>
                 </div>
+            </div>
 
-                <table class="table-container">
-                    <thead>
+            <table class="table-container">
+                <thead>
+                    <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($quantI as $linha) { ?>
                         <tr>
-                            <th scope="col">Código</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Ações</th>
+                            <td><?= $linha['codigo'] ?></td>
+                            <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo' ?></td>
+                            <td><?= $linha['nome'] ?></td>
+                            <td class="actions">
+                                <a href="categoria-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>"
+                                    class="btn btn-ativar" onclick="return confirm('Confirma Ativação?')">
+                                    <i class="fas fa-solid fa-circle-check"></i> Ativar </a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($quantI as $linha) { ?>
-                            <tr>
-                                <td><?= $linha['codigo'] ?></td>
-                                <td><?= ($linha['status'] == 1) ? 'Ativo' : 'Inativo' ?></td>
-                                <td><?= $linha['nome'] ?></td>
-                                <td class="actions">
-                                    <a href="categoria-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>"
-                                        class="btn btn-ativar" onclick="return confirm('Confirma Ativação?')">
-                                        <i class="fas fa-solid fa-circle-check"></i> Ativar </a>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            <?php } ?>
-        </div>
+                    <?php } ?>
+                </tbody>
+            </table>
+        <?php } ?>
+    </div>
 </body>
 
 </html>
