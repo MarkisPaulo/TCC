@@ -51,7 +51,6 @@ function initializeMasks() {
     });
 
     // Remove classes quando ganha foco
-    
   });
 }
 
@@ -79,11 +78,11 @@ function aplicarMascara(input, valorNumerico) {
         input.value =
           valorNumerico.length <= 10
             ? valorNumerico
-              .replace(/(\d{2})(\d)/, "($1) $2")
-              .replace(/(\d{4})(\d{1,4})$/, "$1-$2")
+                .replace(/(\d{2})(\d)/, "($1) $2")
+                .replace(/(\d{4})(\d{1,4})$/, "$1-$2")
             : valorNumerico
-              .replace(/(\d{2})(\d)/, "($1) $2")
-              .replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+                .replace(/(\d{2})(\d)/, "($1) $2")
+                .replace(/(\d{5})(\d{1,4})$/, "$1-$2");
       }
       break;
 
@@ -98,6 +97,12 @@ function aplicarMascara(input, valorNumerico) {
         input.value = valorNumerico
           .replace(/(\d{2})(\d)/, "$1/$2")
           .replace(/(\d{2})(\d)/, "$1/$2");
+      }
+      break;
+
+    case "hora":
+      if (valorNumerico.length <= 4) {
+        input.value = valorNumerico.replace(/(\d{2})(\d)/, "$1:$2");
       }
       break;
 
@@ -120,7 +125,10 @@ function aplicarMascara(input, valorNumerico) {
           valorFormatado = valorNumerico.replace(/(\d{4})(\d)/, "$1.$2");
         }
         if (valorNumerico.length > 6) {
-          valorFormatado = valorFormatado.replace(/(\d{4}\.\d{2})(\d)/, "$1.$2");
+          valorFormatado = valorFormatado.replace(
+            /(\d{4}\.\d{2})(\d)/,
+            "$1.$2"
+          );
         }
 
         input.value = valorFormatado;
@@ -132,10 +140,10 @@ function aplicarMascara(input, valorNumerico) {
       input.value = valorNumerico;
 
       // Feedback visual opcional
-      if (valorNumerico.length > 0 ) {
-        input.classList.add('campo-valido');
+      if (valorNumerico.length > 0) {
+        input.classList.add("campo-valido");
       } else {
-        input.classList.remove('campo-valido');
+        input.classList.remove("campo-valido");
       }
       break;
     default:
@@ -162,7 +170,8 @@ function validarFormulario(formId) {
       switch (tipo) {
         case "cpf-cnpj":
           campoValido =
-            valorNumerico.length === 11 || valorNumerico.length === 14 && valorNumerico.length > 13;
+            valorNumerico.length === 11 ||
+            (valorNumerico.length === 14 && valorNumerico.length > 13);
           break;
         case "tel":
           campoValido = valorNumerico.length >= 10;
@@ -172,6 +181,9 @@ function validarFormulario(formId) {
           break;
         case "data":
           campoValido = valorNumerico.length === 8;
+          break;
+        case "hora":
+          campoValido = valorNumerico.length === 4;
           break;
         case "valor":
           campoValido = valorNumerico.length > 0;
