@@ -46,6 +46,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/masks.css">
+    <link rel="stylesheet" href="assets/css/cep.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 
@@ -71,7 +72,7 @@ if (isset($_POST['cadastrar'])) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="cpf">CPF*</label>
-                    <input type="text" name="cpf" id="cpf" placeholder="000.000.000-00" data-mask="cpf-cnpj" maxlength="14" required>
+                    <input type="text" name="cpf" id="cpf-cnpj" placeholder="000.000.000-00" data-mask="cpf-cnpj" maxlength="14" required>
                 </div>
                 <div class="form-group">
                     <label for="telefone">Telefone*</label>
@@ -183,77 +184,9 @@ if (isset($_POST['cadastrar'])) {
         </form>
     </div>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const cepInput = document.getElementById('cep');
-        const logradouroInput = document.getElementById('logradouro');
-        const bairroInput = document.getElementById('bairro');
-        const cidadeInput = document.getElementById('cidade');
-        const ufSelect = document.getElementById('uf');
-        const enderecoInput = document.getElementById('endereco');
-
-        function limpaCampos() {
-            logradouroInput.value = '';
-            bairroInput.value = '';
-            cidadeInput.value = '';
-            ufSelect.value = '';
-            enderecoInput.value = '';
-        }
-
-        function formatCEP(v) {
-            const d = v.replace(/\D/g, '').slice(0, 8);
-            return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d;
-        }
-
-        cepInput.addEventListener('input', function (e) {
-            e.target.value = formatCEP(e.target.value);
-        });
-
-        
-        cepInput.addEventListener('blur', function () {
-            const cep = cepInput.value.replace(/\D/g, '');
-            if (cep.length !== 8) {
-                limpaCampos();
-                return;
-            }
-
-            // indica carregamento
-            logradouroInput.value = '...';
-            bairroInput.value = '...';
-            cidadeInput.value = '...';
-            ufSelect.value = '';
-            enderecoInput.value = '...';
-
-            fetch('https://viacep.com.br/ws/' + cep + '/json/')
-                .then(res => res.json())
-                .then(data => {
-                    if (data.erro) {
-                        limpaCampos();
-                        alert('CEP não encontrado.');
-                        return;
-                    }
-                    logradouroInput.value = data.logradouro || '';
-                    bairroInput.value = data.bairro || '';
-                    cidadeInput.value = data.localidade || '';
-
-                    const ufFromApi = (data.uf || '').toUpperCase();
-                    if (Array.from(ufSelect.options).some(opt => opt.value === ufFromApi)) {
-                        ufSelect.value = ufFromApi;
-                    } else {
-                        ufSelect.value = '';
-                    }
-
-                    enderecoInput.value = data.logradouro ? data.logradouro + (data.complemento ? ', ' + data.complemento : '') : '';
-                })
-                .catch(err => {
-                    console.error(err);
-                    limpaCampos();
-                    alert('Erro ao consultar CEP. Tente novamente.');
-                });
-        });
-    });
-    </script>
 <script src="assets/js/masks.js"></script>
+<script src="assets/js/validacao.js"></script>
+<script src="assets/js/buscaCEP.js"></script>
 </body>
 
 
