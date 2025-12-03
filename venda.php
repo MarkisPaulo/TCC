@@ -18,7 +18,7 @@ if (isset($_POST['acao'])) {
             $preco = floatval($_POST['preco']);
             $quantidade = intval($_POST['quantidade']);
             $estoque = intval($_POST['estoque']);
-            
+
             // Verifica se o produto já está no carrinho
             $produtoExiste = false;
             foreach ($_SESSION['carrinho'] as $key => $item) {
@@ -34,7 +34,7 @@ if (isset($_POST['acao'])) {
                     break;
                 }
             }
-            
+
             if (!$produtoExiste) {
                 $_SESSION['carrinho'][] = array(
                     'codigo' => $codigo,
@@ -48,7 +48,7 @@ if (isset($_POST['acao'])) {
                 $mensagem = "Produto adicionado!";
             }
             break;
-            
+
         case 'remover':
             $indice = intval($_POST['indice']);
             if (isset($_SESSION['carrinho'][$indice])) {
@@ -57,7 +57,7 @@ if (isset($_POST['acao'])) {
                 $mensagem = "Produto removido!";
             }
             break;
-            
+
         case 'alterar_quantidade':
             $indice = intval($_POST['indice']);
             $incremento = intval($_POST['incremento']);
@@ -74,7 +74,7 @@ if (isset($_POST['acao'])) {
                 }
             }
             break;
-            
+
         case 'limpar':
             $_SESSION['carrinho'] = array();
             $mensagem = "Carrinho limpo!";
@@ -97,12 +97,11 @@ $textoBuscaCli = '';
 
 if (isset($_GET['buscaProd']) && !empty($_GET['buscaProd'])) {
     $textoBuscaProd = $_GET['buscaProd'];
-    $textoBuscaEscaped = mysqli_real_escape_string($conexao, $textoBuscaProd);
     $sql = "SELECT p.codigo, p.nome, p.precoUnitarioDaVenda, p.quantEstoque, p.unidMedida, m.nome as marca 
             FROM produto p 
             INNER JOIN marca m ON p.idMarca = m.codigo 
             WHERE p.status = 1 
-            AND (p.nome LIKE '%$textoBuscaEscaped%' OR p.codigo LIKE '%$textoBuscaEscaped%')
+            AND (p.nome LIKE '%$textoBuscaProd%' OR p.codigo LIKE '%$textoBuscaProd%')
             LIMIT 10";
     $resultado = mysqli_query($conexao, $sql);
     while ($row = mysqli_fetch_assoc($resultado)) {
@@ -112,11 +111,10 @@ if (isset($_GET['buscaProd']) && !empty($_GET['buscaProd'])) {
 
 if (isset($_GET['buscaCli']) && !empty($_GET['buscaCli'])) {
     $textoBuscaCli = $_GET['buscaCli'];
-    $textoBuscaEscaped = mysqli_real_escape_string($conexao, $textoBuscaCli);
     $sql = "SELECT c.codigo, c.nome, c.cpf_cnpj 
             FROM cliente c 
             WHERE c.status = 1 
-            AND (c.nome LIKE '%$textoBuscaEscaped%' OR c.codigo LIKE '%$textoBuscaEscaped%')
+            AND (c.nome LIKE '%$textoBuscaCli%' OR c.codigo LIKE '%$textoBuscaCli%')
             LIMIT 10";
     $resultado = mysqli_query($conexao, $sql);
     while ($row = mysqli_fetch_assoc($resultado)) {
@@ -155,18 +153,32 @@ foreach ($_SESSION['carrinho'] as $item) {
 
 <body>
     <?php require_once("header.php"); ?>
-    
+
+    <?php if (isset($_SESSION['erro_entrega'])) { ?>
+        <div
+            style="position: fixed; top: 20px; right: 20px; padding: 15px 25px; background: #dc3545; color: white; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+            <i class="fas fa-exclamation-circle"></i> <?= $_SESSION['erro_entrega'] ?>
+        </div>
+        <script>
+            setTimeout(function () {
+                document.querySelector('[style*="position: fixed"]').style.display = 'none';
+            }, 4000);
+        </script>
+        <?php unset($_SESSION['erro_entrega']); ?>
+    <?php } ?>
+
     <?php if (isset($mensagem)) { ?>
-        <div style="position: fixed; top: 20px; right: 20px; padding: 15px 25px; background: #4caf50; color: white; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+        <div
+            style="position: fixed; top: 20px; right: 20px; padding: 15px 25px; background: #4caf50; color: white; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
             <?= $mensagem ?>
         </div>
         <script>
-            setTimeout(function() {
+            setTimeout(function () {
                 document.querySelector('[style*="position: fixed"]').style.display = 'none';
             }, 2000);
         </script>
     <?php } ?>
-    
+
     <div class="pdv-container">
         <!-- Painel Esquerdo -->
         <div class="left-panel">
@@ -189,8 +201,8 @@ foreach ($_SESSION['carrinho'] as $item) {
             <div class="panel-content">
 
                 <!-- ABA PRODUTO -->
-                <div class="tab-content <?= $aba_ativa === 'produto' ? 'active' : '' ?>" 
-                     style="<?= $aba_ativa === 'produto' ? '' : 'display: none;' ?>" id="tab-produto">
+                <div class="tab-content <?= $aba_ativa === 'produto' ? 'active' : '' ?>"
+                    style="<?= $aba_ativa === 'produto' ? '' : 'display: none;' ?>" id="tab-produto">
                     <div class="form-group">
                         <label>Buscar Produto</label>
                         <form method="GET" action="">
@@ -200,7 +212,7 @@ foreach ($_SESSION['carrinho'] as $item) {
                                 <input type="text" name="buscaProd" placeholder="Digite o nome ou código do produto"
                                     value="<?= $textoBuscaProd ?>">
                             </div>
-                        </form> 
+                        </form>
 
                         <?php if (!empty($textoBuscaProd)) { ?>
                             <div class="search-results">
@@ -225,10 +237,11 @@ foreach ($_SESSION['carrinho'] as $item) {
                                                 <input type="hidden" name="unidMedida" value="<?= $produto['unidMedida'] ?>">
                                                 <input type="hidden" name="preco" value="<?= $produto['precoUnitarioDaVenda'] ?>">
                                                 <input type="hidden" name="estoque" value="<?= $produto['quantEstoque'] ?>">
-                                                
+
                                                 <label>Qtde:</label>
-                                                <input type="text" name="quantidade" value="1" min="1" 
-                                                       max="<?= $produto['quantEstoque'] ?>" data-mask="numerico" maxlength="5" class="input-quantidade">
+                                                <input type="text" name="quantidade" value="1" min="1"
+                                                    max="<?= $produto['quantEstoque'] ?>" data-mask="numerico" maxlength="5"
+                                                    class="input-quantidade">
                                                 <button type="submit" class="btn-adicionar">
                                                     <i class="fas fa-plus"></i> Adicionar
                                                 </button>
@@ -246,8 +259,8 @@ foreach ($_SESSION['carrinho'] as $item) {
                 </div>
 
                 <!-- ABA CLIENTE -->
-                <div class="tab-content <?= $aba_ativa === 'cliente' ? 'active' : '' ?>" 
-                     style="<?= $aba_ativa === 'cliente' ? '' : 'display: none;' ?>" id="tab-cliente">
+                <div class="tab-content <?= $aba_ativa === 'cliente' ? 'active' : '' ?>"
+                    style="<?= $aba_ativa === 'cliente' ? '' : 'display: none;' ?>" id="tab-cliente">
                     <div class="form-group">
                         <label for="select-cliente">
                             <i class="fas fa-user"></i> Buscar Cliente
@@ -257,20 +270,20 @@ foreach ($_SESSION['carrinho'] as $item) {
                             <div class="search-box">
                                 <i class="fas fa-search"></i>
                                 <input type="text" name="buscaCli" placeholder="Digite o nome ou código do Cliente"
-                                    value="<?= $textoBuscaCli ?>" autofocus autocomplete="off" >
+                                    value="<?= $textoBuscaCli ?>" autofocus autocomplete="off">
                             </div>
                         </form>
-                        
+
                         <?php if (!empty($textoBuscaCli)) { ?>
                             <div class="search-results">
                                 <?php if (count($clientesEncontrados) > 0) { ?>
                                     <?php foreach ($clientesEncontrados as $cliente) { ?>
-                                        <div class="result-item" style="cursor: pointer;" 
-                                             onclick="selecionarCliente(<?= $cliente['codigo'] ?>, '<?= addslashes($cliente['nome']) ?>', '<?= $cliente['cpf_cnpj'] ?>')">
+                                        <div class="result-item" style="cursor: pointer;"
+                                            onclick="selecionarCliente(<?= $cliente['codigo'] ?>, '<?= addslashes($cliente['nome']) ?>', '<?= $cliente['cpf_cnpj'] ?>')">
                                             <h4><?= $cliente['nome'] ?></h4>
                                             <p class="p">
                                                 Código: <?= $cliente['codigo'] ?> |
-                                                CPF/CNPJ: <?= $cliente['cpf_cnpj'] ?>   
+                                                CPF/CNPJ: <?= $cliente['cpf_cnpj'] ?>
                                             </p>
                                         </div>
                                     <?php } ?>
@@ -283,10 +296,13 @@ foreach ($_SESSION['carrinho'] as $item) {
                         <?php } ?>
                     </div>
 
-                    <div id="cliente-info" class="info-box" style="display: <?= isset($_SESSION['cliente_venda']) ? 'block' : 'none' ?>;">
+                    <div id="cliente-info" class="info-box"
+                        style="display: <?= isset($_SESSION['cliente_venda']) ? 'block' : 'none' ?>;">
                         <h4><i class="fas fa-check-circle"></i> Cliente Selecionado</h4>
-                        <p><strong>Nome:</strong> <span id="cliente-nome-display"><?= $_SESSION['cliente_venda']['nome'] ?? '' ?></span></p>
-                        <p><strong>CPF/CNPJ:</strong> <span id="cliente-cpf-display"><?= $_SESSION['cliente_venda']['cpf_cnpj'] ?? '' ?></span></p>
+                        <p><strong>Nome:</strong> <span
+                                id="cliente-nome-display"><?= $_SESSION['cliente_venda']['nome'] ?? '' ?></span></p>
+                        <p><strong>CPF/CNPJ:</strong> <span
+                                id="cliente-cpf-display"><?= $_SESSION['cliente_venda']['cpf_cnpj'] ?? '' ?></span></p>
                     </div>
 
                     <div class="form-group">
@@ -308,7 +324,8 @@ foreach ($_SESSION['carrinho'] as $item) {
             <div class="panel-actions">
                 <form method="POST" action="" style="display: inline;">
                     <input type="hidden" name="acao" value="limpar">
-                    <button type="submit" class="btn btn-secondary" onclick="return confirm('Deseja limpar o carrinho?')">
+                    <button type="submit" class="btn btn-secondary"
+                        onclick="return confirm('Deseja limpar o carrinho?')">
                         <i class="fas fa-trash"></i> Limpar
                     </button>
                 </form>
@@ -347,9 +364,9 @@ foreach ($_SESSION['carrinho'] as $item) {
                         <p style="color: #999; margin-top: 1rem;">Nenhum produto adicionado</p>
                     </div>
                 <?php } else { ?>
-                    <?php foreach ($_SESSION['carrinho'] as $indice => $item) { 
+                    <?php foreach ($_SESSION['carrinho'] as $indice => $item) {
                         $subtotal = $item['precoUnitario'] * $item['quantidade'];
-                    ?>
+                        ?>
                         <div class="product-item">
                             <div class="product-info">
                                 <h4><?= $item['nome'] ?></h4>
@@ -408,17 +425,17 @@ foreach ($_SESSION['carrinho'] as $item) {
             formData.append('codigo', codigo);
             formData.append('nome', nome);
             formData.append('cpf_cnpj', cpf);
-            
+
             fetch('salvar_cliente_sessao.php', {
                 method: 'POST',
                 body: formData
             })
-            .then(() => {
-                document.getElementById('cliente-nome-display').textContent = nome;
-                document.getElementById('cliente-cpf-display').textContent = cpf;
-                document.getElementById('cliente-info').style.display = 'block';
-                alert('Cliente "' + nome + '" selecionado!');
-            });
+                .then(() => {
+                    document.getElementById('cliente-nome-display').textContent = nome;
+                    document.getElementById('cliente-cpf-display').textContent = cpf;
+                    document.getElementById('cliente-info').style.display = 'block';
+                    alert('Cliente "' + nome + '" selecionado!');
+                });
         }
 
         function abrirModalFinalizar() {
@@ -435,14 +452,14 @@ foreach ($_SESSION['carrinho'] as $item) {
                             
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">Cliente*</label>
-                                <select name="idCliente" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                <select id="selectCliente" name="idCliente" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
                                     <option value="">Selecione o cliente</option>
                                     <?php
-                                    $sqlClientesModal = "SELECT codigo, nome FROM cliente WHERE status = 1 ORDER BY nome";
+                                    $sqlClientesModal = "SELECT codigo, nome, endereco FROM cliente WHERE status = 1 ORDER BY nome";
                                     $resultClientesModal = mysqli_query($conexao, $sqlClientesModal);
                                     while ($cliente = mysqli_fetch_assoc($resultClientesModal)) {
                                         $selected = (isset($_SESSION['cliente_venda']) && $_SESSION['cliente_venda']['codigo'] == $cliente['codigo']) ? 'selected' : '';
-                                        echo "<option value='{$cliente['codigo']}' {$selected}>{$cliente['nome']}</option>";
+                                        echo "<option value='{$cliente['codigo']}' data-endereco='{$cliente['endereco']}' {$selected}>{$cliente['nome']}</option>";
                                     }
                                     ?>
                                 </select>
@@ -471,6 +488,30 @@ foreach ($_SESSION['carrinho'] as $item) {
                                 <input type="text" name="valorPago" data-mask="valor" placeholder="R$ 0,00" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
                                 <small style="color: #666;">Se pago parcial, o restante ficará em aberto</small>
                             </div>
+
+                            <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; border-left: 4px solid #007bff;">
+                                <label style="display: flex; align-items: center; cursor: pointer; font-weight: 600; margin-bottom: 10px;">
+                                    <input type="checkbox" id="checkEntrega" name="temEntrega" value="1" style="width: 18px; height: 18px; cursor: pointer; margin-right: 10px;">
+                                    <i class="fas fa-truck" style="margin-right: 8px; color: #007bff;"></i> Agendar Entrega
+                                </label>
+                                
+                                <div id="enderecoEntregaDiv" style="display: none;">
+                                    <label style="display: block; margin-bottom: 5px; font-weight: 600; margin-top: 10px;">Endereço de Entrega*</label>
+                                    <textarea id="enderecoEntrega" name="enderecoEntrega" rows="3" placeholder="Endereço padrão do cliente" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+                                    <small style="color: #666;">Edite se necessário</small>
+
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Data de Entrega*</label>
+                                            <input type="text" id="dataEntrega" name="dataEntrega" data-mask="data" placeholder="DD/MM/YYYY" maxlength="10" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                        </div>
+                                        <div>
+                                            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Hora de Entrega*</label>
+                                            <input type="text" id="horaEntrega" name="horaEntrega" data-mask="hora" placeholder="HH:MM" maxlength="5" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">Observações</label>
@@ -487,6 +528,32 @@ foreach ($_SESSION['carrinho'] as $item) {
             `;
 
             document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+            // Listener para o checkbox de entrega
+            const checkEntrega = document.getElementById('checkEntrega');
+            const enderecoEntregaDiv = document.getElementById('enderecoEntregaDiv');
+            const selectCliente = document.getElementById('selectCliente');
+            const enderecoEntrega = document.getElementById('enderecoEntrega');
+
+            checkEntrega.addEventListener('change', function () {
+                if (this.checked) {
+                    enderecoEntregaDiv.style.display = 'block';
+                    // Preenche com endereço do cliente selecionado
+                    const opcaoSelecionada = selectCliente.options[selectCliente.selectedIndex];
+                    enderecoEntrega.value = opcaoSelecionada.getAttribute('data-endereco') || '';
+                } else {
+                    enderecoEntregaDiv.style.display = 'none';
+                    enderecoEntrega.value = '';
+                }
+            });
+
+            selectCliente.addEventListener('change', function () {
+                if (checkEntrega.checked) {
+                    // Atualiza endereço quando cliente muda
+                    const opcaoSelecionada = this.options[this.selectedIndex];
+                    enderecoEntrega.value = opcaoSelecionada.getAttribute('data-endereco') || '';
+                }
+            });
 
             setTimeout(() => {
                 if (window.MaskUtils) {
