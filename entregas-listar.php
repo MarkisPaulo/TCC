@@ -7,12 +7,54 @@ date_default_timezone_set('America/Sao_Paulo');
 
 // Ação de finalizar entrega
 if (isset($_GET['finalizar']) && isset($_GET['codigo'])) {
-    $codigoVenda = (int)$_GET['codigo'];
-    
+    $codigoVenda = (int) $_GET['codigo'];
+
     $sqlFinalizar = "UPDATE vendas SET statusEntrega = 0 WHERE numeroDaVenda = $codigoVenda";
     mysqli_query($conexao, $sqlFinalizar);
-    
+
     setNotificacao('sucesso', "Entrega #$codigoVenda finalizada com sucesso!");
+    header("Location: entregas-listar.php");
+    exit;
+}
+
+// Busca detalhes se solicitado
+$detalhesVenda = null;
+if (isset($_GET['ver_detalhes'])) {
+    $numeroVenda = (int) $_GET['ver_detalhes'];
+
+    // Busca informações da venda
+    $sqlVenda = "SELECT 
+        v.numeroDaVenda,
+        v.valorTotal,
+        v.dataHoraEntrega,
+        v.enderecoEntrega,
+        v.observacoes,
+        c.nome as nomeCliente,
+        c.telefone as telefoneCliente
+    FROM vendas v
+    INNER JOIN cliente c ON v.idCliente = c.codigo
+    WHERE v.numeroDaVenda = $numeroVenda";
+
+    $resultVenda = mysqli_query($conexao, $sqlVenda);
+    $detalhesVenda = mysqli_fetch_assoc($resultVenda);
+
+    // Busca os itens da venda
+    $sqlItens = "SELECT 
+        vp.quantidade,
+        vp.precoUnitDaVenda,
+        p.codigo,
+        p.nome,
+        m.nome as marca
+    FROM vendahasproduto vp
+    INNER JOIN produto p ON vp.FkCodigoProduto = p.codigo
+    INNER JOIN marca m ON p.idMarca = m.codigo
+    WHERE vp.FkNumeroDaVenda = $numeroVenda";
+
+    $resultItens = mysqli_query($conexao, $sqlItens);
+    $itensVenda = [];
+    while ($item = mysqli_fetch_assoc($resultItens)) {
+        $itensVenda[] = $item;
+    }
 }
 
 // Filtros
@@ -70,6 +112,7 @@ $stats = mysqli_fetch_assoc($resultStats);
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,12 +132,12 @@ $stats = mysqli_fetch_assoc($resultStats);
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 9999;
             align-items: center;
             justify-content: center;
         }
-        
+
         .modal-content {
             background: white;
             padding: 30px;
@@ -104,7 +147,7 @@ $stats = mysqli_fetch_assoc($resultStats);
             max-height: 80vh;
             overflow-y: auto;
         }
-        
+
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -113,15 +156,16 @@ $stats = mysqli_fetch_assoc($resultStats);
             padding-bottom: 15px;
             border-bottom: 2px solid #e0e0e0;
         }
-        
+
         .modal-close {
             background: none;
             border: none;
             font-size: 24px;
             cursor: pointer;
             color: #666;
+            text-decoration: none;
         }
-        
+
         .info-section {
             background: #f8f9fa;
             padding: 15px;
@@ -129,18 +173,18 @@ $stats = mysqli_fetch_assoc($resultStats);
             margin-bottom: 20px;
             border-left: 4px solid #0077b6;
         }
-        
+
         .info-section h3 {
             margin: 0 0 10px 0;
             color: #0077b6;
             font-size: 16px;
         }
-        
+
         .info-section p {
             margin: 5px 0;
             color: #333;
         }
-        
+
         .item-venda {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -149,22 +193,22 @@ $stats = mysqli_fetch_assoc($resultStats);
             border-bottom: 1px solid #f0f0f0;
             align-items: center;
         }
-        
+
         .item-venda:hover {
             background: #f8f9fa;
         }
-        
+
         .item-header {
             font-weight: 600;
             background: #e6f2fa;
             padding: 12px 15px;
             border-radius: 6px;
         }
-        
+
         .entrega-atrasada {
             background-color: #fff5f5 !important;
         }
-        
+
         .badge-atrasada {
             background: #dc3545;
             color: white;
@@ -173,7 +217,7 @@ $stats = mysqli_fetch_assoc($resultStats);
             font-size: 11px;
             font-weight: 600;
         }
-        
+
         .badge-hoje {
             background: #ffc107;
             color: #333;
@@ -184,6 +228,7 @@ $stats = mysqli_fetch_assoc($resultStats);
         }
     </style>
 </head>
+
 <body>
     <?php require_once("header.php"); ?>
 
@@ -207,22 +252,23 @@ $stats = mysqli_fetch_assoc($resultStats);
         <!-- Barra de Filtros -->
         <div class="filter-bar">
             <form method="GET" style="display: flex; gap: 15px; flex-wrap: wrap; width: 100%;">
-                <input type="text" name="busca" placeholder="Pesquisar por cliente, código da venda..." 
-                       value="<?= $buscaCliente ?>" 
-                       style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; flex: 1; min-width: 250px;">
-                
+                <input type="text" name="busca" placeholder="Pesquisar por cliente, código da venda..."
+                    value="<?= $buscaCliente ?>"
+                    style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; flex: 1; min-width: 250px;">
+
                 <select name="periodo">
                     <option value="">Todas as Entregas</option>
                     <option value="atrasadas" <?= $filtroPeriodo === 'atrasadas' ? 'selected' : '' ?>>Atrasadas</option>
                     <option value="hoje" <?= $filtroPeriodo === 'hoje' ? 'selected' : '' ?>>Hoje</option>
                     <option value="proximas" <?= $filtroPeriodo === 'proximas' ? 'selected' : '' ?>>Próximas 24h</option>
                 </select>
-                
+
                 <button type="submit">
                     <i class="fas fa-filter"></i> Filtrar
                 </button>
-                
-                <a href="entregas-listar.php" style="padding: 10px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 6px;">
+
+                <a href="entregas-listar.php"
+                    style="padding: 10px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 6px;">
                     <i class="fas fa-redo"></i> Limpar
                 </a>
             </form>
@@ -251,133 +297,117 @@ $stats = mysqli_fetch_assoc($resultStats);
                 </tr>
             </thead>
             <tbody>
-                <?php 
+                <?php
                 $agora = new DateTime();
-                while ($entrega = mysqli_fetch_assoc($resultado)) { 
+                while ($entrega = mysqli_fetch_assoc($resultado)) {
                     $dataEntrega = new DateTime($entrega['dataHoraEntrega']);
                     $atrasada = $dataEntrega < $agora;
                     $hoje = $dataEntrega->format('Y-m-d') === $agora->format('Y-m-d');
-                ?>
-                <tr class="<?= $atrasada ? 'entrega-atrasada' : '' ?>">
-                    <td>#<?= $entrega['numeroDaVenda'] ?></td>
-                    <td><?= $entrega['nomeCliente'] ?></td>
-                    <td><?= $entrega['telefoneCliente'] ?></td>
-                    <td style="max-width: 250px;"><?= $entrega['enderecoEntrega'] ?></td>
-                    <td>
-                        <?= $dataEntrega->format('d/m/Y H:i') ?>
-                        <?php if ($atrasada) { ?>
-                            <br><span class="badge-atrasada"><i class="fas fa-exclamation-triangle"></i> ATRASADA</span>
-                        <?php } elseif ($hoje) { ?>
-                            <br><span class="badge-hoje"><i class="fas fa-clock"></i> HOJE</span>
-                        <?php } ?>
-                    </td>
-                    <td>R$ <?= number_format($entrega['valorTotal'], 2, ',', '.') ?></td>
-                    <td>
-                        <span class="status-badge pendente">
-                            <i class="fas fa-truck"></i> Pendente
-                        </span>
-                    </td>
-                    <td class="actions">
-                        <button onclick="verDetalhes(<?= $entrega['numeroDaVenda'] ?>)" 
-                                class="btn btn-warning" 
-                                style="margin-bottom: 5px; width: 100%;">
-                            <i class="fas fa-eye"></i> Ver Detalhes
-                        </button>
-                        <a href="entregas-listar.php?finalizar=1&codigo=<?= $entrega['numeroDaVenda'] ?>" 
-                           class="btn btn-ativar"
-                           style="width: 100%;"
-                           onclick="return confirm('Confirmar que a entrega foi realizada?')">
-                            <i class="fas fa-check-circle"></i> Finalizar Entrega
-                        </a>
-                    </td>
-                </tr>
+                    ?>
+                    <tr class="<?= $atrasada ? 'entrega-atrasada' : '' ?>">
+                        <td>#<?= $entrega['numeroDaVenda'] ?></td>
+                        <td><?= $entrega['nomeCliente'] ?></td>
+                        <td><?= $entrega['telefoneCliente'] ?></td>
+                        <td style="max-width: 250px;"><?= $entrega['enderecoEntrega'] ?></td>
+                        <td>
+                            <?= $dataEntrega->format('d/m/Y H:i') ?>
+                            <?php if ($atrasada) { ?>
+                                <br><span class="badge-atrasada"><i class="fas fa-exclamation-triangle"></i> ATRASADA</span>
+                            <?php } elseif ($hoje) { ?>
+                                <br><span class="badge-hoje"><i class="fas fa-clock"></i> HOJE</span>
+                            <?php } ?>
+                        </td>
+                        <td>R$ <?= number_format($entrega['valorTotal'], 2, ',', '.') ?></td>
+                        <td>
+                            <span class="status-badge pendente">
+                                <i class="fas fa-truck"></i> Pendente
+                            </span>
+                        </td>
+                        <td class="actions">
+                            <a href="?ver_detalhes=<?= $entrega['numeroDaVenda'] ?><?= $buscaCliente ? '&busca=' . $buscaCliente : '' ?><?= $filtroPeriodo ? '&periodo=' . $filtroPeriodo : '' ?>"
+                                class="btn btn-warning"
+                                style="margin-bottom: 5px; width: 100%; text-decoration: none; text-align: center;">
+                                <i class="fas fa-eye"></i> Ver Detalhes
+                            </a>
+                            <a href="entregas-listar.php?finalizar=1&codigo=<?= $entrega['numeroDaVenda'] ?>"
+                                class="btn btn-ativar" style="width: 100%; text-decoration: none; text-align: center;"
+                                onclick="return confirm('Confirmar que a entrega foi realizada?')">
+                                <i class="fas fa-check-circle"></i> Finalizar Entrega
+                            </a>
+                        </td>
+                    </tr>
                 <?php } ?>
             </tbody>
         </table>
     </div>
 
     <!-- Modal para Ver Detalhes -->
-    <div id="modalDetalhes" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-truck"></i> Detalhes da Entrega</h2>
-                <button class="modal-close" onclick="fecharModal()">&times;</button>
-            </div>
-            <div id="conteudoDetalhes"></div>
-        </div>
-    </div>
+    <?php if (isset($_GET['ver_detalhes']) && $detalhesVenda) {
+        $dataEntregaFormatada = 'Não agendada';
+        if ($detalhesVenda['dataHoraEntrega'] && $detalhesVenda['dataHoraEntrega'] != '0000-00-00 00:00:00') {
+            $dataEntrega = new DateTime($detalhesVenda['dataHoraEntrega']);
+            $dataEntregaFormatada = $dataEntrega->format('d/m/Y H:i');
+        }
+        ?>
+        <div id="modalDetalhes" class="modal-overlay" style="display: flex;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-truck"></i> Detalhes da Entrega</h2>
+                    <a href="entregas-listar.php<?= $buscaCliente ? '?busca=' . $buscaCliente : '' ?><?= $filtroPeriodo ? ($buscaCliente ? '&' : '?') . 'periodo=' . $filtroPeriodo : '' ?>"
+                        class="modal-close">&times;</a>
+                </div>
+                <div id="conteudoDetalhes">
+                    <!-- Informações da Entrega -->
+                    <div class="info-section">
+                        <h3><i class="fas fa-info-circle"></i> Informações da Entrega</h3>
+                        <p><strong>Venda:</strong> #<?= $detalhesVenda['numeroDaVenda'] ?></p>
+                        <p><strong>Cliente:</strong> <?= $detalhesVenda['nomeCliente'] ?></p>
+                        <p><strong>Telefone:</strong> <?= $detalhesVenda['telefoneCliente'] ?></p>
+                        <p><strong>Endereço:</strong> <?= $detalhesVenda['enderecoEntrega'] ?></p>
+                        <p><strong>Data/Hora:</strong> <?= $dataEntregaFormatada ?></p>
+                        <?php if ($detalhesVenda['observacoes']) { ?>
+                            <p><strong>Observações:</strong> <?= $detalhesVenda['observacoes'] ?></p>
+                        <?php } ?>
+                    </div>
 
-    <script>
-        function verDetalhes(numeroVenda) {
-            const modal = document.getElementById('modalDetalhes');
-            const conteudo = document.getElementById('conteudoDetalhes');
-            
-            conteudo.innerHTML = '<p style="text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Carregando...</p>';
-            modal.style.display = 'flex';
-            
-            fetch(`buscar_detalhes_entrega.php?venda=${numeroVenda}`)
-                .then(response => response.json())
-                .then(data => {
-                    let html = '';
-                    
-                    // Informações da Entrega
-                    html += '<div class="info-section">';
-                    html += '<h3><i class="fas fa-info-circle"></i> Informações da Entrega</h3>';
-                    html += `<p><strong>Venda:</strong> #${data.venda.numeroDaVenda}</p>`;
-                    html += `<p><strong>Cliente:</strong> ${data.venda.nomeCliente}</p>`;
-                    html += `<p><strong>Telefone:</strong> ${data.venda.telefoneCliente}</p>`;
-                    html += `<p><strong>Endereço:</strong> ${data.venda.enderecoEntrega}</p>`;
-                    html += `<p><strong>Data/Hora:</strong> ${data.venda.dataHoraEntregaFormatada}</p>`;
-                    if (data.venda.observacoes) {
-                        html += `<p><strong>Observações:</strong> ${data.venda.observacoes}</p>`;
-                    }
-                    html += '</div>';
-                    
-                    // Itens da Venda
-                    html += '<div class="info-section">';
-                    html += '<h3><i class="fas fa-box"></i> Itens da Venda</h3>';
-                    html += '<div class="item-venda item-header">';
-                    html += '<div>Produto</div>';
-                    html += '<div style="text-align: center;">Quantidade</div>';
-                    html += '<div style="text-align: right;">Preço Unit.</div>';
-                    html += '<div style="text-align: right;">Subtotal</div>';
-                    html += '</div>';
-                    
-                    let total = 0;
-                    data.itens.forEach(item => {
-                        const subtotal = item.quantidade * item.precoUnitDaVenda;
-                        total += subtotal;
-                        
-                        html += '<div class="item-venda">';
-                        html += `<div><strong>${item.nome}</strong><br><small>${item.marca}</small></div>`;
-                        html += `<div style="text-align: center;">${item.quantidade}</div>`;
-                        html += `<div style="text-align: right;">R$ ${parseFloat(item.precoUnitDaVenda).toFixed(2).replace('.', ',')}</div>`;
-                        html += `<div style="text-align: right;"><strong>R$ ${subtotal.toFixed(2).replace('.', ',')}</strong></div>`;
-                        html += '</div>';
-                    });
-                    
-                    html += '<div style="margin-top: 15px; padding: 15px; background: #e6f2fa; border-radius: 6px; text-align: right;">';
-                    html += `<strong style="font-size: 18px;">Valor Total: R$ ${total.toFixed(2).replace('.', ',')}</strong>`;
-                    html += '</div>';
-                    html += '</div>';
-                    
-                    conteudo.innerHTML = html;
-                })
-                .catch(error => {
-                    conteudo.innerHTML = '<p style="color: red; text-align: center; padding: 20px;">Erro ao carregar detalhes</p>';
-                });
-        }
-        
-        function fecharModal() {
-            document.getElementById('modalDetalhes').style.display = 'none';
-        }
-        
-        // Fecha modal ao clicar fora
-        document.getElementById('modalDetalhes').addEventListener('click', function(e) {
-            if (e.target === this) {
-                fecharModal();
-            }
-        });
-    </script>
+                    <!-- Itens da Venda -->
+                    <div class="info-section">
+                        <h3><i class="fas fa-box"></i> Itens da Venda</h3>
+                        <div class="item-venda item-header">
+                            <div>Produto</div>
+                            <div style="text-align: center;">Quantidade</div>
+                            <div style="text-align: right;">Preço Unit.</div>
+                            <div style="text-align: right;">Subtotal</div>
+                        </div>
+
+                        <?php
+                        $total = 0;
+                        foreach ($itensVenda as $item) {
+                            $subtotal = $item['quantidade'] * $item['precoUnitDaVenda'];
+                            $total += $subtotal;
+                            ?>
+                            <div class="item-venda">
+                                <div><strong><?= $item['nome'] ?></strong><br><small>Código: <?= $item['codigo'] ?> |
+                                        <?= $item['marca'] ?></small></div>
+                                <div style="text-align: center;"><?= $item['quantidade'] ?></div>
+                                <div style="text-align: right;">R$ <?= number_format($item['precoUnitDaVenda'], 2, ',', '.') ?>
+                                </div>
+                                <div style="text-align: right;"><strong>R$ <?= number_format($subtotal, 2, ',', '.') ?></strong>
+                                </div>
+                            </div>
+                        <?php } ?>
+
+                        <div
+                            style="margin-top: 15px; padding: 15px; background: #e6f2fa; border-radius: 6px; text-align: right;">
+                            <strong style="font-size: 18px;">Valor Total: R$
+                                <?= number_format($total, 2, ',', '.') ?></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
 </body>
+
 </html>
