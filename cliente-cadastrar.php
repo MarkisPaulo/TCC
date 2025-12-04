@@ -1,6 +1,7 @@
 <?php
 require_once("conexao.php");
 require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
 if (isset($_POST['cadastrar'])) {
 
     $cpf_cnpj = $_POST['cpf_cnpj'];
@@ -18,7 +19,9 @@ if (isset($_POST['cadastrar'])) {
     $sql = "INSERT INTO cliente (nome, cpf_cnpj, telefone, endereco, logradouro, cep, bairro, cidade, uf, email) VALUES('$nome', '$cpf_cnpj', '$telefone', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$email')";
 
     mysqli_query($conexao, $sql);
-    echo "Registro salvo com sucesso";
+    setNotificacao('sucesso', 'Cliente cadastrado com sucesso!');
+    header("Location: cliente-listar.php");
+    exit;
 }
 ?>
 
@@ -35,6 +38,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/masks.css">
     <link rel="stylesheet" href="assets/css/cep.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 

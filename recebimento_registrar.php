@@ -1,42 +1,41 @@
 <?php
 require_once("conexao.php");
 require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
 
 if (isset($_POST['confirmar'])) {
     $codigo = intval($_POST['codigo']);
     $valorRecebido = floatval(str_replace(',', '.', preg_replace('/[^0-9,]/', '', $_POST['valorRecebido'])));
-    $dataRecebimento = date('Y-m-d'); // Formato correto para MySQL
-    
-    // BUSCA O VALOR ATUAL DO BANCO ANTES DE ATUALIZAR
+    $dataRecebimento = date('Y-m-d');
+
     $sqlBusca = "SELECT valorReceber, valorRecebido FROM recebimentos WHERE codigo = $codigo";
     $resultBusca = mysqli_query($conexao, $sqlBusca);
     $dadosAtuais = mysqli_fetch_assoc($resultBusca);
-    
-    // CALCULA CORRETAMENTE
+
     $novoValorRecebido = $dadosAtuais['valorRecebido'] + $valorRecebido;
     $novoValorReceber = $dadosAtuais['valorReceber'] - $valorRecebido;
-    
-    // Se o valor receber ficou negativo ou zero, está pago
+
     $statusRecebimento = ($novoValorReceber <= 0) ? 1 : 0;
-    
-    // Se pagou a mais, ajusta para não ficar negativo
+
     if ($novoValorReceber < 0) {
         $novoValorReceber = 0;
     }
-    
-    // Atualiza o recebimento
+
     $sql = "UPDATE recebimentos SET 
             valorRecebido = $novoValorRecebido,
             valorReceber = $novoValorReceber,
             dataRecebimento = '$dataRecebimento',
             status = '$statusRecebimento'
             WHERE codigo = $codigo";
-    
+
     if (mysqli_query($conexao, $sql)) {
-        header("Location: recebimento_listar.php?mensagem=Recebimento registrado com sucesso");
+        setNotificacao('sucesso', 'Recebimento registrado com sucesso');
+        header("Location: recebimento_listar.php");
         exit;
     } else {
-        $erro = "Erro ao registrar recebimento: " . mysqli_error($conexao);
+        setNotificacao('erro', 'Erro ao registrar recebimento: ' . mysqli_error($conexao));
+        header("Location: recebimento_listar.php");
+        exit;
     }
 }
 
@@ -58,6 +57,7 @@ $recebimento = mysqli_fetch_assoc($resultado);
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,12 +65,14 @@ $recebimento = mysqli_fetch_assoc($resultado);
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
+
 <body>
     <?php require_once("header.php"); ?>
-    
+
     <div class="container">
         <div class="form-header">
             <h1><i class="fas fa-dollar-sign"></i> Registrar Recebimento</h1>
@@ -86,20 +88,20 @@ $recebimento = mysqli_fetch_assoc($resultado);
         <div class="info-box">
             <p><strong>Cliente:</strong> <?= $recebimento['nomeCliente'] ?></p>
             <p><strong>Venda:</strong> #<?= $recebimento['numeroDaVenda'] ?></p>
-            <p><strong>Valor Total da Venda:</strong> R$ <?= number_format($recebimento['valorTotal'], 2, ',', '.') ?></p>
-            <p><strong>Valor Já Recebido:</strong> R$ <?= number_format($recebimento['valorRecebido'], 2, ',', '.') ?></p>
+            <p><strong>Valor Total da Venda:</strong> R$ <?= number_format($recebimento['valorTotal'], 2, ',', '.') ?>
+            </p>
+            <p><strong>Valor Já Recebido:</strong> R$ <?= number_format($recebimento['valorRecebido'], 2, ',', '.') ?>
+            </p>
             <p><strong>Valor Restante:</strong> R$ <?= number_format($recebimento['valorReceber'], 2, ',', '.') ?></p>
         </div>
 
         <form method="POST" id="form" data-validate>
             <input type="hidden" name="codigo" value="<?= $recebimento['codigo'] ?>">
-            
+
             <div class="form-group">
                 <label>Valor a Receber*</label>
-                <input type="text" name="valorRecebido" data-mask="valor" 
-                       placeholder="R$ 0,00" 
-                       value="R$ <?= number_format($recebimento['valorReceber'], 2, ',', '.') ?>"
-                       required>
+                <input type="text" name="valorRecebido" data-mask="valor" placeholder="R$ 0,00"
+                    value="R$ <?= number_format($recebimento['valorReceber'], 2, ',', '.') ?>" required>
                 <small style="color: #666;">Você pode receber um valor parcial</small>
             </div>
 
@@ -116,4 +118,5 @@ $recebimento = mysqli_fetch_assoc($resultado);
 
     <script src="assets/js/masks.js"></script>
 </body>
+
 </html>

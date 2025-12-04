@@ -1,10 +1,11 @@
 <?php
 require_once("verificaautenticacao.php");
 require_once("conexao.php");
+require_once("notificacoes.php");
 
 if($_SESSION["tipoDeAcesso"] = 1){
-    header("location: adm.php");
-    echo "<script>alert('Seu tipo de acesso não permite acessar essa página.');</script>";
+    setNotificacao('erro', 'Seu tipo de acesso não permite acessar essa página.');
+    header("location: $_SERVER[REQUEST_URI]");
     exit();
 
 }
@@ -29,7 +30,9 @@ if (isset($_POST['cadastrar'])) {
     VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao')";
     
     mysqli_query($conexao, $sql);
-    echo "Registro salvo com sucesso";
+    setNotificacao('sucesso', 'Registro salvo com sucesso');
+    header("Location: funcionario-listar.php");
+    exit;
 }
 ?>
 
@@ -47,6 +50,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/masks.css">
     <link rel="stylesheet" href="assets/css/cep.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 

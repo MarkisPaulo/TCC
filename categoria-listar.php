@@ -1,13 +1,20 @@
 <?php
 require_once("conexao.php");
+require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
+
 if (isset($_GET['codigo']) && $_GET['status'] == 1) {
     $sql = "UPDATE categoria SET status = 0 WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    $mensagem = "Categoria Inativada com sucesso.";
+    setNotificacao('erro', 'Categoria Inativada');
+    header("Location: categoria-listar.php");
+    exit;
 } else if (isset($_GET["codigo"]) && $_GET["status"] == 0) {
     $sql = "UPDATE categoria SET status = 1 WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    $mensagem = "Categoria Ativada com sucesso.";
+    setNotificacao('sucesso', 'Categoria Ativada com sucesso.');
+    header("Location: categoria-listar.php");
+    exit;
 }
 
 $textoBusca = "";
@@ -53,6 +60,7 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
     <link rel="stylesheet" href="assets/css/listar.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
@@ -60,12 +68,6 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
 <body>
 
     <?php require_once("header.php"); ?>
-
-    <?php if (isset($mensagem)) { ?>
-        <div class="alert" role="alert">
-            <?= $mensagem ?>
-        </div>
-    <?php } ?>
 
     <div class="container">
 
@@ -108,7 +110,7 @@ if (isset($_GET['busca']) && !empty($_GET['busca'])) {
                         <td><?= $linha['nome'] ?></td>
                         <td class="actions">
                             <a href="categoria-alterar.php?codigo=<?= $linha['codigo'] ?>" class="btn btn-warning">
-                                <i class="fas fa-solid fa-pen-to-square"></i> Alterar</a>
+                                <i class="fas fa-solid fa-pen-to-square"></i> Alterar </a>
                             <a href="categoria-listar.php?codigo=<?= $linha['codigo'] ?>&status=<?= $linha['status'] ?>"
                                 class="btn btn-danger" onclick="return confirm('Confirma Inativação?')"><i
                                     class="fas fa-solid fa-circle-xmark"></i>Inativar</a>

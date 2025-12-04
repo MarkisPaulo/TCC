@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/adm.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Adm</title>
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">

@@ -1,18 +1,21 @@
 <?php
 require_once("conexao.php");
+require_once("notificacoes.php");
+require_once("verificaautenticacao.php");
 if (isset($_POST['salvar'])) {
 
     $nome = $_POST['nome'];
 
     $sql = "UPDATE categoria SET nome = '$nome' WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    echo "Registro alterado com sucesso";
+    setNotificacao('alerta', 'Categoria alterada com sucesso!');
     header("Location: categoria-listar.php");
+    exit;
 }
 
 $sql = "SELECT * FROM categoria WHERE codigo = " . $_GET['codigo'];
 $resultado = mysqli_query($conexao, $sql);
-$linha = mysqli_fetch_array($resultado);
+$linha = mysqli_fetch_assoc($resultado);
 
 ?>
 
@@ -27,6 +30,7 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>

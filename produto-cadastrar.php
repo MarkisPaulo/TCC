@@ -1,6 +1,7 @@
 <?php
 require_once("conexao.php");
 require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
 if (isset($_POST['cadastrar'])) {
 
     $nome = $_POST['nome'];
@@ -21,7 +22,9 @@ if (isset($_POST['cadastrar'])) {
     $sql = "INSERT INTO produto (nome, precoUnitarioDaVenda, precoUnitarioDaCompra, quantEstoque, ncm, cfop, idMarca, idCategoria, unidMedida) 
     VALUES('$nome', $precoUnitarioDaVenda, $precoUnitarioDaCompra, $quantEstoque, '$ncm', '$cfop', $idMarca, $idCategoria, '$unidMeidida')";
     mysqli_query($conexao, $sql);
-    echo "Registro salvo com sucesso";
+    setNotificacao('sucesso', 'Registro salvo com sucesso');
+    header("Location: produto-listar.php");
+    exit;
 }
 ?>
 
@@ -35,6 +38,7 @@ if (isset($_POST['cadastrar'])) {
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/masks.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
     <title>Cadastro de Produto</title>

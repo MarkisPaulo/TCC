@@ -1,8 +1,10 @@
 <?php
 require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
 ?>
 
 <header>
+    <?php exibirNotificacao(); ?>
     <div class="sidebar" id="sidebar">
         <button class="toggle-btn" id="toggleBtn">
             <i class="fas fa-chevron-left"></i>

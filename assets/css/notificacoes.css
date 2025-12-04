@@ -1,0 +1,145 @@
+/* Sistema de Notificações Padronizado */
+.notificacao {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 350px;
+    max-width: 500px;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    animation: surgir 0.3s ease-out;
+}
+
+@keyframes surgir {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.notificacao.desaparecer {
+    animation: desaparecer 0.3s ease-in forwards;
+}
+
+@keyframes desaparecer {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+}
+
+/* Tipos de Notificação */
+.notificacao.sucesso {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.notificacao.alerta {
+    background: linear-gradient(135deg, #ffc107, #ffb300);
+    color: #333;
+}
+
+.notificacao.erro {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+}
+
+.notificacao i {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.notificacao-texto {
+    flex: 1;
+}
+
+/* Notificação de Venda (especial) */
+.notificacao-venda {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 400px;
+    max-width: 600px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    z-index: 99999;
+    text-align: center;
+    animation: surgir 0.4s ease-out;
+}
+
+.notificacao-venda .icone-sucesso {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: pulsar 0.6s ease-in-out;
+}
+
+@keyframes pulsar {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.notificacao-venda .icone-sucesso i {
+    font-size: 40px;
+    color: white;
+}
+
+.notificacao-venda h2 {
+    color: #28a745;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.notificacao-venda p {
+    color: #666;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.notificacao-venda .numero-venda {
+    font-size: 32px;
+    font-weight: bold;
+    color: #0077b6;
+    margin: 15px 0;
+}
+
+/* Overlay escuro para a notificação de venda */
+.overlay-notificacao {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99998;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

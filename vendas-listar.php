@@ -19,13 +19,15 @@ if (isset($_GET['cancelar']) && isset($_GET['codigo'])) {
         mysqli_query($conexao, $sqlEstoque);
     }
 
-    $mensagem = "Venda #$codigoVenda cancelada com sucesso!";
+    setNotificacao('erro', "Venda #$codigoVenda cancelada com sucesso!");
+    header("Location: vendas-listar.php");
+    exit;
 }
 
 // Modal de visualização de itens
 if (isset($_GET['ver_itens'])) {
-    $numeroVenda = (int)$_GET['ver_itens'];
-    
+    $numeroVenda = (int) $_GET['ver_itens'];
+
     $sqlItens = "SELECT 
         vp.quantidade,
         vp.precoUnitDaVenda,
@@ -36,7 +38,7 @@ if (isset($_GET['ver_itens'])) {
     INNER JOIN produto p ON vp.FkCodigoProduto = p.codigo
     INNER JOIN marca m ON p.idMarca = m.codigo
     WHERE vp.FkNumeroDaVenda = $numeroVenda";
-    
+
     $resultItens = mysqli_query($conexao, $sqlItens);
     $itensVenda = [];
     while ($item = mysqli_fetch_assoc($resultItens)) {
@@ -109,6 +111,7 @@ $totais = mysqli_fetch_assoc($resultTotais);
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/filtro.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
     <style>
@@ -314,56 +317,60 @@ $totais = mysqli_fetch_assoc($resultTotais);
 
     <!-- Modal para Ver Itens -->
     <?php if (isset($_GET['ver_itens'])) { ?>
-    <div id="modalItens" class="modal-overlay" style="display: flex;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><i class="fas fa-box"></i> Itens da Venda #<?= $_GET['ver_itens'] ?></h2>
-                <a href="vendas-listar.php<?= isset($_GET['status']) ? '?status='.$_GET['status'] : '' ?><?= isset($_GET['periodo']) ? (isset($_GET['status']) ? '&' : '?').'periodo='.$_GET['periodo'] : '' ?><?= isset($_GET['busca']) ? (isset($_GET['status']) || isset($_GET['periodo']) ? '&' : '?').'busca='.$_GET['busca'] : '' ?>" class="modal-close">&times;</a>
-            </div>
-            <div id="conteudoItens">
-                <div class="item-venda item-header">
-                    <div>Produto</div>
-                    <div style="text-align: center;">Quantidade</div>
-                    <div style="text-align: right;">Preço Unit.</div>
-                    <div style="text-align: right;">Subtotal</div>
+        <div id="modalItens" class="modal-overlay" style="display: flex;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-box"></i> Itens da Venda #<?= $_GET['ver_itens'] ?></h2>
+                    <a href="vendas-listar.php<?= isset($_GET['status']) ? '?status=' . $_GET['status'] : '' ?><?= isset($_GET['periodo']) ? (isset($_GET['status']) ? '&' : '?') . 'periodo=' . $_GET['periodo'] : '' ?><?= isset($_GET['busca']) ? (isset($_GET['status']) || isset($_GET['periodo']) ? '&' : '?') . 'busca=' . $_GET['busca'] : '' ?>"
+                        class="modal-close">&times;</a>
                 </div>
-                
-                <?php 
-                $total = 0;
-                foreach ($itensVenda as $item) { 
-                    $subtotal = $item['quantidade'] * $item['precoUnitDaVenda'];
-                    $total += $subtotal;
-                ?>
-                    <div class="item-venda">
-                        <div><strong><?= $item['nome'] ?></strong><br><small>Código: <?= $item['codigo'] ?></small></div>
-                        <div style="text-align: center;"><?= $item['quantidade'] ?></div>
-                        <div style="text-align: right;">R$ <?= number_format($item['precoUnitDaVenda'], 2, ',', '.') ?></div>
-                        <div style="text-align: right;"><strong>R$ <?= number_format($subtotal, 2, ',', '.') ?></strong></div>
+                <div id="conteudoItens">
+                    <div class="item-venda item-header">
+                        <div>Produto</div>
+                        <div style="text-align: center;">Quantidade</div>
+                        <div style="text-align: right;">Preço Unit.</div>
+                        <div style="text-align: right;">Subtotal</div>
                     </div>
-                <?php } ?>
-                
-                <div style="margin-top: 20px; padding: 15px; background: #e6f2fa; border-radius: 6px; text-align: right;">
-                    <strong style="font-size: 18px;">Total: R$ <?= number_format($total, 2, ',', '.') ?></strong>
+
+                    <?php
+                    $total = 0;
+                    foreach ($itensVenda as $item) {
+                        $subtotal = $item['quantidade'] * $item['precoUnitDaVenda'];
+                        $total += $subtotal;
+                        ?>
+                        <div class="item-venda">
+                            <div><strong><?= $item['nome'] ?></strong><br><small>Código: <?= $item['codigo'] ?></small></div>
+                            <div style="text-align: center;"><?= $item['quantidade'] ?></div>
+                            <div style="text-align: right;">R$ <?= number_format($item['precoUnitDaVenda'], 2, ',', '.') ?>
+                            </div>
+                            <div style="text-align: right;"><strong>R$ <?= number_format($subtotal, 2, ',', '.') ?></strong>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                    <div
+                        style="margin-top: 20px; padding: 15px; background: #e6f2fa; border-radius: 6px; text-align: right;">
+                        <strong style="font-size: 18px;">Total: R$ <?= number_format($total, 2, ',', '.') ?></strong>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-<?php } ?>
+    <?php } ?>
 
-<script>
+    <script>
         function verItens(numeroVenda) {
             // Redireciona para a mesma página com o parâmetro ver_itens
             const params = new URLSearchParams(window.location.search);
             let url = 'vendas-listar.php?ver_itens=' + numeroVenda;
-            
+
             // Mantém os filtros ativos
             if (params.get('status')) url += '&status=' + params.get('status');
             if (params.get('periodo')) url += '&periodo=' + params.get('periodo');
             if (params.get('busca')) url += '&busca=' + params.get('busca');
-            
+
             window.location.href = url;
         }
-    </script>   
+    </script>
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 <?php
 require_once("conexao.php");
 require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -11,7 +12,7 @@ if (isset($_GET['finalizar']) && isset($_GET['codigo'])) {
     $sqlFinalizar = "UPDATE vendas SET statusEntrega = 0 WHERE numeroDaVenda = $codigoVenda";
     mysqli_query($conexao, $sqlFinalizar);
     
-    $mensagem = "Entrega #$codigoVenda finalizada com sucesso!";
+    setNotificacao('sucesso', "Entrega #$codigoVenda finalizada com sucesso!");
 }
 
 // Filtros
@@ -77,6 +78,7 @@ $stats = mysqli_fetch_assoc($resultStats);
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/filtro.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
     <style>
@@ -184,12 +186,6 @@ $stats = mysqli_fetch_assoc($resultStats);
 </head>
 <body>
     <?php require_once("header.php"); ?>
-
-    <?php if (isset($mensagem)) { ?>
-        <div class="alert" role="alert">
-            <?= $mensagem ?>
-        </div>
-    <?php } ?>
 
     <div class="container">
         <!-- Cards de Estatísticas -->

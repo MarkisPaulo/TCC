@@ -148,6 +148,7 @@ foreach ($_SESSION['carrinho'] as $item) {
     <link rel="stylesheet" href="assets/css/venda.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 

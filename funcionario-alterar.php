@@ -1,5 +1,7 @@
 <?php
 require_once("conexao.php");
+require_once("verificaautenticacao.php");   
+require_once("notificacoes.php");
 if (isset($_POST['salvar'])) {
 
 
@@ -16,17 +18,23 @@ if (isset($_POST['salvar'])) {
     $tipoDeAcesso = $_POST['tipoDeAcesso'];
     $dtAdmissao = $_POST['dtAdmissao'];
     $senha = $_POST['senha'];
+
     $dtDemissao = "";
+    $status = "";
+    $campoStatus = "";
     if ($_POST['dtDemissao'] != '') {
         $dtDemissao = ", dtDemissao = '" . $_POST['dtDemissao'] . "'";
+        $status = 0 ;
+        $campoStatus = ", status = " . $status . ""; 
     }
 
 
     $sql = " UPDATE funcionario SET nome = '$nome', email ='$email', senha ='$senha', telefone ='$telefone', cpf='$cpf', endereco='$endereco',
-    logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso', dtAdmissao ='$dtAdmissao' $dtDemissao WHERE codigo = " . $_GET['codigo'];
+    logradouro ='$logradouro', cep ='$cep', bairro='$bairro', cidade ='$cidade', uf ='$uf', tipoDeAcesso ='$tipoDeAcesso', dtAdmissao ='$dtAdmissao' $campoStatus  $dtDemissao WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    echo "Registro alterado com sucesso";
+    setNotificacao('alerta', 'Funcionário alterado com sucesso!');
     header("Location: funcionario-listar.php");
+    exit;
 }
 
 $sql = "SELECT * FROM funcionario WHERE codigo = " . $_GET['codigo'];
@@ -46,6 +54,7 @@ $linha = mysqli_fetch_array($resultado);
     <link rel="stylesheet" href="assets/css/formCadastro.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>

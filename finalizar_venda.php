@@ -1,6 +1,7 @@
 <?php
 require_once("conexao.php");
 require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
 
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -8,11 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Pega os itens do carrinho da sessão
     $itens = $_SESSION['carrinho'];
 
-    // Valida se há itens
-    if (empty($itens)) {
-        header("Location: venda.php?erro=Carrinho vazio");
-        exit;
-    }
 
     // DADOS DO PAGAMENTO
     $idCliente = (int) $_POST['idCliente'];
@@ -127,7 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     unset($_SESSION['cliente_venda']);
     $_SESSION['carrinho'] = array(); // Reinicia como array vazio
 
-    header("Location: venda.php?sucesso=1&numero=$numeroDaVenda");
+    setNotificacao('venda', 'Total: R$ ' . number_format($valorTotal, 2, ',', '.'), $numeroDaVenda);
+    header("Location: venda.php");
     exit;
 }
 ?>

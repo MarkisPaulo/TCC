@@ -1,13 +1,15 @@
 <?php
 require_once("conexao.php");
+require_once("verificaautenticacao.php");
+require_once("notificacoes.php");
 if (isset($_GET['codigo']) && $_GET['status'] == 1) {
     $sql = "UPDATE marca SET status = 0 WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    $mensagem = "Marca Inativada com sucesso.";
+    setNotificacao('erro', 'Marca Inativada com sucesso.');
 } else if (isset($_GET["codigo"]) && $_GET["status"] == 0) {
     $sql = "UPDATE marca SET status = 1 WHERE codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
-    $mensagem = "Marca Ativada com sucesso.";
+    setNotificacao('sucesso', 'Marca Ativada com sucesso.');
 }
 
 $textoBusca = "";
@@ -48,18 +50,13 @@ while ($row = mysqli_fetch_assoc($resultadoI)) {
     <link rel="stylesheet" href="assets/css/listar.css">
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 <body>
 
     <?php require_once("header.php"); ?>
-
-    <?php if (isset($mensagem)) { ?>
-        <div class="alert" role="alert">
-            <?= $mensagem ?>
-        </div>
-    <?php } ?>
 
     <div class="container">
 
