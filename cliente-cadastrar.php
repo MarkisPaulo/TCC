@@ -15,6 +15,15 @@ if (isset($_POST['cadastrar'])) {
     $uf = $_POST['uf'];
     $email = $_POST['email'];
 
+    $sqlVerifica = "SELECT codigo FROM cliente WHERE cpf_cnpj = '$cpf_cnpj'";
+    $resultVerifica = mysqli_query($conexao, $sqlVerifica);
+    
+    if (mysqli_num_rows($resultVerifica) > 0) {
+        setNotificacao('erro', 'CPF/CNPJ já cadastrado no sistema!');
+        header("Location: cliente-cadastrar.php");
+        exit;
+    }
+
 
     $sql = "INSERT INTO cliente (nome, cpf_cnpj, telefone, endereco, logradouro, cep, bairro, cidade, uf, email) VALUES('$nome', '$cpf_cnpj', '$telefone', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$email')";
 

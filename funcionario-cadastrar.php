@@ -3,12 +3,7 @@ require_once("verificaautenticacao.php");
 require_once("conexao.php");
 require_once("notificacoes.php");
 
-if($_SESSION["tipoDeAcesso"] = 1){
-    setNotificacao('erro', 'Seu tipo de acesso não permite acessar essa página.');
-    header("location: $_SERVER[REQUEST_URI]");
-    exit();
 
-}
 
 if (isset($_POST['cadastrar'])) {
     
@@ -25,6 +20,15 @@ if (isset($_POST['cadastrar'])) {
     $tipoDeAcesso = $_POST['tipoDeAcesso'];
     $dtAdmissao = $_POST['dtAdmissao'];
     $senha = $_POST['senha'];
+
+    $sqlVerifica = "SELECT codigo FROM funcionario WHERE cpf = '$cpf'";
+    $resultVerifica = mysqli_query($conexao, $sqlVerifica);
+    
+    if (mysqli_num_rows($resultVerifica) > 0) {
+        setNotificacao('erro', 'CPF já cadastrado no sistema!');
+        header("Location: funcionario-cadastrar.php");
+        exit;
+    }
 
     $sql = "INSERT INTO funcionario (nome, email, senha, telefone, cpf, endereco, logradouro, cep, bairro, cidade, uf, tipoDeAcesso)
     VALUES('$nome', '$email', '$senha', '$telefone', '$cpf', '$endereco', '$logradouro', '$cep', '$bairro', '$cidade', '$uf', '$tipoDeAcesso', '$dtAdmissao')";

@@ -1,7 +1,3 @@
-/**
- * Busca de CEP via API ViaCEP
- */
-
 function buscarCEP() {
     // Obtém referências aos elementos do DOM
     const cepInput = document.getElementById('cep');
