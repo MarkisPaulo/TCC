@@ -63,12 +63,16 @@ if (isset($_POST['acao'])) {
             $incremento = intval($_POST['incremento']);
             if (isset($_SESSION['carrinho'][$indice])) {
                 $novaQuantidade = $_SESSION['carrinho'][$indice]['quantidade'] + $incremento;
+
                 if ($novaQuantidade > 0 && $novaQuantidade <= $_SESSION['carrinho'][$indice]['quantEstoque']) {
                     $_SESSION['carrinho'][$indice]['quantidade'] = $novaQuantidade;
+                    
                 } elseif ($novaQuantidade <= 0) {
+
                     unset($_SESSION['carrinho'][$indice]);
                     $_SESSION['carrinho'] = array_values($_SESSION['carrinho']);
                     $mensagem = "Produto removido!";
+
                 } else {
                     $mensagem = "Estoque insuficiente!";
                 }

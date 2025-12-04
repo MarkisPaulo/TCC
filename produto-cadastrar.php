@@ -80,7 +80,7 @@ if (isset($_POST['cadastrar'])) {
                     <select id="idCategoria" name="idCategoria" required>
                         <option value="">Selecione uma categoria</option>
                         <?php
-                            $sql = "SELECT * FROM categoria ORDER BY nome";
+                            $sql = "SELECT * FROM categoria WHERE status = 1 ORDER BY nome";
                             $result = mysqli_query($conexao, $sql);
 
                             while ($row = mysqli_fetch_array($result)) { ?>
@@ -94,7 +94,7 @@ if (isset($_POST['cadastrar'])) {
                     <select id="idMarca" name="idMarca" required>
                         <option value="">Selecione uma Marca</option>
                         <?php
-                            $sql = "SELECT * FROM marca ORDER BY nome";
+                            $sql = "SELECT * FROM marca WHERE status = 1 ORDER BY nome";
                             $result = mysqli_query($conexao, $sql);
 
                             while ($row = mysqli_fetch_array($result)) { ?>

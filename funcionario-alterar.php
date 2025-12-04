@@ -2,6 +2,9 @@
 require_once("conexao.php");
 require_once("verificaautenticacao.php");   
 require_once("notificacoes.php");
+
+date_default_timezone_set('America/Sao_Paulo');
+
 if (isset($_POST['salvar'])) {
 
 
@@ -80,7 +83,7 @@ $linha = mysqli_fetch_array($resultado);
             <div class="form-row">
                 <div class="form-group">
                     <label for="cpf" class="form-label">CPF*</label>
-                    <input name="cpf" type="text" class="form-control" id="cpf" data-mask="cpf-cnpj" maxlength="14" value="<?= $linha['cpf'] ?>">
+                    <input name="cpf" type="text" class="form-control" id="cpf-cnpj" data-mask="cpf-cnpj" maxlength="14" value="<?= $linha['cpf'] ?>">
                 </div>
                 <div class="form-group">
                     <label for="telefone" class="form-label">Telefone*</label>
@@ -140,13 +143,13 @@ $linha = mysqli_fetch_array($resultado);
                     </select>
                 </div>
 
-            </div>
-
-            <div class="form-row">
                 <div class="form-group">
                     <label for="cidade" class="form-label">Cidade*</label>
                     <input name="cidade" type="text" class="form-control" id="cidade" value="<?= $linha['cidade'] ?>">
                 </div>
+            </div>
+
+            <div class="form-row">
 
                 <div class="form-group">
                     <label for="tel" class="form-label">Logradouro*</label>
@@ -196,6 +199,8 @@ $linha = mysqli_fetch_array($resultado);
             </div>
         </form>
     <script src="assets/js/masks.js"></script>
+    <script src="assets/js/validacao.js"></script>
+    <script src="assets/js/validascao.js"></script>
     </div>
 </body>
 

@@ -58,7 +58,7 @@ require_once("notificacoes.php");
                 <li><a href="recebimento_listar.php"><i class="fas fa-money-bill-wave"></i>
                         <span>Recebimentos</span></a></li>
                 <li><a href="venda.php"><i class="fas fa-store"></i> <span>Venda</span></a></li>
-                <li><a href="#"><i class="fas fa-envelope"></i> <span>Contact</span></a></li>
+                <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></li>
             </ul>
         </nav>
     </div>

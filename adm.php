@@ -1,5 +1,116 @@
 <?php 
   require_once("verificaautenticacao.php");
+  require_once("conexao.php");
+  
+  // Vendas de Hoje
+  $sqlVendasHoje = "SELECT SUM(valorTotal) as total, COUNT(*) as quantidade 
+                    FROM vendas 
+                    WHERE DATE(`data/hora`) = CURDATE() AND status = 1";
+  $resultVendasHoje = mysqli_query($conexao, $sqlVendasHoje);
+  $vendasHoje = mysqli_fetch_assoc($resultVendasHoje);
+  
+  // Vendas de Ontem para comparação
+  $sqlVendasOntem = "SELECT SUM(valorTotal) as total 
+                     FROM vendas 
+                     WHERE DATE(`data/hora`) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND status = 1";
+  $resultVendasOntem = mysqli_query($conexao, $sqlVendasOntem);
+  $vendasOntem = mysqli_fetch_assoc($resultVendasOntem);
+  
+  // Calcula variação percentual
+  $totalHoje = $vendasHoje['total'] ?? 0;
+  $totalOntem = $vendasOntem['total'] ?? 0;
+
+  // Evitar divisão por zero
+  if ($totalOntem > 0) {
+      $variacaoVendas = (($totalHoje - $totalOntem) / $totalOntem) * 100;
+  } else {
+      $variacaoVendas = ($totalHoje > 0) ? 100 : 0;
+  }
+  
+  // Produtos em Estoque
+  $sqlProdutosEstoque = "SELECT COUNT(*) as total 
+                         FROM produto 
+                         WHERE status = 1 AND quantEstoque > 0";
+  $resultProdutosEstoque = mysqli_query($conexao, $sqlProdutosEstoque);
+  $produtosEstoque = mysqli_fetch_assoc($resultProdutosEstoque);
+  
+  // Produtos com estoque baixo (menos de 10 unidades)
+  $sqlEstoqueBaixo = "SELECT COUNT(*) as total 
+                      FROM produto 
+                      WHERE status = 1 AND quantEstoque > 0 AND quantEstoque < 10";
+  $resultEstoqueBaixo = mysqli_query($conexao, $sqlEstoqueBaixo);
+  $estoqueBaixo = mysqli_fetch_assoc($resultEstoqueBaixo);
+  
+  $totalProdutos = $produtosEstoque['total'] ?? 0;
+  $totalEstoqueBaixo = $estoqueBaixo['total'] ?? 0;
+  $percentualEstoqueBaixo = $totalProdutos > 0 ? ($totalEstoqueBaixo / $totalProdutos) * 100 : 0;
+  
+  // Entregas Pendentes
+  $sqlEntregasPendentes = "SELECT COUNT(*) as total 
+                           FROM vendas 
+                           WHERE status = 1 AND statusEntrega = 1";
+  $resultEntregasPendentes = mysqli_query($conexao, $sqlEntregasPendentes);
+  $entregasPendentes = mysqli_fetch_assoc($resultEntregasPendentes);
+  
+/** 
+  $sqlEntregasOntem = "SELECT COUNT(*) as total 
+                       FROM vendas 
+                       WHERE DATE(`data/hora`) = DATE_SUB(CURDATE(), INTERVAL 1 DAY) 
+                       AND status = 1 AND statusEntrega = 1";
+  $resultEntregasOntem = mysqli_query($conexao, $sqlEntregasOntem);
+  $entregasOntem = mysqli_fetch_assoc($resultEntregasOntem);
+  
+  $totalEntregas = $entregasPendentes['total'] ?? 0;
+  $totalEntregasOntem = $entregasOntem['total'] ?? 1;
+  $variacaoEntregas = (($totalEntregas - $totalEntregasOntem) / $totalEntregasOntem) * 100;*/
+  
+  // ========== ATIVIDADES RECENTES ==========
+  $sqlAtividades = "SELECT 
+                        v.numeroDaVenda,
+                        v.valorTotal,
+                        v.`data/hora`,
+                        c.nome as cliente,
+                        'venda' as tipo
+                    FROM vendas v
+                    INNER JOIN cliente c ON v.idCliente = c.codigo
+                    WHERE v.status = 1
+                    ORDER BY v.`data/hora` DESC
+                    LIMIT 4";
+  $resultAtividades = mysqli_query($conexao, $sqlAtividades);
+  $atividades = [];
+  while ($row = mysqli_fetch_assoc($resultAtividades)) {
+      $atividades[] = $row;
+  }
+  
+  $sqlAlertasEstoque = "SELECT 
+                            p.codigo,
+                            p.nome,
+                            p.quantEstoque,
+                            m.nome as marca
+                        FROM produto p
+                        INNER JOIN marca m ON p.idMarca = m.codigo
+                        WHERE p.status = 1 AND p.quantEstoque < 10
+                        ORDER BY p.quantEstoque ASC
+                        LIMIT 5";
+  $resultAlertasEstoque = mysqli_query($conexao, $sqlAlertasEstoque);
+  $alertasEstoque = [];
+  while ($row = mysqli_fetch_assoc($resultAlertasEstoque)) {
+      $alertasEstoque[] = $row;
+  }
+  
+  function tempoDecorrido($dataHora) {
+      $agora = new DateTime();
+      $data = new DateTime($dataHora);
+      $diff = $agora->diff($data);
+      
+      if ($diff->d > 0) {
+          return $diff->d . ' dia' . ($diff->d > 1 ? 's' : '') . ' atrás';
+      } elseif ($diff->h > 0) {
+          return $diff->h . ' hora' . ($diff->h > 1 ? 's' : '') . ' atrás';
+      } else {
+          return $diff->i . ' minuto' . ($diff->i > 1 ? 's' : '') . ' atrás';
+      }
+  }
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -12,7 +123,7 @@
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/notificacoes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Adm</title>
+    <title>Dashboard - NEXUS</title>
     <link rel="shortcut icon" href="assets/img/logoNexus.png" type="image/png">
 </head>
 
@@ -22,32 +133,35 @@
     <div class="main-content">
         <!-- Seção de Boas-vindas -->
         <section class="welcome-section">
-            <h1 class="welcome-title">Bem-vindo ao Sistema de Gestão</h1>
+            <h1 class="welcome-title">Bem-vindo, <?= $_SESSION['nome'] ?>!</h1>
             <p class="welcome-subtitle">Acompanhe o desempenho da sua loja e gerencie seu negócio com facilidade</p>
-            <button class="btn btn-primary"><i class="fas fa-play"></i> Começar Tour</button>
         </section>
 
         <!-- Estatísticas Rápidas -->
         <div class="quick-stats">
             <div class="stat-card">
                 <h3><i class="fas fa-shopping-cart"></i> Vendas Hoje</h3>
-                <div class="stat-value">R$ 3.245,80</div>
-                <div class="stat-diff positive"><i class="fas fa-arrow-up"></i> 12% em relação a ontem</div>
-            </div>
-            <div class="stat-card">
-                <h3><i class="fas fa-users"></i> Clientes Novos</h3>
-                <div class="stat-value">18</div>
-                <div class="stat-diff positive"><i class="fas fa-arrow-up"></i> 5% na semana</div>
+                <div class="stat-value">R$ <?= number_format($totalHoje, 2, ',', '.') ?></div>
+                <div class="stat-diff <?= $variacaoVendas >= 0 ? 'positive' : 'negative' ?>">
+                    <i class="fas fa-arrow-<?= $variacaoVendas >= 0 ? 'up' : 'down' ?>"></i> 
+                    <?= number_format(abs($variacaoVendas), 1) ?>% em relação a ontem
+                </div>
             </div>
             <div class="stat-card">
                 <h3><i class="fas fa-boxes"></i> Produtos em Estoque</h3>
-                <div class="stat-value">542</div>
-                <div class="stat-diff negative"><i class="fas fa-arrow-down"></i> 3% em estoque</div>
+                <div class="stat-value"><?= $totalProdutos ?></div>
+                <div class="stat-diff <?= $percentualEstoqueBaixo > 10 ? 'negative' : 'positive' ?>">
+                    <i class="fas fa-exclamation-triangle"></i> 
+                    <?= $totalEstoqueBaixo ?> com estoque baixo
+                </div>
             </div>
             <div class="stat-card">
-                <h3><i class="fas fa-clipboard-list"></i> Pedidos Pendentes</h3>
-                <div class="stat-value">7</div>
-                <div class="stat-diff negative"><i class="fas fa-arrow-down"></i> 2 em relação a ontem</div>
+                <h3><i class="fas fa-clipboard-list"></i> Entregas Pendentes</h3>
+                <div class="stat-value"><?= $totalEntregas ?></div>
+                <div class="stat-diff <?= $variacaoEntregas <= 0 ? 'positive' : 'negative' ?>">
+                    <i class="fas fa-arrow-<?= $variacaoEntregas <= 0 ? 'down' : 'up' ?>"></i> 
+                    <?= number_format(abs($variacaoEntregas), 1) ?>% em relação a ontem
+                </div>
             </div>
         </div>
 
@@ -57,93 +171,89 @@
             <section class="recent-activity">
                 <h2 class="section-title"><i class="fas fa-history"></i> Atividades Recentes</h2>
                 <ul class="activity-list">
-                    <li class="activity-item">
-                        <div class="activity-icon"><i class="fas fa-check"></i></div>
-                        <div class="activity-details">
-                            <strong>Venda concluída</strong> - R$ 450,00
-                            <div class="activity-time">10 minutos atrás</div>
-                        </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon"><i class="fas fa-plus"></i></div>
-                        <div class="activity-details">
-                            <strong>Novo produto cadastrado</strong> - Smartphone XYZ
-                            <div class="activity-time">35 minutos atrás</div>
-                        </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon"><i class="fas fa-exclamation"></i></div>
-                        <div class="activity-details">
-                            <strong>Estoque baixo</strong> - Fone de Ouvido ABC
-                            <div class="activity-time">1 hora atrás</div>
-                        </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon"><i class="fas fa-user-plus"></i></div>
-                        <div class="activity-details">
-                            <strong>Novo cliente cadastrado</strong> - Maria Silva
-                            <div class="activity-time">2 horas atrás</div>
-                        </div>
-                    </li>
+                    <?php if (empty($atividades)) { ?>
+                        <li class="activity-item">
+                            <div class="activity-details">
+                                <strong>Nenhuma atividade recente</strong>
+                                <div class="activity-time">Comece realizando vendas!</div>
+                            </div>
+                        </li>
+                    <?php } else { ?>
+                        <?php foreach ($atividades as $atividade) { ?>
+                            <li class="activity-item">
+                                <div class="activity-icon"><i class="fas fa-check"></i></div>
+                                <div class="activity-details">
+                                    <strong>Venda #<?= $atividade['numeroDaVenda'] ?> concluída</strong> - 
+                                    R$ <?= number_format($atividade['valorTotal'], 2, ',', '.') ?>
+                                    <br>
+                                    <small>Cliente: <?= $atividade['cliente'] ?></small>
+                                    <div class="activity-time"><?= tempoDecorrido($atividade['data/hora']) ?></div>
+                                </div>
+                            </li>
+                        <?php } ?>
+                    <?php } ?>
                 </ul>
+                <a href="vendas-listar.php" style="display: inline-block; margin-top: 15px; color: #0077b6; text-decoration: none;">
+                    <i class="fas fa-arrow-right"></i> Ver todas as vendas
+                </a>
             </section>
 
             <!-- Alertas de Estoque -->
             <section class="inventory-alerts">
                 <h2 class="section-title"><i class="fas fa-bell"></i> Alertas de Estoque</h2>
-                <div class="alert-item">
-                    <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    <span>Fone de Ouvido ABC - apenas 2 unidades</span>
-                </div>
-                <div class="alert-item">
-                    <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    <span>Carregador Tipo C - abaixo do estoque mínimo</span>
-                </div>
-                <div class="alert-item">
-                    <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    <span>Película para Vidro - reposição necessária</span>
-                </div>
-                <div class="alert-item">
-                    <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
-                    <span>Cabo USB - estoque crítico</span>
-                </div>
-                <button class="btn btn-primary" style="margin-top: 15px;"><i class="fas fa-list"></i> Ver Todos os Alertas</button>
+                <?php if (empty($alertasEstoque)) { ?>
+                    <div class="alert-item" style="border: none; color: #28a745;">
+                        <span class="alert-icon"><i class="fas fa-check-circle"></i></span>
+                        <span>Todos os produtos estão com estoque adequado!</span>
+                    </div>
+                <?php } else { ?>
+                    <?php foreach ($alertasEstoque as $alerta) { ?>
+                        <div class="alert-item">
+                            <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                            <span>
+                                <strong><?= $alerta['nome'] ?></strong> (<?= $alerta['marca'] ?>)
+                                <br>
+                                <small>Apenas <?= $alerta['quantEstoque'] ?> unidade<?= $alerta['quantEstoque'] > 1 ? 's' : '' ?> em estoque</small>
+                            </span>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+                <a href="produto-listar.php" style="display: inline-block; margin-top: 15px;">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-list"></i> Gerenciar Produtos
+                    </button>
+                </a>
             </section>
         </div>
+        
+        <!-- Ações Rápidas -->
+        <section class="recent-activity" style="margin-top: 30px;">
+            <h2 class="section-title"><i class="fas fa-bolt"></i> Ações Rápidas</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                <a href="venda.php" style="text-decoration: none;">
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-cart-plus"></i> Nova Venda
+                    </button>
+                </a>
+                <a href="cliente-cadastrar.php" style="text-decoration: none;">
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-user-plus"></i> Novo Cliente
+                    </button>
+                </a>
+                <a href="produto-cadastrar.php" style="text-decoration: none;">
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-box"></i> Novo Produto
+                    </button>
+                </a>
+                <a href="entregas-listar.php" style="text-decoration: none;">
+                    <button class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-truck"></i> Entregas
+                    </button>
+                </a>
+            </div>
+        </section>
     </div>
 
-    <script>
-        // Atualizar horário das atividades
-        document.addEventListener('DOMContentLoaded', function() {
-            const timeElements = document.querySelectorAll('.activity-time');
-            const now = new Date();
-
-            timeElements.forEach(el => {
-                const hoursAgo = Math.floor(Math.random() * 5) + 1;
-                const eventTime = new Date(now.getTime() - hoursAgo * 60 * 60 * 1000);
-                el.textContent = formatTimeAgo(eventTime);
-            });
-
-            function formatTimeAgo(date) {
-                const diff = Math.floor((now - date) / 1000 / 60); // diferença em minutos
-
-                if (diff < 60) {
-                    return `${diff} minutos atrás`;
-                } else if (diff < 1440) {
-                    return `${Math.floor(diff / 60)} horas atrás`;
-                } else {
-                    return `${Math.floor(diff / 1440)} dias atrás`;
-                }
-            }
-
-            // Simular dados dinâmicos
-            setInterval(() => {
-                const stats = document.querySelectorAll('.stat-value');
-                stats[0].textContent = `R$ ${(Math.random() * 5000 + 2000).toFixed(2).replace('.', ',')}`;
-                stats[1].textContent = Math.floor(Math.random() * 30 + 5);
-            }, 5000);
-        });
-    </script>
 </body>
 
 </html>
